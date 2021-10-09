@@ -1,0 +1,114 @@
+#include <conio.h>
+#include <stdlib.h>
+#include <math.h>
+#include <locale.h>
+
+int main()
+{
+setlocale(LC_ALL, "Russian");
+int zad, toch1 = 0, toch2 = 0, gog, mog;
+float x1, x2, y1, y2, x3, y3, dlina1, dlina2, dlina3, sum, l, s;
+printf("Выберите подзадачу: (1-5) \n");
+scanf("%d", &zad);
+if (zad == 1) {
+    printf("Введите X координату первой точки \n");
+    scanf("%f", &x1);
+    printf("Введите Y координату первой точки \n");
+    scanf("%f", &y1);
+    printf("Введите X координату второй точки \n");
+    scanf("%f", &x2);
+    printf("Введите Y координату второй точки \n");
+    scanf("%f", &y2);
+    dlina1 = sqrtl((x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2));
+    printf("dlina1 = %f", dlina1); }
+else if (zad == 2) {
+    printf("Введите X координату первой точки (Точка А) \n");
+    scanf("%f", &x1);
+    printf("Введите Y координату первой точки (Точка А) \n");
+    scanf("%f", &y1);
+    printf("Введите X координату второй точки (Точка В) \n");
+    scanf("%f", &x2);
+    printf("Введите Y координату второй точки (Точка В) \n");
+    scanf("%f", &y2);
+    printf("Введите X координату третей точки (Точка С) \n");
+    scanf("%f", &x3);
+    printf("Введите Y координату третей точки (Точка С) \n");
+    scanf("%f", &y3);
+    dlina1 = sqrtl((x1 - x3) * (x1 - x3) + (y1 - y3) * (y1 - y3));
+    dlina2 = sqrtl((x2 - x3) * (x2 - x3) + (y2 - y3) * (y2 - y3));
+    sum = dlina1 + dlina2;
+    printf("Длина отрезка АС равен = ");
+    printf("%f\n", dlina1);
+    printf("Длина отрезка BС равен = ");
+    printf("%f\n", dlina2);
+    printf("Сумма этих отрезков = ");
+    printf("%f\n", sum); }
+else if (zad == 3) {
+    printf("Введите координату х для точки А: \n");
+    scanf("%f", &x1);
+    printf("Введите координату х для точки В: \n");
+    scanf("%f", &y1);
+    printf("Введите координату х для точки С: \n");
+    scanf("%f", &l);
+    if (x1 > y1) {
+        if ((l > y1) && (l < x1)) {
+            toch1 = l - y1;
+            toch2 = x1 - l; }
+        else
+            printf("Точка С вне отрезка АВ"); }
+    else if (y1 > x1) {
+        if ((l > x1) && (l < y1)) {
+            toch1 = l - x1;
+            toch2 = y1 - l; }
+        else
+            printf("Точка С вне отрезка АВ"); }
+    if (toch1 > 0) {
+    sum = toch1 * toch2;
+    printf("%f\n", sum); }
+}
+else if (zad == 4) {
+    printf("Введите X координату первой вершины прямоульника \n");
+    scanf("%f", &x1);
+    printf("Введите Y координату первой вершины прямоульника \n");
+    scanf("%f", &y1);
+    printf("Введите X координату второй вершины прямоульника \n");
+    scanf("%f", &x2);
+    printf("Введите Y координату второй вершины прямоульника \n");
+    scanf("%f", &y2);
+    dlina1 = y1 - y2;
+        if (dlina1 < 0) {
+            dlina1 = dlina1 * (-1); }
+    dlina2 = x1 - x2;
+        if (dlina2 < 0) {
+            dlina2 = dlina2 * (-1); }
+    gog = (dlina1 * 2) + (dlina2 * 2);
+    mog = dlina1 * dlina2;
+    printf("Периметр = ");
+    printf("%d\n", gog);
+    printf("Произведение = ");
+    printf("%d", mog); }
+else if (zad == 5) {
+    printf("Введите X координату первой вершины прямоульника \n");
+    scanf("%f", &x1);
+    printf("Введите Y координату первой вершины прямоульника \n");
+    scanf("%f", &y1);
+    printf("Введите X координату второй вершины прямоульника \n");
+    scanf("%f", &x2);
+    printf("Введите Y координату второй вершины прямоульника \n");
+    scanf("%f", &y2);
+    printf("Введите X координату второй вершины прямоульника \n");
+    scanf("%f", &x3);
+    printf("Введите Y координату второй вершины прямоульника \n");
+    scanf("%f", &y3);
+    dlina1 = sqrtl((x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2));
+    dlina2 = sqrtl((x2 - x3) * (x2 - x3) + (y2 - y3) * (y2 - y3));
+    dlina3 = sqrtl((x3 - x1) * (x3 - x1) + (y3 - y1) * (y3 - y1));
+    l = (dlina1 + dlina2 + dlina3) / 2;
+    sum = dlina1 + dlina2 + dlina3;
+    s = sqrtl(l * (l - dlina1) * (l - dlina2) * (l - dlina3));
+    printf("Периметр = ");
+    printf("%f\n", sum);
+    printf("Произведение = ");
+    printf("%f", s); }
+return 0;
+}
