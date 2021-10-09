@@ -1,0 +1,67 @@
+#include <stdio.h>
+#define _CRT_SECURE_NO_WARNINGS 1
+
+int main() {
+setlocale(0, "");
+int zad, a, b, S, P;
+float L, d, f, x, arif, r, t, sum, raz, proiz, del;
+printf("Выберите подзадачу: \n1. Площадь и периметр треугольника \n2. Длина окружности \n3. Среднее арифметическое \n4. Сумма, разность, произведение и частное квадратов \n5. Сумма, разность, произведение и частное модулей \n");
+scanf("%d", &zad);
+if (zad == 1) {
+    printf("Высота прямоугольника = ");
+    scanf("%d", &a);
+    printf("Ширина прямоугольника = ");
+    scanf("%d", &b);
+    S = a * b;
+    P = 2 * (a + b);
+    printf("%d\n", S);
+    printf("%d\n", P); }
+else if (zad == 2) {
+    printf("Диаметр окружности = ");
+    scanf("%f", &d);
+    L = (3.14 * d);
+    printf("%f\n", L); }
+else if (zad == 3) {
+    printf("Число a = ");
+    scanf("%f", &f);
+    printf("Число b = ");
+    scanf("%f", &x);
+    arif = (f + x) / 2;
+    printf("%f\n", arif); }
+else if (zad == 4) {
+    printf("Введите два ненулевых числа \n");
+    printf("Первое число = ");
+    scanf("%f", &r);
+    printf("Второе число = ");
+    scanf("%f", &t);
+    sum = (r * r) + (t * t);
+    raz = (r * r) - (t * t);
+    proiz = (r * r) * (t * t);
+    del = (r * r) / (t * t);
+    printf("%f\n", sum);
+    printf("%f\n", raz);
+    printf("%f\n", proiz);
+    printf("%f\n", del); }
+else if (zad == 5) {
+    printf("Первое число = ");
+    scanf("%f", &r);
+    printf("Второе число = ");
+    scanf("%f", &t);
+    if (r < 0)
+        r = r * (-1);
+    if (t < 0)
+        t = t * (-1);
+    sum = r + t;
+    raz = r - t;
+    proiz = r * t;
+    del = r / t;
+    printf("%f\n", sum);
+    printf("%f\n", raz);
+    printf("%f\n", proiz);
+    printf("%f\n", del); }
+else if (zad > 5) {
+    printf("Подумай еще раз..."); }
+else if (zad < 1) {
+    printf("Подумай еще раз..."); }
+return 0;
+}
