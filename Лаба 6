@@ -1,0 +1,88 @@
+#include <stdio.h>
+#include <math.h>
+
+int main() {
+int zad, a, b, c, j, j1, y, x;
+printf("1.Поменять местами значения А и В\n2.Поменять местами значения А, В и С (А=С,В=А,С=В)\n3.Поменять местами значения А, В и С (А=В,В=С,С=А)\n");
+printf("4.Найти значение функции y = 3x^6 − 6x^2 − 7\n5.Найти значение функции y = 4(x−3)^6 − 7(x−3)^3 + 2\n6.Вычислить А^6\n7.Вычислить А^15");
+scanf("%d", &zad);
+if (zad == 1) {
+    printf("Введите А - ");
+    scanf("%d", &a);
+    printf("Введите B - ");
+    scanf("%d", &b);
+    j = b;
+    b = a;
+    a = j;
+    printf("A - ");
+    printf("%d\n", a);
+    printf("B - ");
+    printf("%d\n", b); }
+else if (zad == 2) {
+    printf("Введите А - ");
+    scanf("%d", &a);
+    printf("Введите B - ");
+    scanf("%d", &b);
+    printf("Введите C - ");
+    scanf("%d", &c);
+    j = a;
+    y = b;
+    a = c;
+    b = j;
+    c = y;
+    printf("A - ");
+    printf("%d\n", a);
+    printf("B - ");
+    printf("%d\n", b);
+    printf("C - ");
+    printf("%d\n", c); }
+else if (zad == 3) {
+    printf("Введите А - ");
+    scanf("%d", &a);
+    printf("Введите B - ");
+    scanf("%d", &b);
+    printf("Введите C - ");
+    scanf("%d", &c);
+    j = a;
+    a = b;  
+    b = c;
+    c = j;
+    printf("A - ");
+    printf("%d\n", a);
+    printf("B - ");
+    printf("%d\n", b);
+    printf("C - ");
+    printf("%d\n", c); }
+else if (zad == 4) {
+    printf("Введите значение Х - ");
+    scanf("%d", &x);
+    y = 3 * pow(x, 6) - 6 * pow(x, 2) - 7;
+    printf("3 * x^6 - 6 * x^2 - 7 = ");
+    printf("%d\n", y); }
+else if (zad == 5) {
+    printf("Введите значение Х - ");
+    scanf("%d", &x);
+    j = x - 3;
+    y = 4 * pow((x-3), 6) - 7 * pow(j, 3) + 2;
+    printf("4(x-3)^6 - 7(x-3)^3 + 2 = ");
+    printf("%d\n", y); }
+else if (zad == 6) {
+    printf("Введите значение A - ");
+    scanf("%d", &a);
+    j = a * a;
+    j = j * j;
+    x = j * j;
+    printf("A в 8 степени равно = ");
+    printf("%d", x); }
+else if (zad == 7) {
+    printf("Введите значение A - ");
+    scanf("%d", &a);
+    j = a * a; //2
+    j1 = j * a; //3
+    j = j1 * j1; //6
+    j1 = j * j1; //9
+    x = j * j1; //15
+    printf("A в 15 степени равно = ");
+    printf("%d", x); }
+return 0;
+}
