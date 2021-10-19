@@ -5,7 +5,7 @@
 int main() {
 	setlocale(LC_ALL, "Russian");
 	int a, b, c, x, z, n, a1, b1, c1, zad;
-	printf("Выберите задачу (1-6)");
+	printf("Выберите задачу (1-6)\n");
 	scanf("%d", &zad);
 	if (zad == 1) {
 		printf("Введите значение А - ");
@@ -165,6 +165,9 @@ int main() {
 					}
 				}
 			}
+		}
+		else {
+			printf("Нулевое число");
 		}
 	}
 }
