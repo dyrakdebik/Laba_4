@@ -1,0 +1,84 @@
+#include <stdio.h>
+#include <math.h>
+#include <locale.h>
+
+int main() {
+	setlocale(LC_ALL, "Russian");
+	int a, a1, b, b1, v1, v2, s, sp, t, zad;
+	float r, z, x, y, lin;
+	printf("Выберите задачу (1-6)");
+	scanf("%d", &zad);
+
+	if (zad == 1) {
+		printf("Введите значение угла а (0 < a < 360)\n");
+		scanf("%d", &a);
+		if (a > 0 && a < 360) {
+			r = a / 180;
+			printf("Значение в радианах равно =%f π", r);
+		}
+		else
+			printf("Неверное значение угла");
+	}
+	else if (zad == 2) {
+		printf("Введите значение радианы (0 < α < 2•π)\n");
+		scanf("%f\n", &r);
+		if (r > 0 && r < 2.0) {
+			a = r * 180;
+			printf("Угол равен = %d", a);
+		}
+		else
+			printf("Неверное значение радианы");
+	}
+	else if (zad == 3) {
+		printf("Сколько килограмм конфет - ");
+		scanf("%f", &x);
+		printf("Конечная стоимость - ");
+		scanf("%d", &a);
+		r = a / x;
+		printf("А сейчас сколько килограмм - ");
+		scanf("%f", &y);
+		z = r * y;
+		printf("За один килограмм - %f", r);
+		printf("\nЗа ");
+		printf("%f кг конфет - ", y);
+		printf("%f", z);
+	}
+	else if (zad == 4) {
+		printf("Скорость первого автомобиля - ");
+		scanf("%d", &v1);
+		printf("Скорость второго автомобиля - ");
+		scanf("%d", &v2);
+		printf("Расстояние между ними в начале - ");
+		scanf("%d", &s);
+		printf("Сколько времени прошло - ");
+		scanf("%d", &t);
+		sp = (v1 * t) + (v2 * t) + s;
+		printf("Итоговое расстояние - %d", sp);
+	}
+	else if (zad == 5) {
+		printf("Коэффициент А (не равен 0) - ");
+		scanf("%d", &a);
+		printf("Коэффициент B - ");
+		scanf("%d", &s);
+		sp = (-s) / a;
+		printf("A*x+B=0\nx=%d", sp);
+	}
+	else if (zad == 6) {
+		printf("Коэффициент А1 - ");
+		scanf("%d", &a);
+		printf("Коэффициент B1 - ");
+		scanf("%d", &b);
+		printf("Коэффициент C1 - ");
+		scanf("%d", &v1);
+		printf("Коэффициент А2 - ");
+		scanf("%d", &a1);
+		printf("Коэффициент B2 - ");
+		scanf("%d", &b1);
+		printf("Коэффициент C2 - ");
+		scanf("%d", &v2);
+		lin = (a1 * v1 - b1) / (-1) * ((a1 * b) / a) - b1;
+		x = (v1 - b * lin) / a;
+		printf("%f\n", lin);
+		printf("%f\n", x);
+	}
+}
