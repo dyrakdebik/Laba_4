@@ -1,0 +1,114 @@
+#include <stdio.h>
+#include <locale.h>
+#include <math.h>
+
+
+int main() {
+	setlocale(LC_ALL, "Russian");
+	int x, a, b, c, v, z, zad;
+	printf("Выберите задачу (1-7)\n");
+	scanf("%d", &zad);
+	if (zad == 1) {
+		printf("Значение А - ");
+		scanf("%d", &a);
+		printf("Значение B - ");
+		scanf("%d", &b);
+		if (a > 2 && b <= 3) {
+			printf("Неравенство справедливо");
+		}
+		else {
+			printf("Неравенство несправедливо");
+		}
+	}
+	else if (zad == 2) {
+		printf("Значение А - ");
+		scanf("%d", &a);
+		printf("Значение B - ");
+		scanf("%d", &b);
+		printf("Значение C - ");
+		scanf("%d", &c);
+		if (a < b && b < c) {
+			printf("Всё верно");
+		}
+		else {
+			printf("Ничего не верно");
+		}
+	}
+	else if (zad == 3) {
+		printf("Введите число - ");
+		scanf("%d", &a);
+		if (a < 100 && a > 9 && (a % 2 == 0)) {
+			printf("Всё верно");
+		}
+		else {
+			printf("Ничего не верно");
+		}
+	}
+	else if (zad == 4) {
+		printf("Введите трёхзначное число - ");
+		scanf("%d", &x);
+		a = x / 100;
+		b = (x - (a * 100)) / 10;
+		c = x % 10;
+		if (a < b && b < c) {
+			printf("Всё верно");
+		}
+		else if (a > b && b > c) {
+			printf("Все верно");
+		}
+		else {
+			printf("Ничего не верно");
+		}
+	}
+	else if (zad == 5) {
+		printf("Введите четырёхзначное число - ");
+		scanf("%d", &x);
+		a = x / 1000;
+		b = (x - (a * 1000)) / 100;
+		c = (x - (a * 1000) - (b * 100)) / 10;
+		v = x % 10;
+		if ((a == v) && (b == c)) {
+			printf("Всё верно");
+		}
+		else {
+			printf("Ничего не верно");
+		}
+	}
+	else if (zad == 6) {
+		printf("Введите сторону a - ");
+		scanf("%d", &a);
+		printf("Введите сторону b - ");
+		scanf("%d", &b);
+		printf("Введите сторону c - ");
+		scanf("%d", &c);
+		v = sqrtl((a * a) + (b * b));
+		x = sqrtl((b * b) + (c * c));
+		z = sqrtl((a * a) + (c * c));
+		if (c == v) {
+			printf("треугольник прямоугольный");
+		}
+		else if (a == x) {
+			printf("треугольник прямоугольный");
+		}
+		else if (b == z) {
+			printf("треугольник прямоугольный");
+		}
+		else {
+			printf("треугольник прямоугольный");
+		}
+	}
+	else if (zad == 7) {
+		printf("Введите сторону a - ");
+		scanf("%d", &a);
+		printf("Введите сторону b - ");
+		scanf("%d", &b);
+		printf("Введите сторону c - ");
+		scanf("%d", &c);
+		if ((a < b + c) & (b < a + c) & (c < a + b)) {
+			printf("треугольник существует");
+		}
+		else {
+			printf("треугольника не существует");
+		}
+	}
+}
