@@ -113,3 +113,52 @@ int main() {
 		printf("%d ", arr[i]);
 }
 
+
+
+
+
+////////////////////////////////////////////////////
+#include <stdio.h>
+#include <locale.h>
+#define _CRT_SECURE_NO_WARNINGS 1
+
+int main()  {
+    setlocale(LC_ALL, "");
+    int i, j, k, arr[] = { 45, 543,234, 2, 8, 13, 13, 14, 88, 10 };
+    int n = sizeof(arr) / sizeof(int);
+    for (i = 1; i < n ; i++) {
+        for (j = i, k = arr[i]; (j > 0) && (arr[j - 1] > k); j--) {
+            arr[j] = arr[j - 1];
+        }
+        arr[j] = k;
+    }
+    for (i = 0; i < n; i++)
+        printf("arr[%d] = %d\n", i + 1, arr[i]);
+}
+
+
+
+
+
+
+#include <stdio.h>
+#include <locale.h>
+#define _CRT_SECURE_NO_WARNINGS 1
+
+
+int main() {
+    setlocale(LC_ALL, "");
+    int i, j, k, arr[] = { 45, 543,234, 2, 8, 13, 13, 14, 88, 10 };
+    int n = sizeof(arr) / sizeof(int);
+    for (i = 1; i < n; i++) {
+        k = arr[i];
+        j = i;
+        while (j > 0 && k < arr[j - 1]) {
+            arr[j] = arr[j - 1];
+            j--;
+        }
+        arr[j] = k;
+    }
+    for (i = 0; i < n; i++)
+        printf("arr[%d] = %d\n", i + 1, arr[i]);
+}
