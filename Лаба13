@@ -1,0 +1,54 @@
+#include <stdio.h>
+#include <math.h>
+#include <locale.h>
+#define _CRT_SECURE_NO_WARNINGS 1
+int main() {
+	setlocale(LC_ALL, "");
+	int zad, i, crai=0, n, q=0, n1, n2=0;
+	float pr, sell, ves = 0.1, j=1, z=1, e, h=1, q1=1 ;
+	printf("Задание №1\n\n");
+	printf("Введите цену для 1кг конфет - ");
+	scanf("%f", &pr);
+	while (ves <= 1.1) {
+		sell = pr * ves;
+		printf("За %fкг стоимость = %f руб\n", ves, sell);
+		ves += 0.1;
+	}
+	printf("Задание №2\n\n");
+	printf("Введите целое число - ");
+	scanf("%d", &i);
+	while (crai<i) {
+		j = j + 0.1;
+		z = z * j;
+		crai++;
+	}
+	printf("\nОтвет - %f", z);
+	printf("\n\nЗадание №3\n\n");
+	printf("Введите значение N - ");
+	scanf("%d", &n);
+	for (q = 1; q <= (2 * n - 1); q += 2) {
+		n2 += q;
+		printf("%d\n", n2);
+	}
+	printf("\n\nЗадание №4\n\n");
+	printf("Введите вещественное число А - ");
+	scanf("%f", &e);
+	printf("Введите целое число N - ");
+	scanf("%d", &n1);
+	for (q = 2; q <= n1; q++) {
+		h = h * e;
+		q1 = q1 + h;
+	}
+	printf("\n\nОтвет - %f\n\n\n\n", q1);
+
+	printf("Введите вещ.число А - ");
+	scanf("%f", e);
+	printf("Введите целое число N - ");
+	scanf("%d", n1);
+	for (q = 2; q <= n1; q++) {
+		h = h * (-e);
+		q1 = q1 + h;
+	}
+	printf("\nОтвет - %f", q1);
+}
+
