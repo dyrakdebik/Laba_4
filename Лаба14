@@ -1,0 +1,100 @@
+#include <stdio.h>
+#include <math.h>
+#include <locale.h>
+#define _CRT_SECURE_NO_WARNINGS 1
+int main() {
+	setlocale(LC_ALL, "");
+	int zad, a, b, c, i = 0, j = 0, k, q, n, p, arr[2] = { 1,1 };
+	float p1, s, j1, i1;
+	printf("Выберите задание (1-6) - ");
+	scanf("%d", &zad);
+	if (zad == 1) {
+		printf("Число А - ");
+		scanf("%d", &a);
+		printf("Число B - ");
+		scanf("%d", &b);
+		while (j != b) {
+			j = a;
+			i = 1;
+			while (j >= i) {
+				printf("\n%d", j);
+				i++;
+			}
+			a++;
+		}
+	}
+	if (zad == 2) {
+		printf("Число А - ");
+		scanf("%d", &a);
+		printf("Число B - ");
+		scanf("%d", &b);
+		while (a >= b) {
+			a = a - b;
+		}
+		printf("\nДлина незанятой части отрезка = %d", a);
+	}
+	if (zad == 3) {
+		printf("Введите число N - ");
+		scanf("%d", &n);
+		k = 0;
+		while (j < n) {
+			k++;
+			j += k;
+			printf("\n%d", j);
+		}
+		printf("\n%d", j);
+		printf("\n%d", k);
+	}
+	if (zad == 4) {
+		printf("Введите процент (0<procent<25) - ");
+		scanf("%d", &p);
+		p1 = (float)p / (float)100;
+		s = 1000;
+		while (s <= 1100) {
+			j1 = s * p1;
+			s += j1;
+			i++;
+		}
+		printf("\nКол-во месяцев - %d", i);
+		printf("\nИтоговая сумма - %f", s);
+	}
+	if (zad == 5) {
+		printf("Число А - ");
+		scanf("%d", &a);
+		printf("Число B - ");
+		scanf("%d", &b);
+		while (a != b) {
+			if (a > b) {
+				a -= b;
+			}
+			else {
+				b -= a;
+			}
+		}
+		printf("Наибольший общий делитель - %d", a);
+	}
+	if (zad == 6) {
+		printf("Введите число Фибоначчи - ");
+		scanf("%d", &n);
+		k = 1;
+		while ((arr[0] != n) && (arr[1] !=n) && (k!=100)) {
+			k++;
+			arr[0] = arr[1] + arr[0];
+			arr[1] = arr[0] + arr[1];
+			printf("\n%d", arr[0]);
+			printf(" %d", arr[1]);
+		}
+		if (n == 1) {
+			printf("\n\nПорядковый номер - 1 или 2");
+		}
+		else if (arr[0] == n) {
+			printf("\n\nПорядковый номер - %d", (k * 2) - 1);
+		}
+		else if (arr[1] == n) {
+			printf("\n\nПорядковый номер - %d", (k*2));
+		}
+		else {
+			printf("\n\nЧисло не входит в порядок Фибоначчи");
+		}
+	}
+}
