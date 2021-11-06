@@ -1,0 +1,87 @@
+#include <stdio.h>
+#include <math.h>
+#include <locale.h>
+#define _CRT_SECURE_NO_WARNINGS 1
+int main() {
+	setlocale(LC_ALL, "");
+    int a, b, b1=1, b2=1, c, c1, zad, n, i = 1, j = 1, arr[10];
+    printf("Выберите задачу (1-5) - ");  
+    scanf("%d", &zad);
+    if (zad == 1) {
+        printf("Введите количество элементов массива - ");
+        scanf("%d", &n);
+        for (i = 0; i < n; ++i) {
+            j = j + 2;
+            arr[i] = j;
+        }
+        for (i = 0; i < n; ++i)     
+            printf("%d - %d\n", i, arr[i]);
+    }
+    if (zad == 2) {
+        printf("Введите количество элементов массива - ");
+        scanf("%d", &n);
+        printf("Введите первый элемент - ");
+        scanf("%d", &a);
+        printf("Введите знаменатель - ");
+        scanf("%d", &b);
+        for (i = 0; i < n; ++i) {
+            j = i + 1;
+            while (b1 < j) {
+                b2 = b2 * b;
+                ++b1;
+            }
+            arr[i] = b2 * a;
+        }
+        for (i = 0; i < n; ++i)
+            printf("%d - %d\n", i, arr[i]);
+    }
+    if (zad == 3) {
+        printf("Введите количество элементов массива - ");
+        scanf("%d", &n);
+        printf("Введите A - ");
+        scanf("%d", &a);
+        printf("Введите B - ");
+        scanf("%d", &b);
+        arr[0] = a;
+        arr[1] = b;
+        for (i = 2; i < n; ++i) {
+            arr[i] = arr[i - 1] + arr[i - 2];
+        }
+        for (i = 0; i < n; ++i)
+            printf("%d - %d\n", i, arr[i]);
+    }
+    if (zad == 4) {
+        printf("Введите количество элементов массива - ");
+        scanf("%d", &n);
+        for (i = 0; i < n; ++i) {
+            arr[i] = i + 1;
+        }
+        for (i = 0, n = n-1; i < n; ++i, --n) {
+            printf("%d - %d\n", i, arr[i]);
+            printf("%d - %d\n", n, arr[n]);
+        }
+    }
+    if (zad == 5) {
+        printf("Введите количество элементов массива - ");
+        scanf("%d", &n);
+        for (i = 0; i < n; ++i) {
+            arr[i] = i + 1;
+        }
+        if (n % 2 == 0) {
+            for (i = 1; i < n; i = i + 2) {
+                printf("%d - %d\n", i, arr[i]);
+            }
+            for (n = n - 2; n >= 0; n = n - 2) {
+                printf("%d - %d\n", n, arr[n]);
+            }
+        }
+        else {
+            for (i = 1; i < n; i = i + 2) {
+                printf("%d - %d\n", i, arr[i]);
+            }
+            for (n= n - 1; n >= 0; n = n - 2) {
+                printf("%d - %d\n", n, arr[n]);
+            }
+        }
+    }
+} 
