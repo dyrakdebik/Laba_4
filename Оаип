@@ -190,3 +190,35 @@ int main() {
         printf("arr[%d] = %d\n", i , arr[i]);
     }
 } 
+
+--while-- 
+#include <stdio.h>
+#include <locale.h>
+#define _CRT_SECURE_NO_WARNINGS 1
+int main() {
+	setlocale(LC_ALL, "");
+    int s, k, arr[] = { 12, 11, 0, 7, 77, 35, 11, 603, 909 };
+    int i, j;
+    int n = sizeof(arr) / sizeof(int);
+    s = n / 2;
+    while (s > 0) {
+        i = s;
+        while (i < n) {
+            k = arr[i];
+            j = i;
+            while (j >= s) {
+                if (k < arr[j - s]) {
+                    arr[j] = arr[j - s];
+                    j = j - s;
+                }
+                else break;
+            }
+            arr[j] = k;
+            i++;
+        }
+        s = s / 2;
+    }
+    for (i = 0; i < n; i++) {
+        printf("arr[%d] = %d\n", i , arr[i]);
+    }
+} 
