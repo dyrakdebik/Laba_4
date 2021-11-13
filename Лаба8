@@ -10,7 +10,7 @@ int main() {
 	if (zad == 1) {
 		printf("Размер файла в байтах - ");
 		scanf("%d", &b);
-		k = b / 1024;
+		k = (b / 1024) + 1;
 		printf("\nКоличество килобайт = %d", k);
 	}
 	else if (zad == 2) {
@@ -46,7 +46,10 @@ int main() {
 		k = z * 10 + b;
 		printf("%d", k);
 	}
-	else if (zad > 5 % %zad < 1) {
+	else if (zad > 5) {
+		printf("Подумай еще раз\n");
+	}
+	else if (zad < 1) {
 		printf("Подумай еще раз");
 	}
 
