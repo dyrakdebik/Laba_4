@@ -1,3 +1,4 @@
+#include <conio.h>
 #include <stdio.h>
 #include <math.h>
 #include <locale.h>
@@ -13,16 +14,16 @@ int main() {
 		printf("Введите значение угла а (0 < a < 360)\n");
 		scanf("%d", &a);
 		if (a > 0 && a < 360) {
-			r = a / 180;
-			printf("Значение в радианах равно =%f π", r);
+			r = (float)a / 180;
+			printf("Значение в радианах равно =%f Пи", r);
 		}
 		else
 			printf("Неверное значение угла");
 	}
 	else if (zad == 2) {
-		printf("Введите значение радианы (0 < α < 2•π)\n");
+		printf("Введите значение радианы (0 < a < 2Пи)\n");
 		scanf("%f\n", &r);
-		if (r > 0 && r < 2.0) {
+		if (r > 0 && r < 2) {
 			a = r * 180;
 			printf("Угол равен = %d", a);
 		}
@@ -76,9 +77,10 @@ int main() {
 		scanf("%d", &b1);
 		printf("Коэффициент C2 - ");
 		scanf("%d", &v2);
-		lin = (a1 * v1 - b1) / (-1) * ((a1 * b) / a) - b1;
-		x = (v1 - b * lin) / a;
-		printf("%f\n", lin);
-		printf("%f\n", x);
+		r = a * b1 - a1 * b;
+		x = (v1 * b1 - v2 * b) / r;
+		y = (a * v2 - a1 * v1) / r;
+		printf("y = %f\n", y);
+		printf("x = %f\n", x);
 	}
 }
