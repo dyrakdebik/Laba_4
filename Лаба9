@@ -5,7 +5,7 @@
 int main() {
 	setlocale(LC_ALL, "Russian");
 	int n, s, g, d, k, kva, mes, zad;
-	char *ned[] = { "воскресенье", "понедельник", "вторник", "среда", "четверг", "пятница", "суббота"};
+	char* ned[] = { "воскресенье", "понедельник", "вторник", "среда", "четверг", "пятница", "суббота" };
 	printf("1-5 задача ");
 	scanf("%d", &zad);
 	if (zad == 1) {
@@ -17,7 +17,7 @@ int main() {
 	else if (zad == 2) {
 		printf("Какой день в году по счету (1-365) - ");
 		scanf("%d", &g);
-		n = g % 7; 
+		n = g % 7;
 		printf("%s", ned[n]);
 	}
 	else if (zad == 3) {
@@ -26,7 +26,9 @@ int main() {
 		printf("С какого дня недели начался год (1-пн, 2-вт, 3-ср, ... 7-вс) - ");
 		scanf("%d", &d);
 		n = g % 7;
-		printf("%s", ned[n + d - 1]);
+		k = n + d;
+		k = k % 7;
+		printf("%s", ned[k - 1]);
 	}
 	else if (zad == 4) {
 		printf("Число А - ");
@@ -48,9 +50,11 @@ int main() {
 		k = (g / 100);
 		s = g % 100;
 		if (s == 0) {
-			printf("%d", k); }
+			printf("%d", k);
+		}
 		else {
 			k = k + 1;
-			printf("%d", k); }
+			printf("%d", k);
+		}
 	}
 }
