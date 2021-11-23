@@ -246,3 +246,27 @@ int main() {
 	for (i = 0; i < a; i++)
 		printf("%d ", arr[i]);
 }
+#include <stdio.h>
+#include <locale.h>
+
+int main() {
+	setlocale(LC_ALL, "Russian");
+	int i, j, k, l, arr[] = { 1, 2, 45, 7, 17, 0, 10, 11, 9, 5 };
+	int a = sizeof(arr) / sizeof(int);
+	while (i < a - 1) {
+		j = i + 1;
+		l = i;
+		while (j < a) {
+			if (arr[j] < arr[l])
+				l = j;
+			j++;
+		}
+		k = arr[i];
+		arr[i] = arr[l];
+		arr[l] = k;
+		i++;
+	}
+	printf("\n");
+	for (i = 0; i < a; i++)
+		printf("%d ", arr[i]);
+}
