@@ -4,7 +4,7 @@
 
 int main() {
 	setlocale(LC_ALL, "Russian");
-	int n, s, g, d, k, kva, mes, zad;
+	int n, s=0, s1=0, g, d, k, k1, kva, mes, zad;
 	char* ned[] = { "воскресенье", "понедельник", "вторник", "среда", "четверг", "пятница", "суббота" };
 	printf("1-5 задача ");
 	scanf("%d", &zad);
@@ -37,10 +37,10 @@ int main() {
 		scanf("%d", &g);
 		printf("Число C - ");
 		scanf("%d", &d);
-		s = n * g;
-		k = d * d;
-		kva = s / k;
-		mes = s - (kva * k);
+		k = n / d;
+		k1 = g / d;
+		kva = k * k1;
+		mes = (n * g) - (kva * (d * d));
 		printf("Количество квадратов - %d\n", kva);
 		printf("Оставшее место - %d", mes);
 	}
