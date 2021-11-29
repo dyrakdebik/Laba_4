@@ -132,6 +132,12 @@ int main() {
 		else if (c > 1 && v == 0) {
 			printf("%s", arr5[c - 1]);
 		}
+		else if (c < 1 && v != 0) {
+			printf("%s", arr9[v - 1]);
+		}
+		else if (c < 1 && v == 0) {
+			printf("%s", arr9[v - 1]);
+		}
 	}
 	else if (zad == 5) {
 		printf("Введите год - ");
