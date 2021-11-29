@@ -35,7 +35,7 @@ int main() {
 	scanf("%f", &e);
 	printf("Введите целое число N - ");
 	scanf("%d", &n1);
-	for (q = 2; q <= n1+1; q++) {
+	for (q = 2; q <= n1 + 1; q++) {
 		h = h * e;
 		q1 = q1 + h;
 		printf("\n%f", q1);
@@ -49,10 +49,10 @@ int main() {
 	scanf("%d", &n1);
 	h = 1;
 	q1 = 1;
-	for (q = 2; q <= n1; q++) {
+	for (q = 2; q <= n1+1; q++) {
 		h = h * (-e);
 		q1 = q1 + h;
 		printf("\n%f", q1);
 	}
-	printf("\nОтвет - %f", q1-1);
+	printf("\nОтвет - %f", q1);
 }
