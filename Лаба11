@@ -4,7 +4,8 @@
 
 int main() {
 	setlocale(LC_ALL, "Russian");
-	int a, b, c, x, z, n, a1, b1, bg, c1, cg, zad;
+	int a, b, c, x, z, n, a1, b1, c1, zad;
+	float bg, cg;
 	printf("Выберите задачу (1-6)\n");
 	scanf("%d", &zad);
 	if (zad == 1) {
@@ -60,10 +61,12 @@ int main() {
 		scanf("%d", &c1);
 		bg = sqrtl((abs(a - b) * (abs(a - b))) + (abs(a1 - b1) * (abs(a1 - b1))));
 		cg = sqrtl((abs(a - c) * (abs(a - c))) + (abs(a1 - c1) * (abs(a1 - c1))));
-		if (bg > cg)
+		if (bg > cg) {
 			printf("Точка C ближе");
+			printf("\n%f", cg); }
 		else if (cg > bg) {
 			printf("Точка В ближе");
+			printf("\n%f", bg);
 		}
 		else
 			printf("Точки находятся на одинаковом расстоянии от А");
