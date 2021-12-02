@@ -42,7 +42,7 @@ int main() {
 			j += k;
 			printf("\n%d", j);
 		}
-		printf("\n%d", j);
+		printf("\n\n%d", j);
 		printf("\n%d", k);
 	}
 	if (zad == 4) {
@@ -77,7 +77,8 @@ int main() {
 		printf("Введите число Фибоначчи - ");
 		scanf("%d", &n);
 		k = 1;
-		while ((arr[0] != n) && (arr[1] !=n) && (k!=100)) {
+		printf("0 1 1");
+		while ((arr[0] != n) && (arr[1] != n) && (k != 100)) {
 			k++;
 			arr[0] = arr[1] + arr[0];
 			arr[1] = arr[0] + arr[1];
@@ -88,10 +89,10 @@ int main() {
 			printf("\n\nПорядковый номер - 1 или 2");
 		}
 		else if (arr[0] == n) {
-			printf("\n\nПорядковый номер - %d", (k * 2) - 1);
+			printf("\n\nПорядковый номер - %d", (k * 2));
 		}
 		else if (arr[1] == n) {
-			printf("\n\nПорядковый номер - %d", (k*2));
+			printf("\n\nПорядковый номер - %d", (k * 2)+1);
 		}
 		else {
 			printf("\n\nЧисло не входит в порядок Фибоначчи");
