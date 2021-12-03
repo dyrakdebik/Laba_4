@@ -3,9 +3,9 @@
 #include <locale.h>
 #define _CRT_SECURE_NO_WARNINGS 1
 int main() {
-	setlocale(LC_ALL, "");
-    int a, b, b1=1, b2=1, c, c1, zad, n, i = 1, j = 1, arr[10];
-    printf("Выберите задачу (1-5) - ");  
+    setlocale(LC_ALL, "");
+    int a, b, b1 = 1, b2 = 1, c, c1, zad, n, i = 1, j = 1, arr[10];
+    printf("Выберите задачу (1-5) - ");
     scanf("%d", &zad);
     if (zad == 1) {
         printf("Введите количество элементов массива - ");
@@ -14,7 +14,7 @@ int main() {
             j = j + 2;
             arr[i] = j;
         }
-        for (i = 0; i < n; ++i)     
+        for (i = 0; i < n; ++i)
             printf("%d - %d\n", i, arr[i]);
     }
     if (zad == 2) {
@@ -54,9 +54,11 @@ int main() {
         printf("Введите количество элементов массива - ");
         scanf("%d", &n);
         for (i = 0; i < n; ++i) {
-            arr[i] = i + 1;
+            printf("\nСоставляем массив - ");
+            scanf("%d", &arr[i]);
+
         }
-        for (i = 0, n = n-1; i < n; ++i, --n) {
+        for (i = 0, n = n - 1; i < n; ++i, --n) {
             printf("%d - %d\n", i, arr[i]);
             printf("%d - %d\n", n, arr[n]);
         }
@@ -79,9 +81,9 @@ int main() {
             for (i = 1; i < n; i = i + 2) {
                 printf("%d - %d\n", i, arr[i]);
             }
-            for (n= n - 1; n >= 0; n = n - 2) {
+            for (n = n - 1; n >= 0; n = n - 2) {
                 printf("%d - %d\n", n, arr[n]);
             }
         }
     }
-} 
+}
