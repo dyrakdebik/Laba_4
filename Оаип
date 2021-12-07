@@ -344,3 +344,114 @@ int main() {
 		qsort(arr, l, b);
 	}
 }
+
+
+
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+#include <math.h> 
+#include <locale.h> 
+void Delimiter()
+{
+		for (int i = 0; i < 76; i++)
+		{
+			if (i != 0 && i != 75)
+			{
+				printf("#");
+			}
+			else
+			{
+				printf("\n\n");
+			}
+		}
+}
+void printArr(int* Arr)
+{
+	for (int i = 0; i < 10; i++)
+	{
+		printf("%d ", Arr[i]);
+	}
+}
+
+void qsortFor(int* Arr, int b, int e)
+{
+	int piv = Arr[(b + e) / 2]; 
+	int l = b;
+	int r = e;
+	for (; l <= r; l++, r--) {
+		for (; Arr[l] < piv; l++) {}
+		for (; Arr[r] > piv; r--) {}
+		if (l <= r) {
+			int t = Arr[l];
+			Arr[l] = Arr[r];
+			Arr[r] = t;
+		}
+		else
+			break; 
+	}
+	if (b < r)
+	{
+		qsortFor(Arr, b, r);
+	}
+	if (l < e)
+	{
+		qsortFor(Arr, l, e); 
+	}
+}
+void qsortWhile(int* Arr, int b, int e)
+{
+	int piv = Arr[(b + e) / 2]; 
+	int l = b;
+	int r = e;
+		while (l <= r) 
+		{
+			while (Arr[l] < piv) 
+				l++;
+			while (Arr[r] > piv)
+				r--;
+			if (l <= r) {
+				int t = Arr[l];
+				Arr[l] = Arr[r];
+				Arr[r] = t;
+				l++;
+				r--;
+			}
+		}
+	if (b < r)
+	{
+		qsortWhile(Arr, b, r); 
+	}
+	if (l < e)
+	{
+		qsortWhile(Arr, l, e); 
+	}
+}
+int main()
+{
+	setlocale(LC_ALL, "Rus");
+	int i = 0, Arr[10], copy_Arr[10];
+	printf(" Алгоритм сортировки \"Быстрая\"\n\n"
+		"Программа отсортирует предложенный массив из 10 элементов по возрастанию.\n\n"
+		"Присвойте целочисленное значение 10 элементам:\n\n");
+	for (i = 0; i < 10; i++)
+	{
+		printf(" %d = ", i + 1); scanf("%d", &Arr[i]);
+	}
+	for (i = 0; i < 10; i++) // Делаем копию массива
+	{
+		copy_Arr[i] = Arr[i];
+	}
+	printf("\nСпасибо! Вывожу ваш массив в строку для удобства\n\n ");
+	printArr(Arr);
+	Delimiter();
+	printf(" Сортировка массива с помощью цикла \"for (;;)\"\n\nИтого вышло: ");
+	qsortFor(Arr, 0, 10 - 1); // Вызываем реализацию через "for(;;)"
+	printArr(Arr);
+	Delimiter();
+	printf(" Сортировка массива с помощью цикла \"while ()\"\n\nИтого вышло: ");
+		qsortWhile(copy_Arr, 0, 10 - 1); // Вызываем реализацию через "while()"
+		printArr(copy_Arr);
+	printf("\n\nНа сим все, всем мира! :)");
+	return 0;
+}
