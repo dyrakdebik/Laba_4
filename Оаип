@@ -311,3 +311,36 @@ int main() {
 		printf("%d ", arr[i]);
 
 }
+
+
+#include <stdio.h>
+#include <locale.h>
+#define _CRT_SECURE_NO_WARNINGS 1
+void qsort(int* arr, int a, int b) {
+	if (a > b) {
+		int k, t, l = a, j = b, f = arr[(a + b) / 2];
+		while (arr[l] < f)
+			l++;
+		while (arr[j] > f)
+			j--;
+		if (l <= j) {
+			t = arr[l];
+			arr[l] = arr[j];
+			arr[j] = t;
+			l++;
+			j--;
+		}
+	} while (l <= j);
+	qsort(arr, a, j);
+	qsort(arr, l, b);
+}
+int main() {
+	int arr[] = { 4, 2, 12, 13, 7, 77, 0, -2, -88, -124 }, a, j, l, b, r = sizeof(arr) / sizeof(int), i;
+	qsort(arr, 0, r - 1);
+	if (a < j) {
+		qsort(arr, a, j);
+	}
+	if (l < b) {
+		qsort(arr, l, b);
+	}
+}
