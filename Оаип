@@ -7,14 +7,18 @@
 #define _CRT_SECURE_NO_WARNINGS 1
 int main() {
 	setlocale(LC_ALL, "");
-	int arr[100000], i, j, k, n, o, z;
+	int arr[1000], arr1[10000], arr2[100000], i, j, k, n=sizeof(arr)/sizeof(int), n1 = sizeof(arr1) / sizeof(int), n2 = sizeof(arr2) / sizeof(int), o, z;
 	float opt = 1.247;
-	printf("Введите кол-во элементов массива - ");
-	scanf("%d", &n);
 	printf("Выберите сортировку:\n1.Пузырёк\n2.Расчёска\n3.Вставками\n4.Шелла\n5.Выбором\n6.Гномья\n7.Быстрая\n___");
 	scanf("%d", &z);
 	for (i = 0; i < n; i++) {
-		arr[i] = rand() % 10000;
+		arr[i] = rand() % 1000000;
+	}
+	for (i = 0; i < n1; i++) {
+		arr1[i] = rand() % 1000000;
+	}
+	for (i = 0; i < n2; i++) {
+		arr2[i] = rand() % 1000000;
 	}
 	if (z == 1) {
 		clock_t tic = clock();
@@ -27,10 +31,32 @@ int main() {
 				}
 			}
 		}
-		for (i = 0; i < n; i++)
-			printf("arr[%d] = %d\n", i + 1, arr[i]);
 		clock_t toc = clock();
-		printf("Время - %f секунд\n", (double)(toc - tic) / CLOCKS_PER_SEC);
+		printf("Время - %f секунд (1к эл)\n", (double)(toc - tic) / CLOCKS_PER_SEC);
+		clock_t tic1 = clock();
+		for (i = 0; i < n1 - 1; i++) {
+			for (j = 0; j < n1 - 1 - i; j++) {
+				if (arr1[j] > arr1[j + 1]) {
+					k = arr1[j];
+					arr1[j] = arr1[j + 1];
+					arr1[j + 1] = k;
+				}
+			}
+		}
+		clock_t toc1 = clock();
+		printf("Время - %f секунд (10к эл)\n", (double)(toc1 - tic1) / CLOCKS_PER_SEC);
+		clock_t tic2 = clock();
+		for (i = 0; i < n2 - 1; i++) {
+			for (j = 0; j < n2 - 1 - i; j++) {
+				if (arr2[j] > arr2[j + 1]) {
+					k = arr2[j];
+					arr2[j] = arr2[j + 1];
+					arr2[j + 1] = k;
+				}
+			}
+		}
+		clock_t toc2 = clock();
+		printf("Время - %f секунд (100к эл)\n", (double)(toc2 - tic2) / CLOCKS_PER_SEC);
 	}
 	if (z == 2) {
 		clock_t tic = clock();
@@ -43,10 +69,32 @@ int main() {
 				}
 			}
 		}
-		for (i = 0; i < n; i++)
-			printf("arr[%d] = %d\n", i + 1, arr[i]);
 		clock_t toc = clock();
-		printf("Время - %f секунд\n", (double)(toc - tic) / CLOCKS_PER_SEC);
+		printf("Время - %f секунд (1к эл)\n", (double)(toc - tic) / CLOCKS_PER_SEC);
+		clock_t tic1 = clock();
+		for (j = n1 - 1; j >= 1; j /= opt) {
+			for (i = 0; i < n1 - j; i++) {
+				if (arr1[i] > arr1[i + j]) {
+					k = arr1[i];
+					arr1[i] = arr1[i + j];
+					arr1[i + j] = k;
+				}
+			}
+		}
+		clock_t toc1 = clock();
+		printf("Время - %f секунд (10к эл)\n", (double)(toc1 - tic1) / CLOCKS_PER_SEC);
+		clock_t tic2 = clock();
+		for (j = n2 - 1; j >= 1; j /= opt) {
+			for (i = 0; i < n2 - j; i++) {
+				if (arr2[i] > arr2[i + j]) {
+					k = arr2[i];
+					arr2[i] = arr2[i + j];
+					arr2[i + j] = k;
+				}
+			}
+		}
+		clock_t toc2 = clock();
+		printf("Время - %f секунд (100к эл)\n", (double)(toc2 - tic2) / CLOCKS_PER_SEC);
 	}
 	if (z == 3) {
 		clock_t tic = clock();
@@ -56,10 +104,26 @@ int main() {
 			}
 			arr[j] = k;
 		}
-		for (i = 0; i < n; i++)
-			printf("arr[%d] = %d\n", i + 1, arr[i]);
 		clock_t toc = clock();
-		printf("Время - %f секунд\n", (double)(toc - tic) / CLOCKS_PER_SEC);
+		printf("Время - %f секунд (1к эл)\n", (double)(toc - tic) / CLOCKS_PER_SEC);
+		clock_t tic1 = clock();
+		for (i = 1; i < n1; i++) {
+			for (j = i, k = arr1[i]; (j > 0) && (arr1[j - 1] > k); j--) {
+				arr1[j] = arr1[j - 1];
+			}
+			arr1[j] = k;
+		}
+		clock_t toc1 = clock();
+		printf("Время - %f секунд (10к эл)\n", (double)(toc1 - tic1) / CLOCKS_PER_SEC);
+		clock_t tic2 = clock();
+		for (i = 1; i < n2; i++) {
+			for (j = i, k = arr2[i]; (j > 0) && (arr2[j - 1] > k); j--) {
+				arr2[j] = arr2[j - 1];
+			}
+			arr2[j] = k;
+		}
+		clock_t toc2 = clock();
+		printf("Время - %f секунд (100к эл)\n", (double)(toc2 - tic2) / CLOCKS_PER_SEC);
 	}
 	if (z == 4) {
 		clock_t tic = clock();
@@ -74,10 +138,36 @@ int main() {
 				arr[j] = k;
 			}
 		}
-		for (i = 0; i < n; i++) 
-			printf("arr[%d] = %d\n", i+1, arr[i]);
 		clock_t toc = clock();
-		printf("Время - %f секунд\n", (double)(toc - tic) / CLOCKS_PER_SEC);
+		printf("Время - %f секунд (1к эл)\n", (double)(toc - tic) / CLOCKS_PER_SEC);
+		clock_t tic1 = clock();
+		for (o = n1 / 2; o > 0; o = o / 2) {
+			for (i = o; i < n1; i++) {
+				k = arr1[i];
+				for (j = i; j >= o; j = j - o) {
+					if (k < arr1[j - o])
+						arr1[j] = arr1[j - o];
+					else break;
+				}
+				arr1[j] = k;
+			}
+		}
+		clock_t toc1 = clock();
+		printf("Время - %f секунд (10к эл)\n", (double)(toc1 - tic1) / CLOCKS_PER_SEC);
+		clock_t tic2 = clock();
+		for (o = n2 / 2; o > 0; o = o / 2) {
+			for (i = o; i < n2; i++) {
+				k = arr2[i];
+				for (j = i; j >= o; j = j - o) {
+					if (k < arr2[j - o])
+						arr2[j] = arr2[j - o];
+					else break;
+				}
+				arr2[j] = k;
+			}
+		}
+		clock_t toc2 = clock();
+		printf("Время - %f секунд (100к эл)\n", (double)(toc2 - tic2) / CLOCKS_PER_SEC);
 	}
 	if (z == 5) {
 		clock_t tic = clock();
@@ -90,10 +180,32 @@ int main() {
 			arr[i] = arr[o];
 			arr[o] = k;
 		}
-		for (i = 0; i < n; i++)
-			printf("arr[%d] = %d\n", i + 1, arr[i]);
 		clock_t toc = clock();
-		printf("Время - %f секунд\n", (double)(toc - tic) / CLOCKS_PER_SEC);
+		printf("Время - %f секунд (1к эл)\n", (double)(toc - tic) / CLOCKS_PER_SEC);
+		clock_t tic1 = clock();
+		for (i = 0; i < n1 - 1; i++) {
+			for (j = i + 1, o = i; j < n1; j++) {
+				if (arr1[j] < arr1[o])
+					o = j;
+			}
+			k = arr1[i];
+			arr1[i] = arr1[o];
+			arr1[o] = k;
+		}
+		clock_t toc1 = clock();
+		printf("Время - %f секунд (10к эл)\n", (double)(toc1 - tic1) / CLOCKS_PER_SEC);
+		clock_t tic2 = clock();
+		for (i = 0; i < n2 - 1; i++) {
+			for (j = i + 1, o = i; j < n2; j++) {
+				if (arr2[j] < arr2[o])
+					o = j;
+			}
+			k = arr2[i];
+			arr2[i] = arr2[o];
+			arr2[o] = k;
+		}
+		clock_t toc2 = clock();
+		printf("Время - %f секунд (100к эл)\n", (double)(toc2 - tic2) / CLOCKS_PER_SEC);
 	}
 	if (z == 6) {
 		clock_t tic = clock();
@@ -107,12 +219,33 @@ int main() {
 				}
 			}
 		}
-		for (i = 0; i < n; i++)
-			printf("arr[%d] = %d\n", i + 1, arr[i]);
 		clock_t toc = clock();
-		printf("Время - %f секунд\n", (double)(toc - tic) / CLOCKS_PER_SEC);
-	}
-	if (z == 7) {
-
+		printf("Время - %f секунд (1к эл)\n", (double)(toc - tic) / CLOCKS_PER_SEC);
+		clock_t tic1 = clock();
+		for (i = 1; i < n1; i++) {
+			for (j = 2; j < n1; j++) {
+				if (arr1[i - 1] > arr1[i]) {
+					k = arr1[i];
+					arr1[i] = arr1[i - 1];
+					arr1[i - 1] = k;
+					i = i - 1;
+				}
+			}
+		}
+		clock_t toc1 = clock();
+		printf("Время - %f секунд (10к эл)\n", (double)(toc1 - tic1) / CLOCKS_PER_SEC);
+		clock_t tic2 = clock();
+		for (i = 1; i < n2; i++) {
+			for (j = 2; j < n2; j++) {
+				if (arr2[i - 1] > arr2[i]) {
+					k = arr2[i];
+					arr2[i] = arr2[i - 1];
+					arr2[i - 1] = k;
+					i = i - 1;
+				}
+			}
+		}
+		clock_t toc2 = clock();
+		printf("Время - %f секунд (100к эл)\n", (double)(toc - tic) / CLOCKS_PER_SEC);
 	}
 }
