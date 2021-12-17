@@ -1,0 +1,87 @@
+#include <stdio.h>
+#include <math.h>
+#include <locale.h>
+#include <time.h>
+#define _CRT_SECURE_NO_WARNINGS 1
+void PowerA3(float a, float* b) {
+    *b = a * a * a;
+}
+int Sign(float x) {
+    if (x < 0) 
+    { return -1; }    
+    if (x == 0) 
+    { return 0; }    
+    if (x > 0) 
+    { return 1; }
+}
+float Ring(float r1, float r2) {
+    return (3.14 * r1 * r1) - (3.14 * r2 * r2);
+}
+int Quarter(int x, int y) {
+    if (x > 0 && y > 0)
+    {
+        return 1;
+    }
+    else if (x>0 && y<0)
+    {
+        return 4;
+    }
+    else if (x<0 && y>0)
+    {
+        return 2;
+    }
+    else if (x<0 && y<0)
+    {
+        return 3;
+    }
+}
+float Fact(float n) {
+    int x = 1;
+    for (n; n > 0; n -= 2) {
+        x *= n;
+    }
+    return x;
+}
+
+int main(void)
+{
+    setlocale(LC_ALL, "");
+    int i, x, y;
+    float a, b, r1, r2,n;
+    for (i = 0; i < 5; ++i) {
+        printf("A - ");
+        scanf("%f", &a);
+        PowerA3(a, &b);
+        printf("B - %f\n", b);
+    }
+    
+    printf("\n////////////////////////////////////\n\n");
+    printf("A - ");
+    scanf("%f", &a);
+    printf("B - ");
+    scanf("%f", &b);
+    printf("Сумма - %d\n", Sign(a) + Sign(b));
+    printf("\n////////////////////////////////////\n\n");
+
+    for (i = 0; i < 3; i++) {
+        printf("Радиус большего круга - ");
+        scanf("%f", &r1);
+        printf("Радиус меньшего круга - ");
+        scanf("%f", &r2);
+        printf("Площадь кольца - %f\n", Ring(r1, r2));
+    }
+    printf("\n////////////////////////////////////\n\n");
+    
+    for (i = 0; i < 3; i++) {
+        printf("x-координата - ");
+        scanf("%f", &x);
+        printf("y-координата - ");
+        scanf("%f", &y);
+        printf("Четверть №%d\n", Quarter(x,y));
+    }
+    printf("\n////////////////////////////////////\n\n");
+
+    printf("N - ");
+    scanf("%f", &n);
+    printf("Двойной факториал - %f", Fact(n));
+}
