@@ -7,9 +7,9 @@
 #define _CRT_SECURE_NO_WARNINGS 1
 int main() {
 	setlocale(LC_ALL, "");
-	int arr[1000], arr1[10000], arr2[100000], i, j, k, n=sizeof(arr)/sizeof(int), n1 = sizeof(arr1) / sizeof(int), n2 = sizeof(arr2) / sizeof(int), o, z;
+	int arr[1000], arr1[10000], arr2[100000], i, j, k, n = sizeof(arr) / sizeof(int), n1 = sizeof(arr1) / sizeof(int), n2 = sizeof(arr2) / sizeof(int), o, z;
 	float opt = 1.247;
-	printf("Выберите сортировку:\n1.Пузырёк\n2.Расчёска\n3.Вставками\n4.Шелла\n5.Выбором\n6.Гномья\n7.Быстрая\n___");
+	printf("Выберите сортировку:\n1.Пузырёк\n2.Расчёска\n3.Вставками\n4.Шелла\n5.Выбором\n6.Гномья\n___");
 	scanf("%d", &z);
 	for (i = 0; i < n; i++) {
 		arr[i] = rand() % 1000000;
