@@ -337,7 +337,7 @@ int main() {
 #include <locale.h>
 #include <time.h>
 #define _CRT_SECURE_NO_WARNINGS 1
-void qsort(int* arr, int a, int b) 
+void qsort(int* arr, int a, int b)
 {
 	int piv = arr[(a + b) / 2];
 	int l = a;
@@ -387,6 +387,31 @@ void qsortodin(int* arr1, int a, int b)
 		qsortodin(arr1, l, b);
 	}
 }
+void qsorttri(int* arr3, int a, int b)
+{
+	int piv = arr3[(a + b) / 2];
+	int l = a;
+	int r = b;
+	for (; l <= r; l++, r--) {
+		for (; arr3[l] < piv; l++) {}
+		for (; arr3[r] > piv; r--) {}
+		if (l <= r) {
+			int t = arr3[l];
+			arr3[l] = arr3[r];
+			arr3[r] = t;
+		}
+		else
+			break;
+	}
+	if (a < r)
+	{
+		qsorttri(arr3, a, r);
+	}
+	if (l < b)
+	{
+		qsorttri(arr3, l, b);
+	}
+}
 void qsortdva(int* arr2, int a, int b)
 {
 	int piv = arr2[(a + b) / 2];
@@ -415,8 +440,8 @@ void qsortdva(int* arr2, int a, int b)
 int main()
 {
 	setlocale(LC_ALL, "");
-	int i = 0, piv, arr[1000], arr1[10000], arr2[100000];
-	int n = sizeof(arr) / sizeof(int), n1 = sizeof(arr1) / sizeof(int), n2 = sizeof(arr2) / sizeof(int);
+	int i = 0, piv, arr[1000], arr1[10000], arr2[100000], arr3[50000];
+	int n = sizeof(arr) / sizeof(int), n1 = sizeof(arr1) / sizeof(int), n2 = sizeof(arr2) / sizeof(int), n3 = sizeof(arr3) / sizeof(int);
 	for (i = 0; i < n; i++) {
 		arr[i] = rand() % 1000000;
 	}
@@ -426,6 +451,9 @@ int main()
 	for (i = 0; i < n2; i++) {
 		arr2[i] = rand() % 1000000;
 	}
+	for (i = 0; i < n3; i++) {
+		arr3[i] = rand() % 1000000;
+	}
 	clock_t tic = clock();
 	qsort(arr, 0, 1000 - 1);
 	clock_t toc = clock();
@@ -434,6 +462,10 @@ int main()
 	qsortodin(arr1, 0, 10000 - 1);
 	clock_t toc1 = clock();
 	printf("Время - %f секунд (10к эл)\n", (double)(toc1 - tic1) / CLOCKS_PER_SEC);
+	clock_t tic3 = clock();
+	qsorttri(arr3, 0, 50000 - 1);
+	clock_t toc3 = clock();
+	printf("Время - %f секунд (50к эл)\n", (double)(toc3 - tic3) / CLOCKS_PER_SEC);
 	clock_t tic2 = clock();
 	qsortdva(arr2, 0, 100000 - 1);
 	clock_t toc2 = clock();
