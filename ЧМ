@@ -1,0 +1,56 @@
+#include <iostream>
+#include <string>
+#include <locale>
+#include <ctype.h>
+#include <iomanip>
+#include <math.h>
+#define _CRT_SECURE_NO_WARNINGS 1
+using namespace std;
+int main() {
+	setlocale(LC_ALL, "");
+	char  slash = '/', point = '.';
+	int i = 0;
+	double x, c, a, b, a0, fa, fx = 1, fa1=1, fb1, fx1;
+	cout << "Введите начальное значение отрезка - ";
+	cin >> a;
+	cout << "Введите конечное значение отрезка - ";
+	cin >> b;
+	cout << "Введите точноть - ";
+	cin >> c;
+	if (a > b) {
+		a0 = a;
+		a = b;
+		b = a0;
+	}
+	cout << endl << "ДИХОТОМИЯ";
+	while (abs(fx) > c) {
+		x = (b + a) / 2;
+		fa = pow((a - 1), 2) - 0.5 * pow(2.718, a);
+		fx = pow((x - 1), 2) - 0.5 * pow(2.718, x);
+		if (fa * fx >= 0) {
+			a = x;
+		}
+		if (fa * fx < 0) {
+			b = x;
+		}
+		i++;
+		cout << endl << "x - " << x << " f(x) - " << fx << " i - " << i;
+	}
+	cout << endl << endl << "ИТЕРАЦИИ" << endl;
+	i = 0;
+	fx = 1;
+	cout << "Введите начальное значение отрезка - ";
+	cin >> a;
+	cout << "Введите конечное значение отрезка - ";
+	cin >> b;
+	fa1 = (-0.5 * pow(2.7182818, a) + pow(2, a)) / 2;
+	fb1 = (-0.5 * pow(2.7182818, b) + pow(2, b)) / 2;
+	while (abs(fx) > c) {
+		fa1 = (-0.5 * pow(2.7182818, a) + pow(2, a)) / 2;
+		fx = abs(fa1 - a);
+		a = fa1;
+		i++;
+		cout << endl << "x - " << fa1 << " i - " << i;
+	}
+
+}
