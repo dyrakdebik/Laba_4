@@ -44,13 +44,12 @@ int main() {
 	cout << "Введите конечное значение отрезка - ";
 	cin >> b;
 	fa1 = (-0.5 * pow(2.7182818, a) + pow(2, a)) / 2;
-	fb1 = (-0.5 * pow(2.7182818, b) + pow(2, b)) / 2;
 	while (abs(fx) > c) {
-		fa1 = (-0.5 * pow(2.7182818, a) + pow(2, a)) / 2;
+		fa1 = (-0.5 * pow(2.7182818, a) + pow(a, 2)+1) / 2;
 		fx = abs(fa1 - a);
 		a = fa1;
 		i++;
-		cout << endl << "x - " << fa1 << " i - " << i;
+		cout << endl << "x - " << fa1 << " i - " << i << " f(x) - " << fx;
 	}
 
 }
