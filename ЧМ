@@ -10,7 +10,7 @@ int main() {
 	setlocale(LC_ALL, "");
 	char  slash = '/', point = '.';
 	int i = 0;
-	double x, c, a, b, a0, fa, fx = 1, fa1=1, fb1, fx1;
+	double x, c, a, b, a0, fa, fb, fx = 1, fa1=1, fb1, fx1;
 	cout << "Введите начальное значение отрезка - ";
 	cin >> a;
 	cout << "Введите конечное значение отрезка - ";
@@ -22,8 +22,10 @@ int main() {
 		a = b;
 		b = a0;
 	}
+	fa = pow((a - 1), 2) - 0.5 * pow(2.718, a);
+	fb = pow((b - 1), 2) - 0.5 * pow(2.718, b);
 	cout << endl << "ДИХОТОМИЯ";
-	while (abs(fx) > c) {
+	while (fa*fb < 0) {
 		x = (b + a) / 2;
 		fa = pow((a - 1), 2) - 0.5 * pow(2.718, a);
 		fx = pow((x - 1), 2) - 0.5 * pow(2.718, x);
@@ -32,6 +34,9 @@ int main() {
 		}
 		if (fa * fx < 0) {
 			b = x;
+		}
+		if ((pow((x - 1 - c), 2) - 0.5 * pow(2.718, (x - c)) * (pow((x - 1 + c), 2) - 0.5 * pow(2.718, (x + c))) < 0)) {
+			break;
 		}
 		i++;
 		cout << endl << "x - " << x << " f(x) - " << fx << " i - " << i;
@@ -43,11 +48,16 @@ int main() {
 	cin >> a;
 	cout << "Введите конечное значение отрезка - ";
 	cin >> b;
+	fa = pow((a - 1), 2) - 0.5 * pow(2.718, a);
+	fb = pow((b - 1), 2) - 0.5 * pow(2.718, b);
 	fa1 = (-0.5 * pow(2.7182818, a) + pow(2, a)) / 2;
-	while (abs(fx) > c) {
+	while (fa * fb < 0) {
 		fa1 = (-0.5 * pow(2.7182818, a) + pow(a, 2)+1) / 2;
 		fx = abs(fa1 - a);
 		a = fa1;
+		if ((pow((x - 1 - c), 2) - 0.5 * pow(2.718, (x - c)) * (pow((x - 1 + c), 2) - 0.5 * pow(2.718, (x + c))) < 0)) {
+			break;
+		}
 		i++;
 		cout << endl << "x - " << fa1 << " i - " << i << " f(x) - " << fx;
 	}
