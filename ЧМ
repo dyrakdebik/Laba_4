@@ -10,7 +10,7 @@ int main() {
 	setlocale(LC_ALL, "");
 	char  slash = '/', point = '.';
 	int i = 0;
-	double x, c, a, b, a0, fa, fb, fx = 1, fa1=1, fb1, fx1;
+	double x, c, a, b, a0, fa, fb, fx = 1, fa1 = 1, fb1, fx1, x1;
 	cout << "Введите начальное значение отрезка - ";
 	cin >> a;
 	cout << "Введите конечное значение отрезка - ";
@@ -24,25 +24,30 @@ int main() {
 	}
 	fa = pow((a - 1), 2) - 0.5 * pow(2.718, a);
 	fb = pow((b - 1), 2) - 0.5 * pow(2.718, b);
-	cout << endl << "ДИХОТОМИЯ";
-	while (fa*fb < 0) {
-		x = (b + a) / 2;
-		fa = pow((a - 1), 2) - 0.5 * pow(2.718, a);
-		fx = pow((x - 1), 2) - 0.5 * pow(2.718, x);
-		if (fa * fx >= 0) {
-			a = x;
+	cout << endl << "ДИХОТОМИЯ - (x-1)^2 - 0,5e^x = 0, x[0; 1]";
+	if (fa * fb < 0) {
+		i = 0;
+		while (true) {
+			i++;
+			x = (b + a) / 2;
+			fa = pow((a - 1), 2) - 0.5 * pow(2.718, a);
+			fx = pow((x - 1), 2) - 0.5 * pow(2.718, x);
+			if (fa * fx >= 0) {
+				a = x;
+				b = b;
+			}
+			if (fa * fx < 0) {
+				a = a;
+				b = x;
+			}
+			cout << endl << "x - " << x << " f(x) - " << fx << " i - " << i << endl;
+			if ((fx - c) * (fx + c) < 0) {
+				cout << endl << endl << "x - " << x << " f(x) - " << fx << " i - " << i << endl;
+				break;
+			}
 		}
-		if (fa * fx < 0) {
-			b = x;
-		}
-		if ((pow((x - 1 - c), 2) - 0.5 * pow(2.718, (x - c)) * (pow((x - 1 + c), 2) - 0.5 * pow(2.718, (x + c))) < 0)) {
-			break;
-		}
-		i++;
-		cout << endl << "x - " << x << " f(x) - " << fx << " i - " << i;
 	}
 	cout << endl << endl << "ИТЕРАЦИИ" << endl;
-	i = 0;
 	fx = 1;
 	cout << "Введите начальное значение отрезка - ";
 	cin >> a;
@@ -51,18 +56,46 @@ int main() {
 	fa = pow((a - 1), 2) - 0.5 * pow(2.718, a);
 	fb = pow((b - 1), 2) - 0.5 * pow(2.718, b);
 	fa1 = (-0.5 * pow(2.7182818, a) + pow(2, a)) / 2;
-	while (fa * fb < 0) {
-		fa1 = (-0.5 * pow(2.7182818, a) + pow(a, 2)+1) / 2;
-		fx = abs(fa1 - a);
-		a = fa1;
-		if ((pow((x - 1 - c), 2) - 0.5 * pow(2.718, (x - c)) * (pow((x - 1 + c), 2) - 0.5 * pow(2.718, (x + c))) < 0)) {
+	if (fa * fb < 0) {
+		if (fa * fb < 0)
+		i = 0;
+		while (true) {
+			i++;
+			fa1 = (-0.5 * pow(2.7182818, a) + pow(a, 2) + 1) / 2;
+			fx = abs(fa1 - a);
+			a = fa1;
+			cout  << endl << "x - " << x << " f(x) - " << fx << " i - " << i << endl;
+			if ((fx - c) * (fx + c) < 0) {
+				cout << endl << endl << "x - " << x << " f(x) - " << fx << " i - " << i << endl;
+				break;
+			}
+		}
+	}
+	cout << endl << endl << "ХОРДЫ" << endl;
+	cout << "Введите начальное значение отрезка - ";
+	cin >> a;
+	cout << "Введите конечное значение отрезка - ";
+	cin >> b;
+	cout << "Введите точноть - ";
+	cin >> c;
+	fa = pow((a - 1), 2) - 0.5 * pow(2.718, a);
+	fb = pow((b - 1), 2) - 0.5 * pow(2.718, b);
+	x = a - ((b - a) / (fa - fb)) * fb;
+	fx = pow((x - 1), 2) - 0.5 * pow(2.718, x);
+	i = 0;
+	a0= 0;
+	if (fa * fb < 0) {
+		i++;
+		a0= x - ((b - x) / (b - fx)) * fx;
+		fx = pow((a0 - 1), 2) - 0.5 * pow(2.718, a0);
+		if (fabs(a0 - x) < c) {
+			cout << endl << endl << "x - " << a0 << " f(x) - " << fx << " i - " << i << endl;
 			break;
 		}
-		i++;
-		cout << endl << "x - " << fa1 << " i - " << i << " f(x) - " << fx;
+		x = a0;
 	}
+} 
 
-}
 
 
 
