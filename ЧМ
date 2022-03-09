@@ -63,3 +63,41 @@ int main() {
 	}
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+cout << endl << endl << "НЬЮТОНА 3x - cos(x) - 1 = 0" << endl;
+	cout << "Введите начальное значение отрезка - ";
+	cin >> a;
+	cout << "Введите конечное значение отрезка - ";
+	cin >> b;
+	cout << "Введите точноть - ";
+	cin >> c;
+	fa = pow((a - 1), 2) - 0.5 * pow(2.718, a);
+	fb = pow((b - 1), 2) - 0.5 * pow(2.718, b);
+	x = pow((a - 1), 2) - 0.5 * pow(2.718, a);
+	if (fa * fb < 0) {
+		i = 0;
+		while (true) {
+			i++;
+			fx = pow((x - 1), 2) - 0.5 * pow(2.718, x);
+			fx1 = 2 * x - 2 - 0.5 * pow(2.718, x);
+			if ((fx - c) * (fx + c) < 0) {
+				cout << endl << endl << "x - " << x << " f(x) - " << fx << " i - " << i << endl;
+				break;
+			}
+			x = (x - fx) / fx1;
+			cout << endl << "x - " << x << " f(x) - " << fx << " i - " << i << endl;
+			
+		}
+	}
