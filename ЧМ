@@ -10,7 +10,8 @@ int main() {
 	setlocale(LC_ALL, "");
 	char  slash = '/', point = '.';
 	int i = 0;
-	double x, c, a, b, a0, fa, fb, fx = 1, fa1 = 1, fb1, fx1, x1;
+	const double e = 2.718281828459045
+	double x, c, a, b, a0, fa, fb, fx = 1, fa1 = 1, fb1, fx1, x1, fx2;
 	cout << "Введите начальное значение отрезка - ";
 	cin >> a;
 	cout << "Введите конечное значение отрезка - ";
@@ -22,21 +23,21 @@ int main() {
 		a = b;
 		b = a0;
 	}
-	fa = pow((a - 1), 2) - 0.5 * pow(2.718, a);
-	fb = pow((b - 1), 2) - 0.5 * pow(2.718, b);
+	fa = pow((a - 1), 2) - 0.5 * pow(e, a);
+	fb = pow((b - 1), 2) - 0.5 * pow(e, b);
 	cout << endl << "ДИХОТОМИЯ - (x-1)^2 - 0,5e^x = 0, x[0; 1]";
 	if (fa * fb < 0) {
 		i = 0;
 		while (true) {
 			i++;
 			x = (b + a) / 2;
-			fa = pow((a - 1), 2) - 0.5 * pow(2.718, a);
-			fx = pow((x - 1), 2) - 0.5 * pow(2.718, x);
+			fa = pow((a - 1), 2) - 0.5 * pow(e, a);
+			fx = pow((x - 1), 2) - 0.5 * pow(e, x);
 			if (fa * fx >= 0) {
 				a = x;
 				b = b;
 			}
-			if (fa * fx < 0) {
+			else {
 				a = a;
 				b = x;
 			}
@@ -53,24 +54,50 @@ int main() {
 	cin >> a;
 	cout << "Введите конечное значение отрезка - ";
 	cin >> b;
-	fa = pow((a - 1), 2) - 0.5 * pow(2.718, a);
-	fb = pow((b - 1), 2) - 0.5 * pow(2.718, b);
-	fa1 = (-0.5 * pow(2.7182818, a) + pow(2, a)) / 2;
+	fa = pow((a - 1), 2) - 0.5 * pow(e, a);
+	fb = pow((b - 1), 2) - 0.5 * pow(e, b);
+	fa1 = (-0.5 * pow(e, a) + pow(2, a)) / 2;
 	if (fa * fb < 0) {
 		if (fa * fb < 0)
-		i = 0;
+			i = 0;
 		while (true) {
 			i++;
-			fa1 = (-0.5 * pow(2.7182818, a) + pow(a, 2) + 1) / 2;
+			fa1 = (-0.5 * pow(e, a) + pow(a, 2) + 1) / 2;
 			fx = abs(fa1 - a);
 			a = fa1;
-			cout  << endl << "x - " << x << " f(x) - " << fx << " i - " << i << endl;
+			cout << endl << "x - " << x << " f(x) - " << fx << " i - " << i << endl;
 			if ((fx - c) * (fx + c) < 0) {
 				cout << endl << endl << "x - " << x << " f(x) - " << fx << " i - " << i << endl;
 				break;
 			}
 		}
 	}
+	cout << endl << endl << "НЬЮТОНА" << endl;
+	cout << "Введите начальное значение отрезка - ";
+	cin >> x;
+	cout << "Введите конечное значение отрезка - ";
+	cin >> b;
+	cout << "Введите точноть - ";
+	cin >> c;
+	fx = pow((x - 1), 2) - 0.5 * pow(2.718, x);
+	x = pow((x - 1), 2) - 0.5 * pow(2.718, x);
+	fx1 = 2 * x - 2 - 0.5 * pow(2.718, x);
+	fx2 = 0.5 * pow(2.718, x) + 2;
+	if (fx * fx2 > 0) {
+		do {
+			if (i == 0) {
+				i++;
+				a0 = x - (fx / fx1);
+			}
+			else {
+				i++;
+				x = a0;
+				a0 = x - (fx / fx1);
+			}
+		}
+		while ((f))
+	}
+
 	cout << endl << endl << "ХОРДЫ" << endl;
 	cout << "Введите начальное значение отрезка - ";
 	cin >> a;
@@ -82,55 +109,19 @@ int main() {
 	fb = pow((b - 1), 2) - 0.5 * pow(2.718, b);
 	x = a - ((b - a) / (fa - fb)) * fb;
 	fx = pow((x - 1), 2) - 0.5 * pow(2.718, x);
-	i = 0;
-	a0= 0;
-	if (fa * fb < 0) {
-		i++;
-		a0= x - ((b - x) / (b - fx)) * fx;
-		fx = pow((a0 - 1), 2) - 0.5 * pow(2.718, a0);
-		if (fabs(a0 - x) < c) {
-			cout << endl << endl << "x - " << a0 << " f(x) - " << fx << " i - " << i << endl;
-			break;
-		}
-		x = a0;
-	}
-} 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-cout << endl << endl << "НЬЮТОНА 3x - cos(x) - 1 = 0" << endl;
-	cout << "Введите начальное значение отрезка - ";
-	cin >> a;
-	cout << "Введите конечное значение отрезка - ";
-	cin >> b;
-	cout << "Введите точноть - ";
-	cin >> c;
-	fa = pow((a - 1), 2) - 0.5 * pow(2.718, a);
-	fb = pow((b - 1), 2) - 0.5 * pow(2.718, b);
-	x = pow((a - 1), 2) - 0.5 * pow(2.718, a);
+	a0 = 0;
 	if (fa * fb < 0) {
 		i = 0;
 		while (true) {
 			i++;
-			fx = pow((x - 1), 2) - 0.5 * pow(2.718, x);
-			fx1 = 2 * x - 2 - 0.5 * pow(2.718, x);
-			if ((fx - c) * (fx + c) < 0) {
-				cout << endl << endl << "x - " << x << " f(x) - " << fx << " i - " << i << endl;
+			a0 = x - ((b - x) / (b - fx)) * fx;
+			fx = pow((a0 - 1), 2) - 0.5 * pow(2.718, a0);
+			cout  << endl << "x - " << a0 << " f(x) - " << fx << " i - " << i << endl;
+			if (fabs(a0 - x) < c) {
+				cout << endl << endl << "x - " << a0 << " f(x) - " << fx << " i - " << i << endl;
 				break;
 			}
-			x = (x - fx) / fx1;
-			cout << endl << "x - " << x << " f(x) - " << fx << " i - " << i << endl;
-			
+			x = a0;
 		}
 	}
+}
