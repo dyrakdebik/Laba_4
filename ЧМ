@@ -191,3 +191,90 @@ int main() {
 			cout << endl << endl << "x - " << x << " f(x) - " << fx << " i - " << i << endl;
 		}
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+//////////////////////////////////////////////////////////////////////////////////
+#include <iostream>
+#include <string>
+#include <locale>
+#include <ctype.h>
+#include <iomanip>
+#include <math.h>
+#define _CRT_SECURE_NO_WARNINGS 1
+using namespace std;
+double f1xx(double x) {
+	return 1;
+}
+double f1xy(double y){
+	return -sin(y);
+}
+double g1yx(double x) {
+	return -cos((2*x - 1) / 2);
+}
+double g1yy(double y) {
+	return 2;
+}
+double f(double x, double y) {
+	return cos(y) + x - 1.5;
+}
+double g(double x, double y) {
+	return 2 * y - sin(x - 0.5) - 1;
+}
+int main() {
+	setlocale(LC_ALL, "");
+	const double e = 2.718281828459045;
+	double x, y, c, delx, dely, x1, y1, i;
+	// cosy+x=1.5 and 2y-sin(x-0.5)=1
+	cout << endl << "----Ньютона----" << endl;
+	cout << "Введите начальное значение (х) - ";
+	cin >> x;
+	cout << "Введите конечное значение (у) - ";
+	cin >> y;
+	cout << "Введите точность - ";
+	cin >> c;
+	i = 0;
+	delx = (f(x, y) * g1yy(y) + f1xy(y) * g(x, y)) / (f1xx(x) * g1yy(y) - f1xy(y) * g1yx(x));
+	dely = (-g(x, y) - g1yx(x) * delx) / g1yy(y);
+	x1 = x + delx;
+	y1 = y + dely;
+	i++;
+	while ((fabs(delx) > c) && (fabs(dely > c))); {
+		i++;
+		x = x1;
+		y = y1;
+		delx = (f(x, y) * g1yy(y) + f1xy(y) * g(x, y)) / (f1xx(x) * g1yy(y) - f1xy(y) * g1yx(x));
+		dely = (-g(x, y) - g1yx(x) * delx) / g1yy(y);
+		x1 = x + delx;
+		y1 = y + dely;
+		cout << endl << "x1 - " << x1 << endl << "y1 - " << y1 << endl << "i - " << i << endl;
+	}
+	cout << endl << "----Итерации----" << endl;
+	cout << "Введите начальное значение (х) - ";
+	cin >> x;
+	cout << "Введите конечное значение (у) - ";
+	cin >> y;
+	cout << "Введите точность - ";
+	cin >> c;
+	i = 1;
+	x1 = (1.5 - cos(y));
+	y1 = (1 + sin(x - 0.5)) / 2;
+	while ((fabs(x - x1) > c) && (fabs(y - y1) > c)) {
+		x = x1;
+		y = y1;
+		x1 = (1.5 - cos(y));
+		y1 = (1 + sin(x - 0.5)) / 2;
+		i++;
+		cout << endl << "x1 - " << x1 << endl << "y1 - " << y1 << endl << "i - " << i << endl;
+	}
+}
