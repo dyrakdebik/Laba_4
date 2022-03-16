@@ -94,21 +94,15 @@ int main() {
 		cin >> c;
 		fa = pow((a - 1), 2) - 0.5 * pow(2.718, a);
 		fb = pow((b - 1), 2) - 0.5 * pow(2.718, b);
-		x = a - ((b - a) / (fa - fb)) * fb;
+		x = b;
 		fx = pow((x - 1), 2) - 0.5 * pow(2.718, x);
-		a0 = 0;
 		if (fa * fb < 0) {
-			i = 0;
-			while (true) {
+			while (fabs(fx) > c) {
 				i++;
-				a0 = x - ((b - x) / (b - fx)) * fx;
-				fx = pow((a0 - 1), 2) - 0.5 * pow(2.718, a0);
-				cout << endl << "x - " << a0 << " f(x) - " << fx << " i - " << i << endl;
-				if (fabs(a0 - x) < c) {
-					cout << endl << endl << "x - " << a0 << " f(x) - " << fx << " i - " << i << endl;
-					break;
-				}
-				x = a0;
+				fx = pow((x - 1), 2) - 0.5 * pow(2.718, x);
+				fa = pow((a - 1), 2) - 0.5 * pow(2.718, a);
+				x = x - fx / (fx - fa) * (x - a);
+				cout << endl << endl << "x - " << x << " f(x) - " << fx << " i - " << i << endl;
 			}
 		}
 		cout << "----НЬЮТОНА----";
@@ -129,15 +123,13 @@ int main() {
 			pribl = a0;
 		else
 			pribl = b0;
-		if (fa * fb < 0) {
-			while (true) {
-				i++;
-				x = pribl - ((pow((pribl - 1), 2) - 0.5 * pow(2.718, pribl)) / (2 - 0.5 * pow(2.718, pribl)));
-				fx = pow((x - 1), 2) - 0.5 * pow(2.718, x);
-				if (fabs(fx) >= c) {
-					cout << endl << endl << "x - " << x << " f(x) - " << fx << " i - " << i << endl;
-					break;
-				}
-			}
+		x = pribl;
+		fx = pow((x - 1), 2) - 0.5 * pow(2.718, x);
+		while (fabs(fx) > c) {
+			i++;
+			fx = pow((x - 1), 2) - 0.5 * pow(2.718, x);
+			fx1 = 2 * x - 2 - 0.5 * pow(2.718, x);
+			x = x - fx / fx1;
+			cout << endl << endl << "x - " << x << " f(x) - " << fx << " i - " << i << endl;
 		}
 }
