@@ -85,3 +85,186 @@ int main() {
 	funt1 = (int)shill / 20;
 	cout << endl << funt1 << '.' << shill1 << '.' << penny1;
 }
+
+
+
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////
+#include <iostream>
+#include <conio.h>
+#include <locale>
+#define _CRT_SECURE_NO_WARNINGS 1
+using namespace std;
+
+int main() {
+	setlocale(LC_ALL, "");
+	int ty = 0, ty0 = 0, all = 39, all0 = 0, all1, i, year, vkld1, drob, drob1, drob2, drob3, drob4;
+	double celc, faren, a, a1, b, c, otvet, procent, vkld, funt, shill, penny, funt1, shill1, penny1, funt2, shill2, penny2;
+	char ch, operat, x, probel, operwho, slash = '/';
+	unsigned long total = 0, fact=1;
+	unsigned int numb;
+	cout << "Выберите задание:" << endl << "1. Таблица умножения";
+	cout << "Введите число для ТУ - ";
+	cin >> ty;
+	while (ty0 < 30) {
+		if (ty0 % 10 == 0) {
+			cout << endl;
+		}
+		ty0++;
+		cout << ty * ty0;
+	}
+	cout << endl << "Перевод температур:" << endl << endl << "Выберите что вы хотите сделать" << endl << "1.Перевести из Цельсия в Фаренгейты" << endl << "2.Перевести из Фаренгейта в Цельсий" << endl;
+	cin >> ty0;
+	if (ty0 == 1) {
+		cout << endl << "Введите градусы в Цельсиях - ";
+		cin >> celc;
+		faren = (celc * 9 / 5) + 32;
+		cout << endl << "В Фаренгейтах - " << faren;
+	}
+	else {
+		cout << endl << "Введите градусы в Фаренгейтах - ";
+		cin >> faren;
+		celc = (faren - 32) * 5 / 9;
+		cout << endl << "В Цельсиях - " << celc;
+	}
+	cout << endl << endl << "Введите последовательность цифр - ";
+	while ((ch = _getche()) != '\r') {
+		total = total * 10 + ch - '0';
+	}
+	cout << endl << "Вы ввели - " << total << endl;
+	cout << endl << endl << endl;
+	do {
+		cout << "Введите число, операнду и число - ";
+		cin >> a >> operat >> b;
+		switch (operat) {
+		case '+':
+			otvet = a + b;
+			break;
+		case '-':
+			otvet = a - b;
+			break;
+		case '*':
+			otvet = a * b;
+			break;
+		case '/':
+			otvet = a / b;
+			break;
+		}
+		cout << "Ответ - " << otvet;
+		cout << endl << "Продолжим? (d / n)";
+		cin >> ch;
+	} while (ch != 'n');
+	cout << endl << endl << endl;
+	all1 = 20;
+	ty = 1;
+	ty0 = 0;
+	i = 0;
+	for (x = 'X'; i < 20; i++) {
+		while (all0 < all1) {
+			cout << ' ';
+			all0++;
+		}
+		all1--;
+		all0 = 0;
+		while (ty0 < ty) {
+			cout << x;
+			ty0++;
+		}
+		ty0 = 0;
+		ty = ty + 2;
+		cout << endl;
+	}
+	do {
+		cout << "Enter a number: ";
+		cin >> numb;
+		for (int j = numb; j > 0; j--)
+			fact *= j;
+		cout << "Factorial is " << fact << endl;
+		cout << "Продолжаем? (d/n)";
+		cin >> ch;
+		if (ch == 'd') {
+			fact = 1;
+		}
+	} while (ch != 'n');
+	i = 0;
+	cout << "Введите начальный вклад - ";
+	cin >> vkld;
+	cout << "Введите число лет - ";
+	cin >> year;
+	cout << "Введите процентную ставку - ";
+	cin >> procent;
+	cout << endl;
+	procent = procent / 100;
+	cout << procent;
+	for (i = 0; i < year; i++) {
+		vkld = vkld + (vkld * procent);
+	}
+	cout << endl << endl << "Через "<< year << " лет вы получите - " << vkld << endl << endl;
+	do {
+		cout << "Введите первую сумму - ";
+		cin >> funt >> shill >> penny;
+		cout << "Введите вторую сумму - ";
+		cin >> funt1 >> shill1 >> penny1;
+		penny2 = penny + penny1;
+		if (penny2 > 11) {
+			shill++;
+			penny2 = penny2 - 12;
+		}
+		shill2 = shill + shill1;
+		if (shill2 > 19) {
+			funt++;
+			shill2 = shill2 - 20;
+		}
+		funt2 = funt + funt1;
+		cout << endl << "Всего - " << funt2 << ' ' << shill2 << ' ' << penny2;
+		cout << endl << "Продолжаем? (d/n)";
+		cin >> ch;
+	} while (ch != 'n');
+	cout << endl << endl << endl;
+	cout << "Введите количество гостей - ";
+	cin >> a;
+	cout << "Введите количество мест - ";
+	cin >> b;
+	otvet = 1;
+	for (i = 0; i < b; i++) {
+		otvet = otvet * a;
+		a--;
+	}
+	cout << "Ответ - " << otvet;
+	cout << "Введите начальный вклад - ";
+	cin >> vkld;
+	cout << "Введите процентную ставку - ";
+	cin >> procent;
+	cout << "Введите нужную сумму - ";
+	cin >> vkld1;
+	cout << endl;
+	procent = procent / 100;
+	for (year = 0; vkld < vkld1; year++) {
+		vkld = vkld + (vkld * procent);
+	}
+	cout << endl << "Количество лет - " << year;
+	// 11 НЕ ЗАБУДЬ !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	cout << endl << endl << endl;
+	do {
+		cout << "Ваш пример: ";
+		cin >> drob1 >> slash >> drob2 >> operwho >> drob3 >> slash >> drob4;
+		switch (operwho) {
+		case '+':
+			drob = (drob1 * drob4 + drob2 * drob3) / (drob2 * drob4);
+			break;
+		case '-':
+			drob = (drob1 * drob4 - drob2 * drob3) / (drob2 * drob4);
+			break;
+		case '*':
+			drob = (drob1 * drob3) / (drob2 * drob4);
+			break;
+		case '/':
+			drob = (drob1 * drob4) / (drob2 / drob3);
+			break;
+		}
+		cout << "Ответ - " << drob << endl;
+		cout << "Продолжаем? (d/n)";
+		cin >> ch;
+	} while (ch != 'n');
+}
