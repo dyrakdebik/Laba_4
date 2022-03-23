@@ -84,114 +84,59 @@ int main() {
 	setlocale(LC_ALL, "");
 	int i = 0;
 	const double e = 2.718281828459045;
-		double x, c, a, b, a0, b0, fa, fb, fx = 1, fa1 = 1, fb1, fx1, x1, fx2, fa2, fb2, pribl;
-		cout << endl << endl << "ХОРДЫ" << endl;
-		cout << "Введите начальное значение отрезка - ";
-		cin >> a;
-		cout << "Введите конечное значение отрезка - ";
-		cin >> b;
-		cout << "Введите точноть - ";
-		cin >> c;
-		fa = pow((a - 1), 2) - 0.5 * pow(2.718, a);
-		fb = pow((b - 1), 2) - 0.5 * pow(2.718, b);
-		x = b;
-		fx = pow((x - 1), 2) - 0.5 * pow(2.718, x);
-		if (fa * fb < 0) {
-			while (fabs(fx) > c) {
-				i++;
-				fx = pow((x - 1), 2) - 0.5 * pow(2.718, x);
-				fa = pow((a - 1), 2) - 0.5 * pow(2.718, a);
-				x = x - fx / (fx - fa) * (x - a);
-				cout << endl << endl << "x - " << x << " f(x) - " << fx << " i - " << i << endl;
-			}
-		}
-		cout << "----НЬЮТОНА----";
-		cout << "Введите начальное значение отрезка - ";
-		cin >> a;
-		cout << "Введите конечное значение отрезка - ";
-		cin >> b;
-		cout << "Введите точноть - ";
-		cin >> c;
-		i = 0;
-		fa = pow((a - 1), 2) - 0.5 * pow(2.718, a);
-		fb = pow((b - 1), 2) - 0.5 * pow(2.718, b);
-		fa2 = 2 - 0.5 * pow(2.718, a);
-		fb2 = 2 - 0.5 * pow(2.718, b);
-		a0 = fa * fa2;
-		b0 = fb * fb2;
-		if (a0 > 0)
-			pribl = a0;
+	double x, c, a, b, a0, b0, fa, fb, fx = 1, fa1 = 1, fb1, fx1, x1, fx2, fa2, fb2, pribl;
+	cout << "----НЬЮТОНА----\n";
+	cout << "Введите начальное значение отрезка - ";
+	cin >> a;
+	cout << "Введите конечное значение отрезка - ";
+	cin >> b;
+	cout << "Введите точноть - ";
+	cin >> c;
+	i = 1;
+	fa = pow((a - 1), 2) - 0.5 * pow(e, a);
+	fb = pow((b - 1), 2) - 0.5 * pow(e, b);
+	fa2 = 2 - 0.5 * pow(e, a);
+	fb2 = 2 - 0.5 * pow(e, b);
+	a0 = fa * fa2;
+	b0 = fb * fb2;
+	if (a0 > 0)
+		pribl = a0;
+	else
+		pribl = b0;
+	x = pribl;
+	cout << endl << x << endl;
+	fx = pow((x - 1), 2) - 0.5 * pow(e, x);
+	fx1 = 2 * x - 0.5 * pow(e, x) - 2;
+	x1 = x - fx / fx1;
+	cout << endl << endl << "x - " << x1 << " i - " << i << endl;
+	while (fabs(x1-x) > c) {
+		i++;
+		x = x1;
+		fx = pow((x - 1), 2) - 0.5 * pow(e, x);
+		fx1 = 2 * x - 0.5 * pow(e, x) - 2;
+		x1 = x - fx / fx1;
+		cout << endl << endl << "x - " << x1 <<  " i - " << i << endl;
+	}
+	cout << "----ХОРДЫ----\n";
+	cout << "Введите начальное значение отрезка - ";
+	cin >> a;
+	cout << "Введите конечное значение отрезка - ";
+	cin >> b;
+	cout << "Введите точноть - ";
+	cin >> c;
+	i = 0;
+	do {
+		i++;
+		x1 = x;
+		x = a - ((b - a) / (fb - fa)) * fa;
+		fx = pow((x - 1), 2) - 0.5 * pow(e, x);
+		if (fa * fx >= 0)
+			a = x;
 		else
-			pribl = b0;
-		x = pribl;
-		fx = pow((x - 1), 2) - 0.5 * pow(2.718, x);
-		while (fabs(fx) > c) {
-			i++;
-			fx = pow((x - 1), 2) - 0.5 * pow(2.718, x);
-			fx1 = 2 * x - 2 - 0.5 * pow(2.718, x);
-			x = x - fx / fx1;
-			cout << endl << endl << "x - " << x << " f(x) - " << fx << " i - " << i << endl;
-		}
+			b = x;
+		cout << endl << endl << "x - " << x << " i - " << i << endl;
+	} while (fabs(x1 - x) > c);
 }
-
-#include <iostream>
-#include <string>
-#include <locale>
-#include <ctype.h>
-#include <iomanip>
-#include <math.h>
-#define _CRT_SECURE_NO_WARNINGS 1
-using namespace std;
-int main() {
-	setlocale(LC_ALL, "");
-	int i = 0;
-	const double e = 2.718281828459045;
-		double x, c, a, b, a0, b0, fa, fb, fx = 1, fa1 = 1, fb1, fx1, x1, fx2, fa2, fb2, pribl;
-		cout << endl << endl << "ХОРДЫ" << endl;
-		cout << "Введите начальное значение отрезка - ";
-		cin >> a;
-		cout << "Введите конечное значение отрезка - ";
-		cin >> b;
-		cout << "Введите точноть - ";
-		cin >> c;
-		i = 1;
-		x = 0;
-		x1 = x + 1;
-		while (fabs(x - x1) > c) {
-			i++;
-			x1 = x;
-			x = (pow(x, 2) + 1 - 0.5 * pow(2.718, x))/2;
-			cout << endl << endl << "x - " << x  << " i - " << i << endl;
-		}
-		cout << "----НЬЮТОНА----";
-		cout << "Введите начальное значение отрезка - ";
-		cin >> a;
-		cout << "Введите конечное значение отрезка - ";
-		cin >> b;
-		cout << "Введите точноть - ";
-		cin >> c;
-		i = 0;
-		fa = pow((a - 1), 2) - 0.5 * pow(2.718, a);
-		fb = pow((b - 1), 2) - 0.5 * pow(2.718, b);
-		fa2 = 2 - 0.5 * pow(2.718, a);
-		fb2 = 2 - 0.5 * pow(2.718, b);
-		a0 = fa * fa2;
-		b0 = fb * fb2;
-		if (a0 > 0)
-			pribl = a0;
-		else
-			pribl = b0;
-		x = pribl;
-		fx = pow((x - 1), 2) - 0.5 * pow(2.718, x);
-		while (fabs(fx) > c) {
-			i++;
-			fx = pow((x - 1), 2) - 0.5 * pow(2.718, x);
-			fx1 = 2 * x - 2 - 0.5 * pow(2.718, x);
-			x = x - fx / fx1;
-			cout << endl << endl << "x - " << x << " f(x) - " << fx << " i - " << i << endl;
-		}
-}
-
 
 
 
