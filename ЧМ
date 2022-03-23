@@ -221,3 +221,41 @@ int main() {
 		cout << endl << "x1 - " << x1 << endl << "y1 - " << y1 << endl << "i - " << i << endl;
 	}
 }
+
+
+
+/////////////////////////////////////////////////////////
+#include <iostream>
+#include <string>
+#include <locale>
+#include <ctype.h>
+#include <iomanip>
+#include <math.h>
+#define _CRT_SECURE_NO_WARNINGS 1
+using namespace std;
+int main() {
+	setlocale(LC_ALL, "");
+	long double U[100], V[100], x[100], k, d, a=1, b=2, c=1;
+	int i;
+
+	cout << "Введите свой вариант - ";
+	cin >> k;
+
+	d = 10 * k;
+	U[1] = -0.5;
+	V[1] = d / 2;
+	for (i = 2; i < 100; i++) {
+		U[i] = -1 * (c / (a * U[i - 1] + b));
+		V[i] = (d - a * V[i - 1]) / (a * U[i - 1] + b);
+	}
+	i = 100;
+	U[i] = 0;
+	V[i] = (d - a * V[i - 1]) / (a * U[i - 1] + b);
+	////////////////////////
+	x[i] = (d - a * V[i - 1]) / (a * U[i - 1] + b);
+	for (i = 99; i > 0; i--) 
+		x[i] = U[i] * x[i + 1] + V[i];
+
+	for (i = 1; i <= 100; i++)
+		cout << "X - " << x[i] << ", i - " << i << endl;
+}
