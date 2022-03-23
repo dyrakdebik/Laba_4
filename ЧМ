@@ -161,11 +161,11 @@ using namespace std;
 double f1xx(double x) {
 	return 1;
 }
-double f1xy(double y){
+double f1xy(double y) {
 	return -sin(y);
 }
 double g1yx(double x) {
-	return -cos((2*x - 1) / 2);
+	return -cos((2 * x - 1) / 2);
 }
 double g1yy(double y) {
 	return 2;
@@ -189,20 +189,18 @@ int main() {
 	cout << "Введите точность - ";
 	cin >> c;
 	i = 0;
-	delx = (f(x, y) * g1yy(y) + f1xy(y) * g(x, y)) / (f1xx(x) * g1yy(y) - f1xy(y) * g1yx(x));
-	dely = (-g(x, y) - g1yx(x) * delx) / g1yy(y);
-	x1 = x + delx;
-	y1 = y + dely;
-	i++;
-	while ((fabs(delx) > c) && (fabs(dely > c))); {
-		i++;
-		x = x1;
-		y = y1;
-		delx = (f(x, y) * g1yy(y) + f1xy(y) * g(x, y)) / (f1xx(x) * g1yy(y) - f1xy(y) * g1yx(x));
-		dely = (-g(x, y) - g1yx(x) * delx) / g1yy(y);
+	while (i < 1000) {
+		dely = (-g(x, y) * f1xx(x) - g1yx(x) * (-f(x, y))) / (g1yy(y) * f1xx(x) - g1yx(x) * f1xy(y));
+		delx = (-f(x, y) - f1xy(y) * dely) / f1xx(x);
 		x1 = x + delx;
 		y1 = y + dely;
-		cout << endl << "x1 - " << x1 << endl << "y1 - " << y1 << endl << "i - " << i << endl;
+		i++;
+		if (fabs(delx) < c || fabs(dely) < c) {
+			cout << endl << "x1 - " << x1 << endl << "y1 - " << y1 << endl << "i - " << i << endl;
+			break;
+		}
+		x = x1;
+		y = y1;
 	}
 	cout << endl << "----Итерации----" << endl;
 	cout << "Введите начальное значение (х) - ";
@@ -214,12 +212,12 @@ int main() {
 	i = 1;
 	x1 = (1.5 - cos(y));
 	y1 = (1 + sin(x - 0.5)) / 2;
-	while ((fabs(x - x1) > c) && (fabs(y - y1) > c)) {
+	while ((fabs(x - x1) > c) || (fabs(y - y1) > c)) {
+		i++;
 		x = x1;
 		y = y1;
 		x1 = (1.5 - cos(y));
 		y1 = (1 + sin(x - 0.5)) / 2;
-		i++;
 		cout << endl << "x1 - " << x1 << endl << "y1 - " << y1 << endl << "i - " << i << endl;
 	}
 }
