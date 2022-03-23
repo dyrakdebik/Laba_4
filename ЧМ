@@ -259,3 +259,40 @@ int main() {
 	for (i = 1; i <= 100; i++)
 		cout << "X - " << x[i] << ", i - " << i << endl;
 }
+
+/////////////////////////////////////////////////////////////////////////
+
+#include <iostream>
+#include <stdio.h>
+#include <stdlib.h>
+#include <locale>
+#include <ctype.h>
+#include <iomanip>
+#include <math.h>
+#define _CRT_SECURE_NO_WARNINGS 1
+using namespace std;
+double f(double x) {
+	return sqrtl(1 + 2 * log(x)) / x;
+}
+int main() {
+	setlocale(LC_ALL, "");
+	double a,a1, b, c, pr=0, st, i, x0;
+
+	cout << "Введите значение левого конца - ";
+	cin >> a;
+	cout << "Введите значение правого конца - ";
+	cin >> b;
+	cout << "Кол-во разбиений - " << endl;
+	cin >> c;
+	if (b < a) {
+		a1 = a;
+		a = b;
+		b = a1;
+	}
+	st = (b - a) / c;
+	for (i = 0; i <= c; i++) {
+		x0 = a + i * st;
+		pr = pr + (st * f(x0));
+	}
+	cout << "pr - " << pr << endl;
+}
