@@ -526,4 +526,28 @@ int main() {
 	funts.pence = newf1;
 	cout << "В старом формате - " << funts.pounds << '.' << funts.shillings << '.' << funts.pence;
 
+	// /////////////////////////////// Задание 11
+	time time1, time2, ttime;
+	cout << "Первое время - ";
+	cin >> time1.h >> time1.min >> time1.sec;
+	cout << "Второе время - ";
+	cin >> time2.h >> time2.min >> time2.sec;
+	long secyn1, secyn2, secyn;
+	secyn1 = time1.h * 3600 + time1.min * 60 + time1.sec;
+	secyn2 = time2.h * 3600 + time2.min * 60 + time2.sec;
+	secyn = secyn1 + secyn2;
+	ttime.h = int(secyn / 3600);
+	secyn -= ttime.h * 3600;
+	ttime.min = int(secyn / 60);
+	secyn = ttime.min * 60;
+	ttime.sec = secyn;
+	cout << "Общее время - " << ttime.h << '.' << ttime.min << '.' << ttime.sec << endl;
+
+	// /////////////////////////////// Задание 12
+	cout << endl << endl << "Первая дробь - ";
+	cin >> dch.chis >> slash >> dch.znam;
+	cout << "Вторая дробь - ";
+	cin >> dz.chis >> slash >> dz.znam;
+	cout << "Сумма дробей - " << dch.chis * dz.znam + dz.znam * dz.chis << slash << dch.znam * dz.znam;
+	return 0;
 }
