@@ -100,9 +100,9 @@ using namespace std;
 int main() {
 	setlocale(LC_ALL, "");
 	int ty = 0, ty0 = 0, all = 39, all0 = 0, all1, i, year, vkld1, drob, drob1, drob2, drob3, drob4;
-	double celc, faren, a, a1, b, c, otvet, procent, vkld, funt, shill, penny, funt1, shill1, penny1, funt2, shill2, penny2;
+	double celc, faren, a, a1, b, b1, c, otvet, procent, vkld, funt, shill, penny, funt1, shill1, penny1, funt2, shill2, penny2;
 	char ch, operat, x, probel, operwho, slash = '/';
-	unsigned long total = 0, fact=1;
+	unsigned long total = 0, fact = 1;
 	unsigned int numb;
 	cout << "Выберите задание:" << endl << "1. Таблица умножения";
 	cout << "Введите число для ТУ - ";
@@ -200,7 +200,7 @@ int main() {
 	for (i = 0; i < year; i++) {
 		vkld = vkld + (vkld * procent);
 	}
-	cout << endl << endl << "Через "<< year << " лет вы получите - " << vkld << endl << endl;
+	cout << endl << endl << "Через " << year << " лет вы получите - " << vkld << endl << endl;
 	do {
 		cout << "Введите первую сумму - ";
 		cin >> funt >> shill >> penny;
@@ -244,7 +244,44 @@ int main() {
 		vkld = vkld + (vkld * procent);
 	}
 	cout << endl << "Количество лет - " << year;
-	// 11 НЕ ЗАБУДЬ !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	// 11 
+	do {
+		cout << "Введите пример - ";
+		cin >> funt >> shill >> penny >> operat >> funt1 >> shill1 >> penny1;
+		switch (operat) {
+			case '+':
+				funt += funt1;
+				shill += shill1;
+				penny += penny1;
+				break;
+			case '-':
+				funt -= funt1;
+				shill -= shill1;
+				penny -= penny1;
+				break;
+			case '*':
+				funt *= funt1;
+				shill *= shill1;
+				penny *= penny1;
+				break;
+			case '/':
+				funt /= funt1;
+				shill /= shill1;
+				penny /= penny1;
+				break;
+		}
+		if (penny > 11) {
+			shill++;
+			penny -= 12;
+		}
+		if (shill > 19) {
+			funt++;
+			shill -= 20;
+		}
+		cout << funt << '.' << shill << '.' << penny << endl;
+		cout << "Продолжаем? (d/n)";
+		cin >> ch;
+	} while (ch != 'n');
 	cout << endl << endl << endl;
 	do {
 		cout << "Ваш пример: ";
@@ -268,7 +305,6 @@ int main() {
 		cin >> ch;
 	} while (ch != 'n');
 }
-
 
 
 
