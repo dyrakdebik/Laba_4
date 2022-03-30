@@ -488,6 +488,70 @@ int main() {
 		}
 		cout << "Дата принятия на работу - " << data.day << slash << data.month << slash << data.year << endl; ///  ФИКССССССССССССССССССССССС
 	}
+	
+	/////////////////////////////
+	#include <iostream>
+
+using namespace std;
+
+int main()
+{
+    enum etype {
+		laborer, secretary, manager, accountant, executive, researcher
+	};
+	struct date {
+		int day, month, year;
+	};
+	char slash = '/';
+	struct employee {
+		int nomer;
+		float pocob;
+		char et;
+		date data;
+		etype doljn;
+	};
+	employee sotrydnik[3];
+	for (int i = 1; i < 4; i++) {
+		cout << "Сотрудник №" << i << endl;
+		cout << "Номер сотрудника - ";
+		cin >> sotrydnik[i].nomer;
+		cout << "Зарплата сотрудника - ";
+		cin >> sotrydnik[i].pocob;
+		cout << "Первая буква должности - ";
+		cin >> sotrydnik[i].et;
+		cout << "Дата принятия на работу";
+		cin >> sotrydnik[i].data.day >> slash >> sotrydnik[i].data.month >> slash >> sotrydnik[i].data.year;
+	}
+	cout << endl << endl;
+	for (int i = 1; i < 4; i++) {
+		cout << "Сотрудник №" << i << endl;
+		cout << "Номер - " << sotrydnik[i].nomer << endl;
+		cout << "Зарплата - " << sotrydnik[i].pocob << endl;
+		cout << "Должность - ";
+		switch (sotrydnik[i].et) {
+		case 'l':
+			cout << "laborer" << endl;
+			break;
+		case 's':
+			cout << "secretary" << endl;
+			break;
+		case 'm':
+			cout << "manager" << endl;
+			break;
+		case 'a':
+			cout << "accountant" << endl;
+			break;
+		case 'e':
+			cout << "executive" << endl;
+			break;
+		case 'r':
+			cout << "researcher" << endl;
+			break;
+		}
+		cout << "Дата принятия на работу - " << sotrydnik[i].data.day << slash << sotrydnik[i].data.month << slash << sotrydnik[i].data.year << endl; ///  ФИКССССССССССССССССССССССС
+	}
+}
+////////////////
 	// ///////////////////////ЗАДАНИЕ 8
 	struct fraction {
 		int chis, znam;
