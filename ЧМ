@@ -296,3 +296,37 @@ int main() {
 	}
 	cout << "pr - " << pr << endl;
 }
+
+
+
+////////////////////////////
+#include <iostream>
+#include <conio.h>
+#include <locale>
+#include <math.h>
+#define _CRT_SECURE_NO_WARNINGS 1
+using namespace std;
+double f(double x) {
+	return (sqrt(1 + 2 * log(x))) / x;
+}
+double f1(double x) {
+	return sin(x);
+}
+int main() {
+	setlocale(LC_ALL, "");
+	double a, b, a1,dl, b1, n, x, x1, x0, i, pi = 3.1415926535897932384626433832795;
+	cout << "Введите начальное значение - ";
+	cin >> a;
+	cout << "Введите конечное значение - ";
+	cout << "Введите кол-во разбиений - ";
+	cin >> n;
+	b = pi / 2;
+	dl = (b - a) / n;
+	cout << dl << endl;
+	for (i = 0; i < n; i++) {
+		x0 = a;
+		x = f1(x0);
+		a +=dl;
+		cout << x << endl;
+	}
+}
