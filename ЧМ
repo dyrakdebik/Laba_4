@@ -400,6 +400,14 @@ int main() {
 
 ///////////////////////////////////////////
 
+/******************************************************************************
+
+                              Online C++ Compiler.
+               Code, Compile, Run and Debug C++ program online.
+Write your code in this editor and press "Run" button to compile and execute it.
+
+*******************************************************************************/
+
 #include <iostream>
 #include <conio.h>
 #include <locale>
@@ -414,7 +422,7 @@ double f1(double x) {
 }
 int main() {
 	setlocale(LC_ALL, "");
-	double zd, a, b, a1, dl, b1, n, x=0, x1=0, x0, i, pi = 3.1415926535897932384626433832795;
+	double zd, a, b, a1, dl, b1, n, x=0, x1=0, x0, i, pi = 3.1415926535897932384626433832795, intg = 7.508609742995709;
 	cout << "Выберите задание:\n1.Метод прямоугольников\n2.Метод трапеции\n3.Метод Симпсона" << endl;
 	cin >> zd;
 	if (zd == 1) {
@@ -424,13 +432,13 @@ int main() {
 		cin >> b;
 		cout << "Введите кол-во разбиений - ";
 		cin >> n;
-		//b = pi / 2;
 		dl = (b - a) / n;
 		for (i = 0; i < n; i++) {
 			x += f(a) * dl;
 			a += dl;
 		}
 		cout << x << endl;
+		cout << "Погрешность - " << fabs(x-intg) << endl;
 	}
 	if (zd == 2) {
 		cout << "Введите начальное значение - ";
@@ -448,7 +456,8 @@ int main() {
 			a += dl;
 		}
 		x1 = dl * (x0 + x);
-		cout << x1 << endl << a;
+		cout << x1 << endl;
+		cout << "Погрешность - " << fabs(x1-intg) << endl;
 	}
 	if (zd == 3) {
 		cout << "Введите начальное значение - ";
@@ -464,7 +473,7 @@ int main() {
 		dl = (b - a) / n;
 		x = f(a);
 		a += dl;
-		for (i = 1; i < n - 1; i++) {
+		for (i = 1; i <= n - 1; i++) {
 			if ((int)i % 2 == 1)
 				x += 4 * f(a);
 			else
@@ -473,6 +482,7 @@ int main() {
 		}
 		x += f(b);
 		x = (dl / 3) * x;
-		cout << "X == " << x;
+		cout << "X == " << x << endl;
+		cout << fabs(x-intg) << endl;
 	}
 }
