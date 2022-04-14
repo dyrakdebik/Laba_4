@@ -806,3 +806,252 @@ int main()
 	cout << "Сумма дробей - " << dch.chis * dz.znam + dz.znam * dz.chis << slash << dch.znam * dz.znam;
 	return 0;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+///////////////
+//////////////
+//////////////
+/////////////////
+///////////////////
+#include <iostream>
+#include <conio.h>
+#include <locale>
+#include <math.h>
+#define _CRT_SECURE_NO_WARNINGS 1
+using namespace std;
+struct times {
+	long sec, min, h;
+};
+long hms_to_secs(int h, int min, int sec) {
+	return h * 3600 + min * 60 + sec;
+}
+long time_to_secs(times tim) {
+	return tim.h * 3600 + tim.min * 60 + tim.sec;
+}
+times secs_to_time(long allsec) {
+	long sh;
+	times rez;
+	sh = allsec / 3600;
+	rez.h = sh;
+	allsec -= rez.h * 3600;
+	sh = allsec / 60;
+	rez.min = sh;
+	allsec -= rez.h * 60;
+	rez.sec = allsec;
+	return rez;
+
+}
+double power(char n, int p = 2) {
+	return pow(n, p);
+}
+double power(int n, int p = 2) {
+	return pow(n, p);
+}
+double power(long n, int p = 2) {
+	return pow(n, p);
+}
+double power(float n, int p = 2) {
+	return pow(n, p);
+}
+void swap(int* a, int* b) {
+	int a0 = *a;
+	*a = *b;
+	*b = a0;
+}
+void glob() {
+	int raz = 0;
+	cout << "Кол-во вызовов - " << ++raz << endl;
+}
+void stat() {
+	static int raz = 0;
+	cout << "Кол-во вызовов - " << ++raz << endl;
+}
+void swap(times* time1, times* time2) {
+	times sh;
+	sh.h = (*time1).h;
+	sh.min = (*time1).min;
+	sh.sec = (*time1).sec;
+	*time1 = *time2;
+	*time2 = sh;
+}
+struct sterling
+{
+	int lb, shilling, penalties;
+};
+struct fraction
+{
+	int num, den;
+};
+sterling ster_1(int i_lb, int i_shilling, int i_penalties) {
+	sterling temp;
+	temp.lb = i_lb;
+	temp.shilling = i_shilling;
+	temp.penalties = i_penalties;
+	return temp;
+}
+sterling ster_2(sterling s_1, sterling s_2) {
+	long general = 0;
+	sterling s_finish;
+	general = (s_1.penalties + s_2.penalties) + 12 * (s_1.shilling + s_2.shilling) + 240
+		* (s_1.lb + s_2.lb);
+	s_finish.lb = general / 240;
+	general -= s_finish.lb * 240;
+	s_finish.shilling = general / 12;
+	general -= s_finish.shilling * 12;
+	s_finish.penalties = general;
+	return s_finish;
+}
+void ster_3(sterling s) {
+	cout << "Сумма вышла: " << s.lb << '.' << s.shilling << '.' << s.penalties << endl;
+}
+fraction add(fraction f_1, fraction f_2)
+{
+	fraction temp;
+	temp.num = f_1.num * f_2.den + f_1.den * f_2.num;
+	temp.den = f_1.den * f_2.den;
+	return temp;
+}
+fraction add(fraction f_1, fraction f_2)
+{
+	fraction temp;
+	temp.num = f_1.num * f_2.den + f_1.den * f_2.num;
+	temp.den = f_1.den * f_2.den;
+	return temp;
+}
+fraction sub(fraction f_1, fraction f_2)
+{
+	fraction temp;
+	temp.num = f_1.num * f_2.den - f_1.den * f_2.num;
+	temp.den = f_1.den * f_2.den;
+	return temp;
+}
+fraction mul(fraction f_1, fraction f_2)
+{
+	fraction temp;
+	temp.num = f_1.num * f_2.num;
+	temp.den = f_1.den * f_2.den;
+	return temp;
+}
+fraction div(fraction f_1, fraction f_2)
+{
+	fraction temp;
+	temp.num = f_1.num * f_2.den;
+	temp.den = f_1.den * f_2.num;
+	return temp;
+}
+void simple_culc()
+{
+	fraction f_1, f_2, f_s;
+	char del = '0', symbol = '0';
+	while (true)
+	{
+		cout << "Введите первую дробь, операцию ('+', '-', '*' или '/') и вторую дробь: ";
+			cin >> f_1.num >> del >> f_1.den >> symbol >> f_2.num >> del >> f_2.den;
+		switch (symbol)
+		{
+		case '+':
+			f_s = add(f_1, f_2);
+			cout << "Сумма дробей = " << f_s.num << del << f_s.den << endl;
+			break;
+		case '-':
+			f_s = sub(f_1, f_2);
+			cout << "Разность дробей = " << f_s.num << del << f_s.den << endl;
+			break;
+		case '*':
+			f_s = mul(f_1, f_2);
+			cout << "Умножение дробей = " << f_s.num << del << f_s.den << endl;
+			break;
+		case '/':
+			f_s = div(f_1, f_2);
+			cout << "Деление дробей = " << f_s.num << del << f_s.den << endl;
+			break;
+		default:
+			cout << "Такой операции нет в списке! :(\n";
+			break;
+		}
+		cout << "Продолжаем (y/n)? "; cin >> symbol;
+		if (symbol == 'n')
+		{
+			break;
+		}
+	}
+}
+int main() {
+	setlocale(LC_ALL, "");
+	int h, min, sec, vsesec, a, b, i=0;
+	char otv;
+	///////////////////////№5 Время////////
+	do {
+		cout << "Введите время через пробел (Часы Минуты Секунды)";
+		cin >> h >> min >> sec;
+		cout << endl << hms_to_secs(h, min, sec) << " секунд" << endl;
+		cout << "Продолжаем? (Y/N)";
+		cin >> otv;
+	} while (otv != 'N');
+	////////////////////////№6 Время + структуры////////
+	times time1, time2, ttime;
+	cout << "Первое время - ";
+	cin >> time1.h >> time1.min >> time1.sec;
+	cout << "Второе время - ";
+	cin >> time2.h >> time2.min >> time2.sec;
+	vsesec = (time1.h + time2.h) * 3600 + (time1.min + time2.min) * 60 + (time1.sec + time2.sec);
+	ttime = secs_to_time(vsesec);
+	cout << ttime.h << ' ' << ttime.min << ' ' << ttime.sec << endl;
+	cout << "Сумма обоих - " << time_to_secs(ttime) << endl;
+	///////////////////////№7 POWER ////////////////////////
+	//cout << power(('7', 7) << endl;
+	//cout << power((int)7, 7) << endl;
+	//cout << power((long)7, 7) << endl;
+	//cout << power((float)7.7, 7) << endl;
+	////////////////////////№8 SWAP SWAP ///////////////
+	cout << "Введите значения а и b (через пробел)";
+	cin >> a >> b;
+	swap(&a, &b);
+	cout << "Меняем местами - " << a << " " << b << endl;
+	///////////////////////№9 TIME SWAP ////////////
+	cout << "Первое время - ";
+	cin >> time1.h >> time1.min >> time1.sec;
+	cout << "Второе время - ";
+	cin >> time2.h >> time2.min >> time2.sec;
+	swap(&time1, &time2);
+	cout << "Первое время - ";
+	cout << time1.h << time1.min << time1.sec;
+	cout << "Второе время - ";
+	cout << time2.h << time2.min << time2.sec;
+	////////////////////////№10 СКОЛЬКО МОЖНО? /////////////
+	for (i = 0; i < 23; i++) {
+		glob();
+	}
+	cout << endl;
+	for (i = 0; i < 23; i++) {
+		stat();
+	}
+	cout << endl;
+	//////////////////////№11 STERLING /////////////////
+	char symbol = '0';
+	int i_lb_1 = 0, i_shilling_1 = 0, i_penalties_1 = 0,
+		i_lb_2 = 0, i_shilling_2 = 0, i_penalties_2 = 0;
+	sterling s_1, s_2, s_final;
+	cout << "Введите первую сумму: ";
+	cin >> i_lb_1 >> symbol >> i_shilling_1 >> symbol >> i_penalties_1;
+	s_1 = ster_1(i_lb_1, i_shilling_1, i_penalties_1);
+	cout << "Введите вторую сумму: ";
+	cin >> i_lb_2 >> symbol >> i_shilling_2 >> symbol >> i_penalties_2;
+	s_2 = ster_1(i_lb_2, i_shilling_2, i_penalties_2);
+	s_final = ster_2(s_1, s_2);
+	ster_3(s_final);
+	cout << endl;
+	/////////////////////№12 калькулятор///////////
+	simple_culc();
+	cout << endl;
+}
