@@ -296,8 +296,6 @@ private:
 				tden = tden / 10; i++;
 			}
 			cout << num << '/' << den;
-			for (int j = 1; j <= (width- i); j++)
-				cout << ' ';
 		}
 		void add(fraction12 f1, fraction12 f2) {
 			num = f1.num * f2.den + f2.num * f1.den;
@@ -370,8 +368,7 @@ int main() {
 	int task;
 	cout << "Введите задание(4- 12):";
 	cin >> task;
-	switch (task) {
-	case 4:
+	if (task == 4) {
 		employee emp1, emp2, emp3;
 		emp1.vvod();
 		emp1.vivod();
@@ -379,33 +376,28 @@ int main() {
 		emp2.vivod();
 		emp3.vvod();
 		emp3.vivod();
-		break
-			;
-	case 5:
+	}
+	else if (task == 5) {
 		date dat;
 		dat.vvodd();
 		dat.vivodd();
-		break
-			;
-	case 6:
+	}
+	else if (task == 6) {
 		employee№6 emp21;
 		emp21.getemploy();
 		emp21.putemploy();
-		break;
-	case 7:
-		mainQ();
-		break;
-	case 9:
-		mainsumdrob();
-		break;
-	default:
-		break;
 	}
-	if (task == 8) {
+	else if (task == 7) {
+		mainQ();
+	}
+	else if (task == 8) {
 		PorydNomer obj1, obj2, obj3;
 		obj1.main();
 		obj2.main();
 		obj3.main();
+	}
+	else if (task == 8) {
+		mainsumdrob();
 	}
 	else if (task == 10) {
 		ship s1, s2, s3;
@@ -449,45 +441,35 @@ int main() {
 	}
 	else if (task == 12) {
 		int den;
-		cout << "Введите знаменатель дроби: ";
+		cout << "Введите знаменатель дроби - ";
 		cin >> den;
 		cout << endl;
-		int width1 = 1;
 		int tnum = den - 1, tden = den;
 		while (tnum) {
-			tnum = tnum / 10; width1++;
+			tnum = tnum / 10;
 		}
 		while (tden) {
-			tden = tden / 10; width1++;
+			tden = tden / 10;
 		}
-		int width2 = 1;
 		tnum = den * den - 1, tden = den * den;
 		while (tnum) {
-			tnum = tnum / 10; width2++;
+			tnum = tnum / 10;
 		}
 		while (tden) {
-			tden = tden / 10; width2++;
+			tden = tden / 10;
 		}
-		for (int i = 1; i <= width1; i++)
-			cout << ' ';
-		cout << " ";
 		for (int num1 = 1; num1 < den; num1++) {
 			fraction12 f1(num1, den);
-			cout << ' ';
-			f1.show(width2);
+			f1.show();
 		}
-		cout << endl;
-		for (int i = 1; i <= (width1 + 2 + (width2 + 1) * (den - 1)); i
-			++)
-			cout << '-';
-		cout << endl;
+		cout << endl << endl;
 		for (int num1 = 1; num1 < den; num1++) {
 			fraction12 f1(num1, den);
-			f1.show(width1); cout << " |";
+			f1.show();
 			for (int num2 = 1; num2 < den; num2++) {
 				fraction12 f2(num2, den), f;
 				f.mul(f1, f2);
-				cout << ' '; f.show(width2);
+				f.show();
 			}
 			cout << endl;
 		}
