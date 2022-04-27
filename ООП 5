@@ -24,496 +24,473 @@ class date {
 	unsigned int day, month, year;
 	char slash = '/';
 public:
-	void vvodd(unsigned int day1, unsigned int month1, unsigned int year1) {
-		day = day1;
-		month = month1;
-		year = year1;
+	void vvodd() {
+		cout << "Введите дату через слэш - ";
+		cin >> day >> slash >> month >> slash >> year;
 	}
 	void vivodd() {
 		cout << day << slash << month << slash << year << endl;
 	}
 };
-class ExtendedEmployee : public employee
-{
+enum dolj {
+	laborer, 
+	secretary, 
+	manager, 
+	accountant, 
+	executive,
+	researcher
+};
+
+class employee№6 {
 private:
-	date recruitment; // Прием на работу
-	enum eType
-	{
-		laborer,
-		secretary,
-		manager,
-		accountant,
-		executive,
-		researcher
-	};
-	int dolj; // Должность сотрудника
+	int nomer;
+	float pocob;
+	dolj rab;
+	date data;
 public:
-	void getemploy()
-	{
-		vvod(); // Номер и оклад сотрудника
+	void getemploy() {
 		unsigned int day, month, year;
 		char slash = '/', doljn;
-		cout << " Введите дату приема сотрудника в формате \"MM/DD/YYYY\": ";
+		cout << "Введите номер сотрудника";
+		cin >> nomer;
+		cout << "Введите номер сотрудника";
+		cin >> pocob;
+		cout << " Введите дату приема сотрудника через слэш - ";
 		cin >> month >> slash >> day >> slash >> year;
-		recruitment.vvodd(day, month, year);
+		data.vvodd();
 		cout << "Введите первую букву должности (laborer, secretary, manager, accountant, executive, researcher) - ";
 		cin >> doljn;
 		switch (doljn)
 		{
 		case 'l':
-			dolj = laborer;
+			rab = dolj::laborer;
 			break;
 		case 's':
-			dolj = secretary;
+			rab = dolj::secretary;
 			break;
 		case 'm':
-			dolj = manager;
+			rab = dolj::manager;
 			break;
 		case 'a':
-			dolj = accountant;
+			rab = dolj::accountant;
 			break;
 		case 'e':
-			dolj = executive;
+			rab = dolj::executive;
 			break;
 		case 'r':
-			dolj = researcher;
+			rab = dolj::researcher;
 			break;
 		default:
 			cout << "Неизвестная должность!";
 			break;
 		}
 	}
-	void putemploy()
-	{
-		vivod();
-		cout << "Прием на работу. ";
-		recruitment.vivodd();
-		switch (dolj)
-		{
+	void putemploy() {
+		cout << endl << "///////////////////////////   ИНФОРМАЦИЯ  //////////////////////";
+		cout << endl << "Номер сотрудника - " << nomer;
+		cout << endl << "Пособие сотрудника - " << pocob;
+		cout << endl << "Дата приема на работу. ";
+		data.vivodd();
+		switch (rab) {
 		case laborer:
-			cout << "Должность - laborer" << endl;
+			cout << " Полное название должности: laborer\n";
 			break;
 		case secretary:
-			cout << "Должность - secretary" << endl;
+			cout << " Полное название должности: secretary\n";
 			break;
 		case manager:
-			cout << "Должность - manager" << endl;
+			cout << " Полное название должности: manager\n";
 			break;
 		case accountant:
-			cout << "Должность - accountant" << endl;
+			cout << " Полное название должности: accountant\n";
 			break;
 		case executive:
-			cout << "Должность - executive" << endl;
+			cout << " Полное название должности: executive\n";
 			break;
 		case researcher:
-			cout << "Должность - researcher" << endl;
+			cout << " Полное название должности: researcher\n";
 			break;
 		default:
-			cout << "Неизвестная должность!" << endl;
+			cout << " Невозможно вывести полностью должность!\n";
 			break;
 		}
 	}
+};
 	class angle {
-	private:
-		int gradysshir, gradysdol;
-		float minshir, mindol;
-		char napravshir, napravdol;
+		int gradys;
+		float min;
+		char naprav;
 	public:
-		angle(){}
-		// Только долгота
-		angle(int gradysdol1, float mindol1, char napravdol1)
-		{
-			gradysdol = gradysdol1;
-			mindol = mindol1;
-			napravdol = napravdol1;
-			show_lon();
+		angle() {}
+		angle(int gradys1, float min1, char naprav1) : gradys(gradys1), min(min1), naprav(naprav1) {}
+		void vvodkoor() {
+			cout << "Введите градусы - ";
+			cin >> gradys;
+			cout << endl << "Введите минуты - ";
+			cin >> gradys;
+			cout << endl << "Введите направление - ";
+			cin >> gradys;
 		}
-		void set_lon()
-		{
-			cout << "Введите градусы долготы: "; 
-			cin >> gradysdol;
-			cout << "Введите минуты долготы: "; 
-			cin >> mindol;
-			cout << "Введите направление долготы: "; 
-			cin >> napravdol;
-		}
-		void set_lat()
-		{
-			cout << "Введите градусы широты: "; 
-			cin >> gradysshir;
-			cout << "Введите минуты широты: ";
-			cin >> minshir;
-			cout << "Введите направление широты: ";
-			cin >> napravshir;
-		}
-		// Долгота
-		void show_lon()
-		{
-			cout << gradysdol << '°' << mindol << "' " << napravdol;
-		}
-		// Широта
-		void show_lat()
-		{
-			cout << gradysshir << '°' << minshir << "' " << napravshir;
+		void vivodkoor() {
+			cout << gradys << '\xB0' << min << "\' " << naprav;
 		}
 	};
-	class Memory
-	{
-	private:
-		static int number;
-		int ID;
-	public:
-		Memory()
-		{
-			ID = ++number;
-		}
-		void showID()
-		{
-			cout << ID;
-		}
-	};
-	int Memory::number = 0;
-
-};
-int Memory::number = 0;
-class Fraction
-{
-private:
-	int num, den;
-public:
-	void set(int c_num, int c_den)
-	{
-		num = c_num;
-		den = c_den;
-	}
-	void get()
-	{
-		cout << num << '/' << den;
-	}
-	void add(Fraction* f)
-	{
-		cout << num * f->den + den * f->num << '/'
-			<< den * f->den;
-	}
-};
-class Ship {
-private:
-	angle coordinates;
-	static int number;
-	int ID;
-public:
-	void set()
-	{
-		coordinates.set_lon();
-		coordinates.set_lat();
-		ID = ++number;
-	}
-	void get()
-	{
-		cout << "ID корабля: " << ID << endl;
-		coordinates.show_lon();
-		cout << " долготы";
-		cout << endl;
-		coordinates.show_lat();
-		cout << " широты";
-	}
-};
-int Ship::number = 0;
-class ExtendedFraction
-{
-private:
-	int num, den;
-public:
-	void set()
-	{
-		char sb = '0';
-		cout << "Введите дробь: "; cin >> num >> sb >> den;
-	}
-	void set_num(int s_num)
-	{
-		num = s_num;
-	}
-	void set_den(int s_den)
-	{
-		den = s_den;
-	}
-	void set_num_and_den(int s_num)
-	{
-		num = s_num;
-		lowterms_for_12_add(num, den);
-	}
-	void get()
-	{
-		cout << "Дробь = " << num << '/' << den << endl;
-	}
-	int get_den()
-	{
-		return den;
-	}
-	void add(ExtendedFraction* f)
-	{
-		lowterms(num * f->den + den * f->num, den * f->den);
-	}
-	void add_for_12(int a_num)
-	{
-		lowterms_for_12_add(num + a_num, den);
-	}
-	void sub(ExtendedFraction* f)
-	{
-		lowterms(num * f->den - den * f->num, den * f->den);
-	}
-	void mul(ExtendedFraction* f)
-	{
-		lowterms(num * f->num, den * f->den);
-	}
-	void mul_for_12(int m_num, int m_den)
-	{
-		lowterms_for_12_add(num * m_num, den * m_den);
-	}
-	void div(ExtendedFraction* f)
-	{
-		lowterms(num * f->den, den * f->num);
-	}
-	void lowterms(int l_num, int l_den) // Сокращение дроби
-	{
-		long tnum, tden, temp, gcd;
-		tnum = labs(l_num); // Используем неотрицательные значения
-		tden = labs(l_den); // Нужен cmath
-		if (tden == 0)
-		{ // Проверка знаменателя
-			cout << "Недопустимый знаменатель";
-			exit(1);
-		}
-		else
-			if (tnum == 0)
-			{
-				l_num = 0;
-				l_den = 1;
-				return;
-			}
-		// Нахождение наибольшего общего делителя
-		while (tnum != 0)
-		{
-			if (tnum < tden)
-			{ // Если числитель больше знаменателя, меняем их местами.
-				temp = tnum;
-				tnum = tden;
-				tden = temp;
-			}
-			tnum = tnum - tden;
-		}
-		gcd = tden;// Делим числитель и знаменатель на НОД.
-		l_num = l_num / gcd;
-		l_den = l_den / gcd;
-		cout << l_num << '/' << l_den << endl;
-	}
-	void lowterms_for_12_add(int l_num, int l_den) // Сокращение дроби
-	{
-		long tnum, tden, temp, gcd;
-		tnum = labs(l_num); // Используем неотрицательные значения
-		tden = labs(l_den); // Нужен cmath
-		if (tden == 0)
-		{ // Проверка знаменателя
-			cout << "Недопустимый знаменатель";
-			exit(1);
-		}
-		else
-			if (tnum == 0)
-			{
-				l_num = 0;
-				l_den = 1;
-				return;
-			}
-		// Нахождение наибольшего общего делителя
-		while (tnum != 0)
-		{
-			if (tnum < tden)
-			{ // Если числитель больше знаменателя, меняем их местами.
-				temp = tnum;
-				tnum = tden;
-				tden = temp;
-			}
-			tnum = tnum - tden;
-		}
-		gcd = tden;// Делим числитель и знаменатель на НОД.
-		l_num = l_num / gcd;
-		l_den = l_den / gcd;
-		cout << l_num << '/' << l_den << ' ';
-	}
-};
-
-int main() {
-	setlocale(LC_ALL, "");
-	double day, month, year;
-	char slash = '/';
-	employee sotrydnik[3];
-	for (int i = 1; i < 4; i++) {
-		cout << "Сотрудник номер " << i << endl;
-		sotrydnik[i].vvod();
-	}
-	for (int i = 1; i < 4; i++) {
-		cout << "Сотрудник номер " << i << endl;
-		sotrydnik[i].vivod();
-	}
-	date data;
-	cout << "Введите дату через / - ";
-	cin >> day >> slash >> month >> slash >> year;
-	data.vvodd(day, month, year);
-	data.vivodd();
-	ExtendedEmployee sotrydnikfull[3];
-	cout << endl;
-	for (int i = 1; i < 4; i++) {
-		cout << "Сотрудник номер " << i << endl;
-		sotrydnikfull[i].getemploy();
-		cout << endl;
-	}
-	for (int i = 1; i < 4; i++) {
-		cout << "Сотрудник номер " << i << endl;
-		sotrydnikfull[i].putemploy();
-		cout << endl;	
-	}
-	int gradysshir, gradysdol;
-	float minshir, mindol;
-	char napravshir, napravdol;
-	cout << "Введите градусы долготы: "; 
-	cin >> gradysdol;
-	cout << "Введите минуты долготы: ";
-	cin >> mindol;
-	cout << "Введите направление долготы: ";
-	cin >> napravdol;
-	//angle a (gradysdol, mindol, napravdol);
-	cout << " долготы\n";
-	cout << endl;
-	//a.set_lat();
-	//a.show_lat();
-	cout << " широты\n";
-	cout << endl;
-	/////////ДОРАБОАТЬ 7 НОМЕР//////////////
-	Memory mem[3];
-	for (int i = 0; i < 3; i++)
-	{
-		cout << "Порядковый номер: ";
-		mem[i].showID();
-		cout << endl;
-	}
-	cout << endl;
-	Fraction f1, f2;
-	do
-	{
-		int f1_num = 0, f1_den = 0, f2_num = 0, f2_den = 0;
+	/// ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/// ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/// ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	void mainQ() {
+		angle position1(1, 2, 'S'), position2(11, 23, 'W');
 		char da;
-		cout << "Введите первую дробь: "; cin >> f1_num >> slash >> f1_den;
-		f1.set(f1_num, f1_den);
-		cout << "Первая дробь = ";
-		f1.get();
+		cout << "Координаты:\n";
+		position1.vivodkoor(); cout << " ,"; position2.vivodkoor();
+		do {
+			cout << "\nШирота. ";
+			position1.vvodkoor();
+			cout << "Долгота. ";
+			position2.vvodkoor();
+			cout << "Ваши координаты:\n";
+			cout << "широта: ";
+			position1.vivodkoor();
+			cout << ", долгота: ";
+			position2.vivodkoor();
+			cout << endl << "Продолжаем? (Y/N) ";
+			cin >> da;
+		} while (da != 'N');
+	}
+/// ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/// ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/// ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+class PorydNomer {
+private:
+	int nomer;
+	int static count;
+public:
+	PorydNomer() {
+		count++;
+		nomer = count;
+	}
+	void main() {
+		cout << "Мой порядковый номер: " << nomer << endl;
+	}
+};
+int PorydNomer::count = 0;
+
+class fraction {
+private:
+	int chisl, znam;
+	char slash = '/';
+public:
+	void vvoddrob() {
+		cout << "Введите дробь - ";
+		cin >> chisl >> slash >> znam;
+	}
+	void vivoddrob() {
+		cout << chisl << slash << znam;
+	}
+	void sum(fraction f1, fraction f2) {
+		chisl = f1.chisl * f2.znam + f2.chisl * f1.znam;
+		znam = f1.znam * f2.znam;
+	}
+};
+void mainsumdrob() { //main9
+	char da;
+	fraction f1, f2, f3;
+	do {
+		f1.vvoddrob();
+		f2.vvoddrob();
+		f3.sum(f1, f2);
+		cout << "Сумма дробей: ";
+		f3.vivoddrob();
 		cout << endl;
-		cout << "Введите вторую дробь: "; cin >> f2_num >> slash >> f2_den;
-		f2.set(f2_num, f2_den);
-		cout << "Вторая дробь = ";
-		f2.get();
-		cout << "\n\n";
-		cout << "Сумма двух дробей = ";
-		f1.add(&f2);
+		cout << "\nПродолжить? (y/n) ";
+		cin >> da;
 		cout << endl;
-		cout << "Продолжить? (Y/N): "; cin >> da;
-		cout << endl;
-		if (da == 'N')
-		{
-			break;
-		}
-	} while (true);
-	/////////////////10///////////////
-	Ship shp[3];
-	for (int i = 0; i < 3; i++)
-	{
-		cout << "Введите данные для " << i + 1 << " корабля.\n";
-		shp[i].set();
+	} while (da != 'n');
+}
+class ship {
+private:
+	int nomer;
+	static int count;
+	angle position1;
+	angle position2;
+public:
+	ship() {
+		count++;
+		nomer = count;
+	}
+	void vvodship() {
+		cout << "Корабль № " << nomer << ". Введите его координаты:\n";
+		cout << "Широта. ";
+		position1.vvodkoor();
+		cout << "Долгота. ";
+		position2.vvodkoor();
 		cout << endl;
 	}
-	for (int i = 0; i < 3; i++)
-	{
-		shp[i].get();
-		cout << "\n\n";
+	void vivodship() {
+		cout << "Корабль № " << nomer << ". Координаты его расположения:\n";
+		cout << "широта: ";
+		position1.vivodkoor();
+		cout << ", долгота: ";
+		position2.vivodkoor();
+		cout << endl << endl;
 	}
-	cout << endl;
-	///////////////////11///////////////
-	ExtendedFraction e_f1, e_f2;
-	do
-	{
-		cout << "Первая дробь\n";
-		e_f1.set();
-		cout << "Вы ввели ";
-		e_f1.get();
-		cout << endl;
-		cout << "Вторая дробь\n";
-		e_f2.set();
-		cout << "Вы ввели ";
-		e_f2.get();
-		cout << endl;
-		cout << "Что с ними сделать? (+, -, *, /): ";
-		cin >> sb;
-		switch (sb)
-		{
-		case '+':
-			cout << endl;
-			e_f1.add(&e_f2);
-			cout << endl;
-			break;
-		case '-':
-			cout << endl;
-			e_f1.sub(&e_f2);
-			cout << endl;
-			break;
-		case '*':
-			cout << endl;
-			e_f1.mul(&e_f2);
-			cout << endl;
-			break;
-		case '/':
-			cout << endl;
-			e_f1.div(&e_f2);
-			cout << endl;
-			break;
-		default:
-			cout << "Такой операции нет :(\n";
-			break;
-		}
-		cout << "Хотите продолжить? (y/n): "; cin >> sb;
-		if (sb == 'n')
-		{
-			break;
-		}
-		cout << endl;
-	} while (true);
-	cout << endl;
-	cout << "================================\n"
-		<< "=Задание N12: Таблица умножения=\n"
-		<< "================================\n\n";
-	ExtendedFraction e_f;
-	e_f.set_num(1);
-	int znam = 0;
-	cout << "Введите знаменатель: "; cin >> znam;
-	cout << endl;
-	e_f.set_den(znam);
-	for (int i = 0; i < znam - 1; i++) // Выводим все дроби
-	{
-		e_f.add_for_12(i);
+};
+int ship::count = 0;
+class fraction11 {
+private:
+	int num;
+	int den;
+public:
+	fraction11() {}
+	fraction11(int n, int d) : num(n), den(d) { }
+	void get() {
+		char slash;
+		cout << "Введите дробь: ";
+		cin >> num >> slash >> den;
 	}
-	cout << endl;
-	for (int i = 0; i < znam; i++)
-	{
-		e_f.set_num_and_den(i);
-		for (int j = 0; j < znam - 1; j++)
-		{
-			e_f.mul_for_12(j + 1, e_f.get_den());
+	void show() {
+		cout << "Результат: " << num << '/' << den << endl;
+	}
+	void add(fraction11 f1, fraction11 f2) {
+		num = f1.num * f2.den + f2.num * f1.den;
+		den = f1.den * f2.den;
+		lowterms();
+	}
+	void sub(fraction11 f1, fraction11 f2) {
+		num = f1.num * f2.den - f2.num * f1.den;
+		den = f1.den * f2.den;
+		lowterms();
+	}
+	void mul(fraction11 f1, fraction11 f2) {
+		num = f1.num * f2.num;
+		den = f1.den * f2.den;
+		lowterms();
+	}
+	void div(fraction11 f1, fraction11 f2) {
+		num = f1.num * f2.den;
+		den = f1.den * f2.num;
+		lowterms();
+	}
+	void lowterms();
+};
+class fraction12 {
+private:
+	int num, den;
+	public:
+		fraction12() { }
+		fraction12(int n, int d) : num(n), den(d) {
+			lowterms();
+		}
+		void get() {
+			char slash;
+			cout << "Введите дробь: ";
+			cin >> num >> slash >> den;
+			lowterms();
+		}
+		void show(int width = 5) {
+			int i = 1, tnum = num, tden = den;
+			while (tnum) {
+				tnum = tnum / 10; i++;
+			}
+			while (tden) {
+				tden = tden / 10; i++;
+			}
+			cout << num << '/' << den;
+			for (int j = 1; j <= (width- i); j++)
+				cout << ' ';
+		}
+		void add(fraction12 f1, fraction12 f2) {
+			num = f1.num * f2.den + f2.num * f1.den;
+			den = f1.den * f2.den;
+			lowterms();
+		}
+		void sub(fraction12 f1, fraction12 f2) {
+			num = f1.num * f2.den - f2.num * f1.den;
+			den = f1.den * f2.den;
+			lowterms();
+		}
+		void mul(fraction12 f1, fraction12 f2) {
+			num = f1.num * f2.num;
+			den = f1.den * f2.den;
+			lowterms();
+		}
+		void div(fraction12 f1, fraction12 f2) {
+			num = f1.num * f2.den;
+			den = f1.den * f2.num;
+			lowterms();
+		}
+		void lowterms();
+};
+void fraction11::lowterms() {
+	long tnum, tden, temp, gcd;
+	tnum = labs(num);
+	tden = labs(den);
+	if (tden == 0) {
+		cout << "Недопустимый знаменатель!";
+		exit(1);
+	}
+	else if (tnum == 0) {
+		num = 0; den = 1;
+		return;
+	}
+	while (tnum != 0) {
+		if (tnum < tden) {
+			temp = tnum; tnum = tden; tden = temp;
+		}
+		tnum = tnum - tden;
+	}
+	gcd = tden;
+	num = num / gcd;
+	den = den / gcd;
+}
+void fraction12::lowterms() {
+	long tnum, tden, temp, gcd;
+	tnum = labs(num);
+	tden = labs(den);
+	if (tden == 0) {
+		cout << "Недопустимый знаменатель!";
+		exit(1);
+	}
+	else if (tnum == 0) {
+		num = 0; den = 1;
+		return;
+	}
+	while (tnum != 0) {
+		if (tnum < tden) {
+			temp = tnum; tnum = tden; tden = temp;
+		}
+		tnum = tnum - tden;
+	}
+	gcd = tden;
+	num = num / gcd;
+	den = den / gcd;
+}
+int main() {
+	setlocale(0, "");
+	int task;
+	cout << "Введите задание(4- 12):";
+	cin >> task;
+	switch (task) {
+	case 4:
+		employee emp1, emp2, emp3;
+		emp1.vvod();
+		emp1.vivod();
+		emp2.vvod();
+		emp2.vivod();
+		emp3.vvod();
+		emp3.vivod();
+		break
+			;
+	case 5:
+		date dat;
+		dat.vvodd();
+		dat.vivodd();
+		break
+			;
+	case 6:
+		employee№6 emp21;
+		emp21.getemploy();
+		emp21.putemploy();
+		break;
+	case 7:
+		mainQ();
+		break;
+	case 9:
+		mainsumdrob();
+		break;
+	default:
+		break;
+	}
+	if (task == 8) {
+		PorydNomer obj1, obj2, obj3;
+		obj1.main();
+		obj2.main();
+		obj3.main();
+	}
+	else if (task == 10) {
+		ship s1, s2, s3;
+		s1.vvodship();
+		s2.vvodship();
+		s3.vvodship();
+		s1.vivodship();
+		s2.vivodship();
+		s3.vivodship();
+	}
+	else if (task == 11) {
+		fraction11 fr1, fr2, fr3;
+		char oper;
+		char ch;
+		do {
+			fr1.get();
+			cout << "Операция: ";
+			cin >> oper;
+			fr2.get();
+			switch (oper) {
+			case '+':
+				fr3.add(fr1, fr2);
+				fr3.show();
+				break;
+			case '-':
+				fr3.sub(fr1, fr2);
+				fr3.show();
+				break;
+			case '*':
+				fr3.mul(fr1, fr2);
+				fr3.show();
+				break;
+			case '/':
+				fr3.div(fr1, fr2);
+				fr3.show();
+				break;
+			default: cout << "Неизвестная операция" << endl;
+			}
+			cout << "Продолжить (y/n) ? "; cin >> ch;
+		} while (ch != 'n');
+	}
+	else if (task == 12) {
+		int den;
+		cout << "Введите знаменатель дроби: ";
+		cin >> den;
+		cout << endl;
+		int width1 = 1;
+		int tnum = den - 1, tden = den;
+		while (tnum) {
+			tnum = tnum / 10; width1++;
+		}
+		while (tden) {
+			tden = tden / 10; width1++;
+		}
+		int width2 = 1;
+		tnum = den * den - 1, tden = den * den;
+		while (tnum) {
+			tnum = tnum / 10; width2++;
+		}
+		while (tden) {
+			tden = tden / 10; width2++;
+		}
+		for (int i = 1; i <= width1; i++)
+			cout << ' ';
+		cout << " ";
+		for (int num1 = 1; num1 < den; num1++) {
+			fraction12 f1(num1, den);
+			cout << ' ';
+			f1.show(width2);
 		}
 		cout << endl;
+		for (int i = 1; i <= (width1 + 2 + (width2 + 1) * (den - 1)); i
+			++)
+			cout << '-';
+		cout << endl;
+		for (int num1 = 1; num1 < den; num1++) {
+			fraction12 f1(num1, den);
+			f1.show(width1); cout << " |";
+			for (int num2 = 1; num2 < den; num2++) {
+				fraction12 f2(num2, den), f;
+				f.mul(f1, f2);
+				cout << ' '; f.show(width2);
+			}
+			cout << endl;
+		}
 	}
-	cout << endl;
-	// Ожидание, позволяющее пользователю увидеть результат
-	// работы программы
-	cout << "Нажмите Enter для продолжения...\n";
-	cin.get();
-	cin.get();
 	return 0;
 }
