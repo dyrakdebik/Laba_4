@@ -493,7 +493,7 @@ int main() {
 #include <math.h>
 #define _CRT_SECURE_NO_WARNINGS 1
 using namespace std;
-class employee {
+class sotrloyee {
 private:
 	int nomer;
 	float pocob;
@@ -530,14 +530,14 @@ enum dolj {
 	researcher
 };
 
-class employee№6 {
+class sotrloyee№6 {
 private:
 	int nomer;
 	float pocob;
 	dolj rab;
 	date data;
 public:
-	void getemploy() {
+	void getsotrloy() {
 		unsigned int day, month, year;
 		char slash = '/', doljn;
 		cout << "Введите номер сотрудника";
@@ -574,7 +574,7 @@ public:
 			break;
 		}
 	}
-	void putemploy() {
+	void putsotrloy() {
 		cout << endl << "///////////////////////////   ИНФОРМАЦИЯ  //////////////////////";
 		cout << endl << "Номер сотрудника - " << nomer;
 		cout << endl << "Пособие сотрудника - " << pocob;
@@ -627,14 +627,13 @@ public:
 /// ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /// ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /// ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void Koordi() {
+void mainQ() {
 	angle position1(1, 2, 'S'), position2(11, 23, 'W');
 	char da;
 	cout << "Координаты - ";
 	position1.vivodkoor(); cout << " ,"; position2.vivodkoor();
 	do {
-		cout << endl;
-		cout << "Широта. ";
+		cout << endl << "Широта. ";
 		position1.vvodkoor();
 		cout << "Долгота. ";
 		position2.vvodkoor();
@@ -667,18 +666,18 @@ int PorydNomer::count = 0;
 
 class fraction {
 private:
-	int chisl, znam;
+	int num, znam;
 	char slash = '/';
 public:
 	void vvoddrob() {
 		cout << "Введите дробь - ";
-		cin >> chisl >> slash >> znam;
+		cin >> num >> slash >> znam;
 	}
 	void vivoddrob() {
-		cout << chisl << slash << znam;
+		cout << num << slash << znam;
 	}
 	void sum(fraction f1, fraction f2) {
-		chisl = f1.chisl * f2.znam + f2.chisl * f1.znam;
+		num = f1.num * f2.znam + f2.num * f1.znam;
 		znam = f1.znam * f2.znam;
 	}
 };
@@ -728,144 +727,148 @@ public:
 int ship::count = 0;
 class fraction11 {
 private:
-	int chisl, del;
+	int num, den;
 public:
 	fraction11() {}
-	fraction11(int n, int d) : chisl(n), del(d) { }
+	fraction11(int n, int d) : num(n), den(d) { }
 	void get() {
 		char slash;
 		cout << "Введите дробь - ";
-		cin >> chisl >> slash >> del;
+		cin >> num >> slash >> den;
 	}
 	void show() {
-		cout << "Результат - " << chisl << '/' << del << endl;
+		cout << "Результат - " << num << '/' << den << endl;
 	}
 	void add(fraction11 f1, fraction11 f2) {
-		chisl = f1.chisl * f2.del + f2.chisl * f1.del;
-		del = f1.del * f2.del;
+		num = f1.num * f2.den + f2.num * f1.den;
+		den = f1.den * f2.den;
 		lowterms();
 	}
 	void sub(fraction11 f1, fraction11 f2) {
-		chisl = f1.chisl * f2.del - f2.chisl * f1.del;
-		del = f1.del * f2.del;
+		num = f1.num * f2.den - f2.num * f1.den;
+		den = f1.den * f2.den;
 		lowterms();
 	}
 	void mul(fraction11 f1, fraction11 f2) {
-		chisl = f1.chisl * f2.chisl;
-		del = f1.del * f2.del;
+		num = f1.num * f2.num;
+		den = f1.den * f2.den;
 		lowterms();
 	}
 	void div(fraction11 f1, fraction11 f2) {
-		chisl = f1.chisl * f2.del;
-		del = f1.del * f2.chisl;
+		num = f1.num * f2.den;
+		den = f1.den * f2.num;
 		lowterms();
 	}
 	void lowterms();
 };
 class fraction12 {
 private:
-	int chisl, del;
+	int num, den;
 public:
 	fraction12() { }
-	fraction12(int n, int d) : chisl(n), del(d) {
+	fraction12(int n, int d) : num(n), den(d) {
 		lowterms();
 	}
 	void get() {
 		char slash;
 		cout << "Введите дробь - ";
-		cin >> chisl >> slash >> del;
+		cin >> num >> slash >> den;
 		lowterms();
 	}
 	void show(int width = 5) {
-		int i = 1, chisl0 = chisl, del0 = del;
-		while (chisl0) {
-			chisl0 = chisl0 / 10; i++;
+		int i = 1, tnum = num, tden = den;
+		while (tnum) {
+			tnum = tnum / 10; i++;
 		}
-		while (del0) {
-			del0 = del0 / 10; i++;
+		while (tden) {
+			tden = tden / 10; i++;
 		}
-		cout << chisl << '/' << del;
+		cout << num << '/' << den;
 	}
 	void add(fraction12 f1, fraction12 f2) {
-		chisl = f1.chisl * f2.del + f2.chisl * f1.del;
-		del = f1.del * f2.del;
+		num = f1.num * f2.den + f2.num * f1.den;
+		den = f1.den * f2.den;
 		lowterms();
 	}
 	void sub(fraction12 f1, fraction12 f2) {
-		chisl = f1.chisl * f2.del - f2.chisl * f1.del;
-		del = f1.del * f2.del;
+		num = f1.num * f2.den - f2.num * f1.den;
+		den = f1.den * f2.den;
 		lowterms();
 	}
 	void mul(fraction12 f1, fraction12 f2) {
-		chisl = f1.chisl * f2.chisl;
-		del = f1.del * f2.del;
+		num = f1.num * f2.num;
+		den = f1.den * f2.den;
 		lowterms();
 	}
 	void div(fraction12 f1, fraction12 f2) {
-		chisl = f1.chisl * f2.del;
-		del = f1.del * f2.chisl;
+		num = f1.num * f2.den;
+		den = f1.den * f2.num;
 		lowterms();
 	}
 	void lowterms();
 };
 void fraction11::lowterms() {
-	long chisl0, del0, temp, gcd;
-	chisl0 = labs(chisl);
-	del0 = labs(del);
-	if (del0 == 0) {
+	long tnum, tden, tsotr, gcd;
+	tnum = labs(num);
+	tden = labs(den);
+	if (tden == 0) {
 		cout << "Знаменатель не может быть равен 0";
 		exit(1);
 	}
-	else if (chisl0 == 0) {
-		chisl = 0; del = 1;
+	else if (tnum == 0) {
+		num = 0; den = 1;
 		return;
 	}
-	while (chisl0 != 0) {
-		if (chisl0 < del0) {
-			temp = chisl0; chisl0 = del0; del0 = temp;
+	while (tnum != 0) {
+		if (tnum < tden) {
+			tsotr = tnum; 
+			tnum = tden; 
+			tden = tsotr;
 		}
-		chisl0 = chisl0 - del0;
+		tnum = tnum - tden;
 	}
-	gcd = del0;
-	chisl = chisl / gcd;
-	del = del / gcd;
+	gcd = tden;
+	num = num / gcd;
+	den = den / gcd;
 }
 void fraction12::lowterms() {
-	long chisl0, del0, temp, gcd;
-	chisl0 = labs(chisl);
-	del0 = labs(del);
-	if (del0 == 0) {
+	long tnum, tden, tsotr, gcd;
+	tnum = labs(num);
+	tden = labs(den);
+	if (tden == 0) {
 		cout << "Знаменатель не может быть равен 0";
 		////////////////////////////////////////////////////////////////////////exit(1);
 	}
-	else if (chisl0 == 0) {
-		chisl = 0; del = 1;
+	else if (tnum == 0) {
+		num = 0; den = 1;
 		return;
 	}
-	while (chisl0 != 0) {
-		if (chisl0 < del0) {
-			temp = chisl0; chisl0 = del0; del0 = temp;
+	while (tnum != 0) {
+		if (tnum < tden) {
+			tsotr = tnum; 
+			tnum = tden; 
+			tden = tsotr;
 		}
-		chisl0 = chisl0 - del0;
+		tnum = tnum - tden;
 	}
-	gcd = del0;
-	chisl = chisl / gcd;
-	del = del / gcd;
+	gcd = tden;
+	num = num / gcd;
+	den = den / gcd;
 }
 int main() {
 	setlocale(0, "");
-	int zadanie, del, thum, del0;
+	int zadanie, den, thum, tden;
 	char oper, da;
 	cout << "Введите задание(4- 12):";
 	cin >> zadanie;
 	if (zadanie == 4) {
-		employee emp1, emp2, emp3;
-		emp1.vvod();
-		emp1.vivod();
-		emp2.vvod();
-		emp2.vivod();
-		emp3.vvod();
-		emp3.vivod();
+		sotrloyee sotr1, sotr2, sotr3;
+		sotr1.vvod();
+		sotr1.vivod();
+		sotr2.vvod();
+		sotr2.vivod();
+		sotr3.vvod();
+		sotr3.vivod();
 	}
 	else if (zadanie == 5) {
 		date dat;
@@ -873,12 +876,12 @@ int main() {
 		dat.vivodd();
 	}
 	else if (zadanie == 6) {
-		employee№6 emp21;
-		emp21.getemploy();
-		emp21.putemploy();
+		sotrloyee№6 sotr0;
+		sotr0.getsotrloy();
+		sotr0.putsotrloy();
 	}
 	else if (zadanie == 7) {
-		Koordi();
+		mainQ();
 	}
 	else if (zadanie == 8) {
 		PorydNomer obj1, obj2, obj3;
@@ -886,7 +889,7 @@ int main() {
 		obj2.main();
 		obj3.main();
 	}
-	else if (zadanie == 8) {
+	else if (zadanie == 9) {
 		mainsumdrob();
 	}
 	else if (zadanie == 10) {
@@ -902,7 +905,7 @@ int main() {
 		fraction11 fr1, fr2, fr3;
 		do {
 			fr1.get();
-			cout << "Операция: ";
+			cout << "Операция - ";
 			cin >> oper;
 			fr2.get();
 			switch (oper) {
@@ -924,40 +927,40 @@ int main() {
 				break;
 			default: cout << "Неизвестная операция" << endl;
 			}
-			cout << "Продолжаем? (Y/N)"; 
+			cout << "Продолжаем? (Y/N)";
 			cin >> da;
 		} while (da != 'N');
 	}
 	else if (zadanie == 12) {
 		cout << "Введите знаменатель дроби - ";
-		cin >> del;
+		cin >> den;
 		cout << endl;
-		chisl0 = del - 1;
-		del0 = del;
-		while (chisl0) {
-			chisl0 = chisl0 / 10;
+		tnum = den - 1;
+		tden = den;
+		while (tnum) {
+			tnum = tnum / 10;
 		}
-		while (del0) {
-			del0 = del0 / 10;
+		while (tden) {
+			tden = tden / 10;
 		}
-		chisl0 = del * del - 1;
-		del0 = del * del;
-		while (chisl0) {
-			chisl0 = chisl0 / 10;
+		tnum = den * den - 1;
+		tden = den * den;
+		while (tnum) {
+			tnum = tnum / 10;
 		}
-		while (del0) {
-			del0 = del0 / 10;
+		while (tden) {
+			tden = tden / 10;
 		}
-		for (int chisl1 = 1; chisl1 < del; chisl1++) {
-			fraction12 f1(chisl1, del);
+		for (int num1 = 1; num1 < den; num1++) {
+			fraction12 f1(num1, den);
 			f1.show();
 		}
 		cout << endl << endl;
-		for (int chisl1 = 1; chisl1 < del; chisl1++) {
-			fraction12 f1(chisl1, del);
+		for (int num1 = 1; num1 < den; num1++) {
+			fraction12 f1(num1, den);
 			f1.show();
-			for (int num2 = 1; num2 < del; num2++) {
-				fraction12 f2(num2, del), f;
+			for (int num2 = 1; num2 < den; num2++) {
+				fraction12 f2(num2, den), f;
 				f.mul(f1, f2);
 				f.show();
 			}
