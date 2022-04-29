@@ -472,3 +472,156 @@ int main() {
 	}
 	return 0;
 }
+
+
+
+
+
+
+
+
+
+
+#include <iostream>
+#include <conio.h>
+#include <locale>
+#include <math.h>
+#define _CRT_SECURE_NO_WARNINGS 1
+using namespace std;
+class zadan12 {
+private:
+int num, den;
+public:
+zadan12() { }
+zadan12(int n, int d) : num(n), den(d) {
+lowterms();
+}
+void get() {
+char slash;
+cout << "Введите дробь - ";
+cin >> num >> slash >> den;
+lowterms();
+}
+void show(int width = 5) {
+int i = 1, tnum = num, tden = den;
+while (tnum) {
+tnum = tnum / 10; i++;
+}
+while (tden) {
+tden = tden / 10; i++;
+}
+cout << num << '/' << den;
+}
+void add(zadan12 f1, zadan12 f2) {
+num = f1.num * f2.den + f2.num * f1.den;
+den = f1.den * f2.den;
+lowterms();
+}
+void sub(zadan12 f1, zadan12 f2) {
+num = f1.num * f2.den - f2.num * f1.den;
+den = f1.den * f2.den;
+lowterms();
+}
+void mul(zadan12 f1, zadan12 f2) {
+num = f1.num * f2.num;
+den = f1.den * f2.den;
+lowterms();
+}
+void div(zadan12 f1, zadan12 f2) {
+num = f1.num * f2.den;
+den = f1.den * f2.num;
+lowterms();
+}
+void lowterms();
+};
+void zadan11::lowterms() {
+long tnum, tden, tsotr, gcd;
+tnum = labs(num);
+tden = labs(den);
+if (tden == 0) {
+cout << "Знаменатель не может быть равен 0";
+}
+else if (tnum == 0) {
+num = 0; den = 1;
+return;
+}
+while (tnum != 0) {
+if (tnum < tden) {
+tsotr = tnum;
+tnum = tden;
+tden = tsotr;
+}
+tnum = tnum - tden;
+}
+gcd = tden;
+num = num / gcd;
+den = den / gcd;
+}
+void zadan12::lowterms() {
+long tnum, tden, tsotr, gcd;
+tnum = labs(num);
+tden = labs(den);
+if (tden == 0) {
+cout << "Знаменатель не может быть равен 0";
+}
+else if (tnum == 0) {
+num = 0; den = 1;
+return;
+}
+while (tnum != 0) {
+if (tnum < tden) {
+tsotr = tnum;
+tnum = tden;
+tden = tsotr;
+}
+tnum = tnum - tden;
+}
+gcd = tden;
+num = num / gcd;
+den = den / gcd;
+}
+
+int main() {
+setlocale(0, "");
+int zadanie, den, tnum, tden;
+char oper, da;
+cout << "Введите задание(4- 12):";
+cin >> zadanie;
+if (zadanie == 12) {
+cout << "Введите знаменатель дроби - ";
+cin >> den;
+cout << endl;
+tnum = den - 1;
+tden = den;
+while (tnum) {
+tnum = tnum / 10;
+}
+while (tden) {
+tden = tden / 10;
+}
+tnum = den * den - 1;
+tden = den * den;
+while (tnum) {
+tnum = tnum / 10;
+}
+while (tden) {
+tden = tden / 10;
+}
+for (int num1 = 1; num1 < den; num1++) {
+zadan12 f1(num1, den);
+f1.show();
+}
+cout << endl << endl;
+for (int num1 = 1; num1 < den; num1++) {
+zadan12 f1(num1, den);
+f1.show();
+for (int num2 = 1; num2 < den; num2++) {
+zadan12 f2(num2, den), f;
+f.mul(f1, f2);
+f.show();
+}
+cout << endl;
+}
+}
+return 0;
+}
