@@ -1,114 +1,365 @@
+#include <iostream>
 #include <conio.h>
-#include <stdlib.h>
+#include <locale>
 #include <math.h>
-#include <locale.h>
+#define _CRT_SECURE_NO_WARNINGS 1
+using namespace std;
+class employee {
+private:
+	int nomer;
+	float pocob;
+public:
+	void vvod() {
+		cout << "Введите номер сотрудника - ";
+		cin >> nomer;
+		cout << "Введите пособие - ";
+		cin >> pocob;
+	}
+	void vivod() {
+		cout << "Номер сотрудникa - " << nomer << endl;
+		cout << "Пособие сотрудника - " << pocob << endl;
+	}
+};
+/// ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+class date {
+	unsigned int day, month, year;
+	char slash = '/';
+public:
+	void vvodd() {
+		cout << "Введите дату через слэш - ";
+		cin >> day >> slash >> month >> slash >> year;
+	}
+	void vivodd() {
+		cout << day << slash << month << slash << year << endl;
+	}
+};
+/// ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+enum dolj {laborer, secretary, manager, accountant, executive, researcher };
 
-int main()
-{
-setlocale(LC_ALL, "Russian");
-int zad, toch1 = 0, toch2 = 0, gog, mog;
-float x1, x2, y1, y2, x3, y3, dlina1, dlina2, dlina3, sum, l, s;
-printf("Выберите подзадачу: (1-5) \n");
-scanf("%d", &zad);
-if (zad == 1) {
-    printf("Введите X координату первой точки \n");
-    scanf("%f", &x1);
-    printf("Введите Y координату первой точки \n");
-    scanf("%f", &y1);
-    printf("Введите X координату второй точки \n");
-    scanf("%f", &x2);
-    printf("Введите Y координату второй точки \n");
-    scanf("%f", &y2);
-    dlina1 = sqrtl((x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2));
-    printf("dlina1 = %f", dlina1); }
-else if (zad == 2) {
-    printf("Введите координату точки А \n");
-    scanf("%f", &x1);
-    printf("Введите координату точки B \n");
-    scanf("%f", &x2);
-    printf("Введите координату точки C \n");
-    scanf("%f", &x3);
-    if (x1>x3) {
-        dlina1 = x1 - x3; }
-    else {
-        dlina1 = x3 - x1; }
-    if (x2>x3) {
-        dlina2 = x2 - x3; }
-    else {
-        dlina2 = x3 - x2; }
-    sum = dlina1 + dlina2;
-    printf("Длина отрезка АС равен = ");
-    printf("%f\n", dlina1);
-    printf("Длина отрезка BС равен = ");
-    printf("%f\n", dlina2);
-    printf("Сумма этих отрезков = ");
-    printf("%f\n", sum); }
-else if (zad == 3) {
-    printf("Введите координату точки А: \n");
-    scanf("%f", &x1);
-    printf("Введите координату точки В: \n");
-    scanf("%f", &y1);
-    printf("Введите координату точки С: \n");
-    scanf("%f", &l);
-    if (x1 > y1) {
-        if ((l > y1) && (l < x1)) {
-            toch1 = l - y1;
-            toch2 = x1 - l; }
-        else
-            printf("Точка С вне отрезка АВ"); }
-    else if (y1 > x1) {
-        if ((l > x1) && (l < y1)) {
-            toch1 = l - x1;
-            toch2 = y1 - l; }
-        else
-            printf("Точка С вне отрезка АВ"); }
-    if (toch1 > 0) {
-    sum = toch1 * toch2;
-    printf("%f\n", sum); }
+class employee№6 {
+private:
+	int nomer;
+	float pocob;
+	dolj rab;
+	date data;
+public:
+	void getsotrloy() {
+		unsigned int day, month, year;
+		char slash = '/', doljn;
+		cout << "Введите номер сотрудника - ";
+		cin >> nomer;
+		cout << "Введите пособие сотрудника - ";
+		cin >> pocob;
+		data.vvodd();
+		cout << "Введите первую букву должности (laborer, secretary, manager, accountant, executive, researcher) - ";
+		cin >> doljn;
+		switch (doljn)
+		{
+		case 'l':
+			rab = dolj::laborer;
+			break;
+		case 's':
+			rab = dolj::secretary;
+			break;
+		case 'm':
+			rab = dolj::manager;
+			break;
+		case 'a':
+			rab = dolj::accountant;
+			break;
+		case 'e':
+			rab = dolj::executive;
+			break;
+		case 'r':
+			rab = dolj::researcher;
+			break;
+		default:
+			cout << "Неизвестная должность!";
+			break;
+		}
+	}
+	void putsotrloy() {
+		cout << endl << "///////////////////////////   ИНФОРМАЦИЯ  //////////////////////";
+		cout << endl << "Номер сотрудника - " << nomer;
+		cout << endl << "Пособие сотрудника - " << pocob;
+		cout << endl << "Дата приема на работу - ";
+		data.vivodd();
+		switch (rab) {
+		case laborer:
+			cout << "Должность - laborer";
+			break;
+		case secretary:
+			cout << "Должность - secretary";
+			break;
+		case manager:
+			cout << "Должность - manager";
+			break;
+		case accountant:
+			cout << "Должность - accountant";
+			break;
+		case executive:
+			cout << "Должность - executive";
+			break;
+		case researcher:
+			cout << "Должность - researcher";
+			break;
+		default:
+			cout << "Неизвестная должность";
+			break;
+		}
+	}
+};
+/// ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+class angle {
+	int gradys;
+	float min;
+	char naprav;
+public:
+	angle() {}
+	angle(int gradys1, float m, char naprav1) : gradys(gradys1), min(m), naprav(naprav1) { }
+	void vvodkoor() {
+		cout << "Введите градусы минуты и направление - ";
+		cin >> gradys >> min >> naprav;
+	}
+	void vivodkoor() {
+		cout << gradys << '\xB0' << min << "\' " << naprav;
+	}
+};
+void mainQ() {
+	angle position1(149, 34.8, 'W'), position2(17, 31.5, 'S');
+	char da;
+	do {
+		cout << endl << "Широта - ";
+		position1.vvodkoor();
+		cout << "Долгота - ";
+		position2.vvodkoor();
+		cout << "Ваши координаты - " << endl;
+		cout << "Широта - ";
+		position1.vivodkoor();
+		cout << ", долгота - ";
+		position2.vivodkoor();
+		cout << endl << endl;
+		cout << "Продолжаем? (Y/N) ";
+		cin >> da;
+	} while (da != 'N');
 }
-else if (zad == 4) {
-    printf("Введите X координату первой вершины прямоульника \n");
-    scanf("%f", &x1);
-    printf("Введите Y координату первой вершины прямоульника \n");
-    scanf("%f", &y1);
-    printf("Введите X координату второй вершины прямоульника \n");
-    scanf("%f", &x2);
-    printf("Введите Y координату второй вершины прямоульника \n");
-    scanf("%f", &y2);
-    dlina1 = y1 - y2;
-        if (dlina1 < 0) {
-            dlina1 = dlina1 * (-1); }
-    dlina2 = x1 - x2;
-        if (dlina2 < 0) {
-            dlina2 = dlina2 * (-1); }
-    gog = (dlina1 * 2) + (dlina2 * 2);
-    mog = dlina1 * dlina2;
-    printf("Периметр = ");
-    printf("%d\n", gog);
-    printf("Произведение = ");
-    printf("%d", mog); }
-else if (zad == 5) {
-    printf("Введите X координату первой вершины треугольника \n");
-    scanf("%f", &x1);
-    printf("Введите Y координату первой вершины треугольника \n");
-    scanf("%f", &y1);
-    printf("Введите X координату второй вершины треугольника \n");
-    scanf("%f", &x2);
-    printf("Введите Y координату второй вершины треугольника \n");
-    scanf("%f", &y2);
-    printf("Введите X координату третий вершины треугольника \n");
-    scanf("%f", &x3);
-    printf("Введите Y координату третий вершины треугольника \n");
-    scanf("%f", &y3);
-    dlina1 = sqrtl((x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2));
-    dlina2 = sqrtl((x2 - x3) * (x2 - x3) + (y2 - y3) * (y2 - y3));
-    dlina3 = sqrtl((x3 - x1) * (x3 - x1) + (y3 - y1) * (y3 - y1));
-    l = (dlina1 + dlina2 + dlina3) / 2;
-    sum = dlina1 + dlina2 + dlina3;
-    s = sqrtl(l * (l - dlina1) * (l - dlina2) * (l - dlina3));
-    printf("Периметр = ");
-    printf("%f\n", sum);
-    printf("Произведение = ");
-    printf("%f", s); }
-return 0;
+
+/// ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+class PorydNomer {
+private:
+	int nomer;
+	int static count;
+public:
+	PorydNomer() {
+		count++;
+		nomer = count;
+	}
+	void main() {
+		cout << "Порядковый номер - " << nomer << endl;
+	}
+};
+int PorydNomer::count = 0;
+/// ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+class fraction {
+private:
+	int num, znam;
+	char slash = '/';
+public:
+	void vvoddrob() {
+		cout << "Введите дробь - ";
+		cin >> num >> slash >> znam;
+	}
+	void vivoddrob() {
+		cout << num << slash << znam;
+	}
+	void sum(fraction f1, fraction f2) {
+		num = f1.num * f2.znam + f2.num * f1.znam;
+		znam = f1.znam * f2.znam;
+	}
+};
+void mainsumdrob() {
+	char da;
+	fraction f1, f2, f3;
+	do {
+		f1.vvoddrob();
+		f2.vvoddrob();
+		f3.sum(f1, f2);
+		cout << "Сумма дробей - ";
+		f3.vivoddrob();
+		cout << endl;
+		cout << "Продолжить? (Y/N) ";
+		cin >> da;
+		cout << endl;
+	} while (da != 'N');
+}
+/// ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+class ship {
+private:
+	int nomer;
+	static int count;
+	angle position1;
+	angle position2;
+public:
+	ship() {
+		count++;
+		nomer = count;
+	}
+	void vvodship() {
+		cout << "Корабль " << nomer << endl << "Введите его координаты - ";
+		cout << "Широта - ";
+		position1.vvodkoor();
+		cout << "Долгота - ";
+		position2.vvodkoor();
+		cout << endl;
+	}
+	void vivodship() {
+		cout << "Корабль " << nomer << endl;
+		cout << "Его координаты - ";
+		cout << "Широта - ";
+		position1.vivodkoor();
+		cout << ", долгота - ";
+		position2.vivodkoor();
+		cout << endl << endl;
+	}
+};
+int ship::count = 0;
+/// ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+class zadan11 {
+private:
+	int num, den;
+public:
+	zadan11() {}
+	zadan11(int n, int d) : num(n), den(d) { }
+	void vvodkal() {
+		char slash;
+		cout << "Введите дробь - ";
+		cin >> num >> slash >> den;
+	}
+	void vivodkal() {
+		cout << "Результат - " << num << '/' << den << endl;
+	}
+	void add(zadan11 f1, zadan11 f2) {
+		num = f1.num * f2.den + f2.num * f1.den;
+		den = f1.den * f2.den;
+		lowterms();
+	}
+	void sub(zadan11 f1, zadan11 f2) {
+		num = f1.num * f2.den - f2.num * f1.den;
+		den = f1.den * f2.den;
+		lowterms();
+	}
+	void mul(zadan11 f1, zadan11 f2) {
+		num = f1.num * f2.num;
+		den = f1.den * f2.den;
+		lowterms();
+	}
+	void div(zadan11 f1, zadan11 f2) {
+		num = f1.num * f2.den;
+		den = f1.den * f2.num;
+		lowterms();
+	}
+	void lowterms();
+};
+void zadan11::lowterms() {
+	long tnum, tden, tsotr, gcd;
+	tnum = labs(num);
+	tden = labs(den);
+	if (tden == 0) {
+		cout << "Знаменатель не может быть равен 0";
+	}
+	else if (tnum == 0) {
+		num = 0; den = 1;
+		return;
+	}
+	while (tnum != 0) {
+		if (tnum < tden) {
+			tsotr = tnum;
+			tnum = tden;
+			tden = tsotr;
+		}
+		tnum = tnum - tden;
+	}
+	gcd = tden;
+	num = num / gcd;
+	den = den / gcd;
+	/// ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+}
+int main() {
+	setlocale(0, "");
+	int zadanie, den, tnum, tden;
+	char oper, da;
+	cout << "Выберите задание - ";
+	cin >> zadanie;
+	if (zadanie == 4) {
+		employee sotr1, sotr2, sotr3;
+		sotr1.vvod();
+		sotr1.vivod();
+		sotr2.vvod();
+		sotr2.vivod();
+		sotr3.vvod();
+		sotr3.vivod();
+	}
+	else if (zadanie == 5) {
+		date dat;
+		dat.vvodd();
+		dat.vivodd();
+	}
+	else if (zadanie == 6) {
+		employee№6 sotr0;
+		sotr0.getsotrloy();
+		sotr0.putsotrloy();
+	}
+	else if (zadanie == 7) {
+		mainQ();
+		return 0;
+	}
+	else if (zadanie == 8) {
+		PorydNomer obj1, obj2, obj3;
+		obj1.main();
+		obj2.main();
+		obj3.main();
+	}
+	else if (zadanie == 9) {
+		mainsumdrob();
+	}
+	else if (zadanie == 10) {
+		ship s1, s2, s3;
+		s1.vvodship();
+		s2.vvodship();
+		s3.vvodship();
+		s1.vivodship();
+		s2.vivodship();
+		s3.vivodship();
+	}
+	else if (zadanie == 11) {
+		zadan11 fr1, fr2, fr3;
+		do {
+			fr1.vvodkal();
+			cout << "Операция - ";
+			cin >> oper;
+			fr2.vvodkal();
+			switch (oper) {
+			case '+':
+				fr3.add(fr1, fr2);
+				fr3.vivodkal();
+				break;
+			case '-':
+				fr3.sub(fr1, fr2);
+				fr3.vivodkal();
+				break;
+			case '*':
+				fr3.mul(fr1, fr2);
+				fr3.vivodkal();
+				break;
+			case '/':
+				fr3.div(fr1, fr2);
+				fr3.vivodkal();
+				break;
+			default: cout << "Неизвестная операция" << endl;
+			}
+			cout << "Продолжаем? (Y/N)";
+			cin >> da;
+		} while (da != 'N');
+	}
+	return 0;
 }
