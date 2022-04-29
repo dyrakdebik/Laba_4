@@ -476,3 +476,83 @@ int main() {
 	}
 	return 0;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#include <iostream>
+#include <conio.h>
+#include <locale>
+#include <math.h>
+#include <cstring>
+#define _CRT_SECURE_NO_WARNINGS 1
+using namespace std;
+void maxint() {
+    int i, n, a=0, b;
+    cout << "Количество элементов - ";
+    cin >> n;
+    int naib[n];
+    for (int i = 0; i<n; i++) {
+        cin >> naib[i];
+    }
+    for (i=0; i<n; i++) {
+        if (a<naib[i]) {
+            a = naib[i];
+            b=i+1;
+        }
+    }
+    cout << "Наибольшее число - " << a << endl;
+    cout << "Его индекс - " << b << endl;
+}
+////////////////////////////////////
+//////////////////////////////////
+class fraction {
+private:
+	int chisl, znam, a[10], i;
+	char slash = '/';
+public:
+	void vvoddrob() {
+		cout << "Введите дроби (5) - ";
+		for (i=1; i<=10; i=i+2 ) {
+		    cin >> chisl >> slash >> znam;
+		    a[i] = chisl;
+		    a[i+1] = znam;
+		}
+	}
+	void vivoddrob() {
+		for (i=1; i<=10; i=i+2) {
+		    cout << a[i] << slash << a[i+1];
+		}
+	}
+	void sum(fraction f1, fraction f2) {
+		chisl = f1.chisl * f2.znam + f2.chisl * f1.znam;
+		znam = f1.znam * f2.znam;
+	}
+};
+//////////////////////////////////////////
+//////////////////////////////////////////
+int main() {
+    setlocale(0, "");
+    int zadanie;
+    cout << "Введите номер задания - ";
+    cin >> zadanie;
+    if (zadanie == 4) {
+        maxint();
+    }
+    else if (zadanie == 5) {
+        fraction a[10];
+        a[10].vvoddrob();
+        a[10].vivoddrob();
+    }
+}
+
