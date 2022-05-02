@@ -1,0 +1,385 @@
+#include <iostream>
+#include <conio.h>
+#include <locale>
+#include <math.h>
+#include <cstring> 
+#include <string>
+#define _CRT_SECURE_NO_WARNINGS 1
+using namespace std;
+/// ///////////////////   №1   ////////////////////////////////////////////
+void reversit() {
+	int const n = 10;
+	char mas[n], bekva;
+	int i, j;
+	cout << "Введите строку из 10 символов - ";
+	cin.get(mas, n);
+	cout << endl <<  "Ваша строка - ";
+	for (i = 0; i < n; i++) {
+		cout << mas[i];
+	}
+	for (i = 0; i < (n / 2); i++) {
+		bekva = mas[i];
+		mas[i] = mas[n - i - 1];
+		mas[n - i - 1] = bekva;
+	}
+	cout << "Перевернутая строка - ";
+	for (i = 0; i < n; i++) {
+		cout << mas[i];
+	}
+}
+/// ///////////////////   №2   ////////////////////////////////////////////
+class employee {
+private:
+	string imya;
+	long nomer;
+public:
+	void getdata() {
+		cout << "Введите имя и номер сотрудника - ";
+		cout << endl << "Имя - ";
+		cin >> imya;
+		cout << endl << "Номер - ";
+		cin >> nomer;
+	}
+	void putdata() {
+		cout << endl << endl << imya << endl << nomer;
+	}
+};
+/// ///////////////////   №3   ////////////////////////////////////////////
+/// 
+/// 
+/// ///////////////////   №4   ////////////////////////////////////////////
+int maxint(int *mas, int n) {
+	int naib=0, indnaib=0;
+	for (int i = 0; i < n; i++) {
+		if (naib < mas[i]) {
+			naib = mas[i];
+			indnaib = i;
+		}
+	}
+	cout << endl << naib << " - " << indnaib;
+	return indnaib;
+}
+/// ///////////////////   №5   ////////////////////////////////////////////
+class fraction {
+private:
+	int chisl, znam;
+	char slash = '/';
+public:
+	void vvod() {
+		cin >> chisl >> slash >> znam;
+	}
+	int retchisl() {
+		return chisl;
+	}
+	int retznam() {
+		return znam;
+	}
+};
+/// ///////////////////   №6   ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+enum Suit { clubs, diamonds, hearts, spades };
+// от 2 до 10 обычные числа
+const int jack = 11;
+const int queen = 12;
+const int king = 13;
+const int ace = 14;
+/////////////////////////////////////////////////////////////
+class card
+{
+private:
+	int number;
+	Suit suit;
+public:
+	card() // конструктор
+	{ }
+	void set(int n, Suit s) // установка значения
+	{
+		suit = s; number = n;
+	}
+	void display(); // показ карты
+};
+/////////////////////////////////////////////////////////////
+void card::display()
+{
+	if (number >= 2 && number <= 10)
+		cout << number;
+	else
+	{
+		switch (number)
+		{
+		case jack: cout << 'J'; break;
+		case queen: cout << 'Q'; break;
+		case king: cout << 'K'; break;
+		case ace: cout << 'A'; break;
+		}
+	}
+	switch (suit)
+	{
+	case clubs: cout << static_cast<char>(5); break;
+	case diamonds: cout << static_cast<char>(4); break;
+	case hearts: cout << static_cast<char>(3); break;
+	case spades: cout << static_cast<char>(6); break;
+	}
+}
+/// ///////////////////   №7    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+class money {
+private:
+	long double ribov;
+public:
+	long double mstold(char *denga) {
+		ribov = 0;
+		for (int i = 0; i < 25; i++) {
+			
+		}
+	}
+};
+/// ///////////////////   №8    /////////////////////////////////////////////////////////////////////////
+class safearay {
+private:
+	int limit[100];
+	bool police(int ind) {
+		if (ind >= 0 && ind < 100)
+			return true;
+		else
+			return false;
+	}
+public:
+	void putel(int ind, int val) {
+		if (police(ind))
+			limit[ind] = val;
+		else {
+			cout << "Неверный индекс";
+			}
+	}
+	int getel(int ind) {
+		if (police(ind))
+			return limit[ind];
+		else
+			cout << "Неверный индекс";
+	}
+};
+/// ///////////////////   №9    /////////////////////////////////////////////////////////////////////////
+class queue
+{
+private:
+	enum { MAX = 10 };
+	int st[MAX];
+	int tail, head;
+public:
+	queue()
+	{
+		head = -1;
+		tail = 0;
+	}
+	void put(int var) // поместить в очередь
+	{
+		if (head == MAX - 1)
+		{
+			cout << "Очередь заполнена!\n";
+		}
+		else
+		{
+			st[++head] = var;
+			tail++;
+		}
+	}
+	void get() // извлечение из очереди
+	{
+		if (head == -1)
+		{
+			cout << "Очередь пуста!\n";
+		}
+		else
+		{
+			cout << st[0] << endl;
+			for (int i = 1; i < tail; i++)
+			{
+				st[i - 1] = st[i];
+			}
+			head--;
+			tail--;
+		}
+	}
+};
+
+
+
+	/// ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+int main() {
+	setlocale(0, "");
+	const int N=1;
+	int n = 0, zadanie;
+	double chisl, znam, obsh=0;
+	char oper, da;
+	cout << "Выберите задание (1-12) - ";
+	cin >> zadanie;
+	cout << endl;
+	if (zadanie == 1) {
+		cout << "/// ///////////////////   №1   ////////////////////////////////////////////" << endl;;
+		reversit();
+		cout << endl;
+	}
+	else if (zadanie == 2) {
+		cout << endl << "/// ///////////////////   №2   ////////////////////////////////////////////" << endl;
+		employee sotr[100];
+		sotr[n++].getdata();
+		for (int i = 0; i < n; i++) {
+			sotr[i].putdata();
+		}
+	}
+	else if (zadanie == 4) {
+		cout << endl << "/// ///////////////////   №4   ////////////////////////////////////////////" << endl;
+		cout << "Введите кол-во элементов массива - ";
+		cin >> n;
+		int* mas = new int[n];
+		cout << endl << "Заполните массив - ";
+		for (int i = 0; i < n; i++) {
+			cin >> mas[i];
+		}
+		maxint(mas, n);
+	}
+	else if (zadanie == 5) {
+		cout << endl << "/// ///////////////////   №5   ////////////////////////////////////////////" << endl;
+		cout << "Сколько дробец вы хотите ввести - ";
+		cin >> n;
+		fraction* drobs = new fraction[n];
+		cout << endl << "Введите дроби - ";
+		for (int i = 0; i < n; i++) {
+			drobs[i].vvod();
+			cout << endl;
+		}
+		for (int i = 0; i < n; i++) {
+			chisl = drobs[i].retchisl();
+			znam = drobs[i].retznam();
+			obsh = obsh + (chisl / znam);
+		}
+		cout << "Среднее значение - " << obsh / (double)n;
+	}
+	else if (zadanie == 6) {
+		cout << endl << "/// ///////////////////   №6   ////////////////////////////////////////////" << endl;
+		card deck[52];
+		int j;
+		cout << endl;
+		for (j = 0; j < 52; j++) // создаем упорядоченную колоду карт
+		{
+			int num = (j % 13) + 2;
+			Suit su = Suit(j / 13);
+			deck[j].set(num, su);
+		}
+			// показываем исходную колоду
+			cout << "Исходная колода:\n";
+		for (j = 0; j < 52; j++)
+		{
+			deck[j].display();
+			cout << " ";
+			if (!((j + 1) % 13)) // начинаем новую строку после каждой 13-й карты
+				cout << endl;
+		}
+		srand(time(NULL)); // инициализируем генератор случайных чисел
+		for (j = 0; j < 52; j++)
+		{
+			int k = rand() % 52; // выбираем случайную карту
+			card temp = deck[j]; // и меняем ее с текущей
+			deck[j] = deck[k];
+			deck[k] = temp;
+		}
+		// показываем перемешанную колоду
+		cout << "\nПеремешанная колода:\n";
+		for (j = 0; j < 52; j++)
+		{
+			deck[j].display();
+			cout << " ";
+			if (!((j + 1) % 13)) // начинаем новую строку после каждой 13-й карты
+				cout << endl;
+		}
+		card deck1[13], deck2[13], deck3[13], deck4[13];
+		for (int i = 0; i < 52; i++) {
+			if (i < 13) {
+				deck1[i % 13] = deck[i];
+			}
+			else if (i < 26 && i > 12) {
+				deck2[i % 13] = deck[i];
+			}
+			else if (i < 39 && i > 25) {
+				deck3[i % 13] = deck[i];
+			}
+			else if (i < 52 && i > 38) {
+				deck4[i % 13] = deck[i];
+			}
+		}
+		for (int i = 0; i < 52; i++) {
+			if (i < 13) {
+				if (i == 0)
+					cout << endl << "----------------------------------------------------------------------------------" << endl << "Первая колода" << endl;
+				deck1[i % 13].display();
+				cout << " ";
+				if (i == 12)
+					cout << endl << "----------------------------------------------------------------------------------";
+			}
+			else if (i < 26 && i > 12) {
+				if (i == 13)
+					cout << endl << "Вторая колода" << endl;
+				deck2[i % 13].display();
+				cout << " ";
+				if (i == 25)
+					cout << endl << "----------------------------------------------------------------------------------";
+			}
+			else if (i < 39 && i > 25) {
+				if (i == 26)
+					cout << endl << "Третья колода" << endl;
+				deck3[i % 13].display();
+				cout << " ";
+				if (i == 38)
+					cout << endl << "----------------------------------------------------------------------------------";
+			}
+			else if (i < 52 && i > 38) {
+				if (i == 39)
+					cout << endl << "Четвертая колода" << endl;
+				deck4[i % 13].display();
+				cout << " ";
+				if (i == 51)
+					cout << endl << "----------------------------------------------------------------------------------";
+			}
+		}
+	}
+	else if (zadanie == 7) {
+		cout << endl << "/// ///////////////////   №7   ////////////////////////////////////////////" << endl;
+
+	}
+	else if (zadanie == 8) {
+	cout << endl << "/// ///////////////////   №8   ////////////////////////////////////////////" << endl;
+	safearay massiv;
+	int znaj = 0, ind = 0;
+	cout << "Введите индекс массива - ";
+	cin >> ind;
+	cout << "Введите значение - ";
+	cin >> znaj;
+	massiv.putel(ind, znaj);
+	cout << "Введите индекс, по которому хотите получить значение - ";
+	cin >> ind;
+	cout << "Значение по индексу - " << massiv.getel(ind) << endl;
+	}
+
+	else if (zadanie == 9) {
+		queue q;
+		for (int i = 0; i < 11; i++)
+		{
+			q.put(i + 1);
+		}
+		cout << endl;
+		for (int i = 0; i < 4; i++)
+		{
+			q.get();
+		}
+		for (int i = 0; i < 4; i++)
+		{
+			q.put(100 + i * 10);
+		}
+		cout << endl;
+		for (int i = 0; i < 11; i++)
+		{
+			q.get();
+		}
+		cout << endl;
+
+	}
+}
