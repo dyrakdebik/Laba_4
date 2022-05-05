@@ -4,6 +4,7 @@
 #include <math.h>
 #include <cstring> 
 #include <string>
+#include <iomanip>
 #define _CRT_SECURE_NO_WARNINGS 1
 using namespace std;
 /// ///////////////////   №1   ////////////////////////////////////////////
@@ -121,17 +122,33 @@ void card::display()
 	}
 }
 /// ///////////////////   №7    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-class money {
+class Money
+{
 private:
-	long double ribov;
+	string strMon;
+	string strMon1;
+	long double usa;
 public:
-	long double mstold(char *denga) {
-		ribov = 0;
-		for (int i = 0; i < 25; i++) {
-			
-		}
+	long double mstold() {
+		cout << "Введите гос.долг США (на конце знак доллара)" << endl;
+		getline(cin, strMon, '$');
+
+		int wlen = strMon.length();
+		int n = 0;
+		string number;
+
+		for (int j = 0; j < wlen; j++)
+			if (strMon[j] != '.' && strMon[j] != '$')
+				number.push_back(strMon[j]); ;
+		usa = stold(number);
+		return usa;
+	}
+
+	void display()const {
+		cout << setiosflags(ios::fixed) << setiosflags(ios::showpoint) << setprecision(2) << endl << usa << endl;
 	}
 };
+
 /// ///////////////////   №8    /////////////////////////////////////////////////////////////////////////
 class safearay {
 private:
@@ -161,8 +178,8 @@ public:
 class queue
 {
 private:
-	enum { MAX = 10 };
-	int st[MAX];
+	enum { MAX = 10 }; // немного нестандартный синтаксис
+	int st[MAX]; // стек в виде массива
 	int tail, head;
 public:
 	queue()
@@ -170,11 +187,11 @@ public:
 		head = -1;
 		tail = 0;
 	}
-	void put(int var) // поместить в очередь
+	void put(int var) 
 	{
 		if (head == MAX - 1)
 		{
-			cout << "Очередь заполнена!\n";
+			cout << "Очередь заполнена!" << endl;
 		}
 		else
 		{
@@ -182,11 +199,11 @@ public:
 			tail++;
 		}
 	}
-	void get() // извлечение из очереди
+	void get() 
 	{
 		if (head == -1)
 		{
-			cout << "Очередь пуста!\n";
+			cout << "Очередь пуста!" << endl;
 		}
 		else
 		{
@@ -200,8 +217,75 @@ public:
 		}
 	}
 };
+/// ///////////////////   №10    /////////////////////////////////////////////////////////////////////////
+class matrix
+{
+private:
+	int limit[10][10];
+	int strok, stolb;
+	bool police(int ind1, int ind2)
+	{
+		if ((ind1 >= 0 && ind1 <= strok) && (ind2 >= 0 && ind2 <= stolb))
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
+public:
+	matrix()
+	{
+		cout << "Введите максимальное кол-во строк - "; 
+		cin >> strok;
+		cout << "Введите максимальное кол-во столбцов - "; 
+		cin >> stolb;
+		cout << endl;
+	}
+	void putel(int ind1, int ind2, int val)
+	{
+		if (police(ind1, ind2))
+		{
+			limit[ind1][ind2] = val;
+		}
+		else
+		{
+			int ind10 = 0, ind20 = 0;
+			cout << "Индекс неверный!" << endl << "Введите новый индекс строки - "; 
+			cin >> ind10;
+			cout << "Введите новый индекс столбца - "; cin >> ind20;
+			putel(ind10, ind20, val);
+		}
+	}
+	int getel(int ind1, int ind2)
+	{
+		if (police(ind1, ind2))
+		{
+			return limit[ind1][ind2];
+		}
+		else
+		{
+			int ind10 = 0, ind20 = 0;
+			cout << "Индекс неверный!" << endl << "Введите новый индекс строки - ";
+			cin >> ind10;
+			cout << "Введите новый индекс столбца - "; cin >> ind20;
+			return getel(ind10, ind20);
+		}
+	}
+};
+/// ///////////////////   №11   /////////////////////////////////////////////////////////////////////////
 
-
+/// ///////////////////   №12    /////////////////////////////////////////////////////////////////////////
+class bMoney {
+private: long
+double money; public:
+	bMoney();
+	bMoney(char s[]);
+	void madd(bMoney m1, bMoney m2);
+	void getmoney();
+	void putmoney();
+};
 
 	/// ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 int main() {
@@ -343,7 +427,9 @@ int main() {
 	}
 	else if (zadanie == 7) {
 		cout << endl << "/// ///////////////////   №7   ////////////////////////////////////////////" << endl;
-
+		Money money;
+		money.mstold();
+		money.display();
 	}
 	else if (zadanie == 8) {
 	cout << endl << "/// ///////////////////   №8   ////////////////////////////////////////////" << endl;
@@ -360,6 +446,7 @@ int main() {
 	}
 
 	else if (zadanie == 9) {
+		cout << endl << "/// ///////////////////   №9   ////////////////////////////////////////////" << endl;
 		queue q;
 		for (int i = 0; i < 11; i++)
 		{
@@ -380,6 +467,34 @@ int main() {
 			q.get();
 		}
 		cout << endl;
-
 	}
+	else if (zadanie == 10) {
+	cout << endl << "/// ///////////////////   №10   ////////////////////////////////////////////" << endl;
+	matrix mat;
+	int chislind = 0, indstrok = 0, indtolb = 0;
+	char da;
+	do {
+		cout << "Введите индекс строки массива: "; cin >> indstrok;
+		cout << "Введите индекс столбца массива: "; cin >> indtolb;
+		cout << "Введите значение, которое будет размещено по этому индексу: ";
+		cin >> chislind;
+		mat.putel(indstrok, indtolb, chislind);
+		cout << "Хотите ввести еще значений? (Y/N)";
+		cin >> da;
+		cout << endl;
+	} while (da != 'N');
+	cout << "Введите индекс строки, по которому нужно получить значение: "; 
+	cin >> indstrok;
+	cout << "Введите индекс столбца, по которому нужно получить значение: "; 
+	cin >> indtolb;
+	cout << "Значение по этому индексу = " << mat.getel(indstrok, indtolb);
+}
+	else if (zadanie == 11) {
+	double val_for_11 = 0.0;
+	cout << "Введите денежную сумму: $"; cin >> val_for_11;
+	Money mn_for_11;
+	mn_for_11.ldtoms(val_for_11);
+	cout << endl;
+
+}
 }
