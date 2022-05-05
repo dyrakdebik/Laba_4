@@ -121,7 +121,7 @@ void card::display()
 	case spades: cout << static_cast<char>(6); break;
 	}
 }
-/// ///////////////////   №7    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/// ///////////////////   №7/№11    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 class Money
 {
 private:
@@ -143,7 +143,10 @@ public:
 		usa = stold(number);
 		return usa;
 	}
-
+	void ldtoms(double temp_sum)
+	{
+		
+	}
 	void display()const {
 		cout << setiosflags(ios::fixed) << setiosflags(ios::showpoint) << setprecision(2) << endl << usa << endl;
 	}
@@ -277,14 +280,36 @@ public:
 /// ///////////////////   №11   /////////////////////////////////////////////////////////////////////////
 
 /// ///////////////////   №12    /////////////////////////////////////////////////////////////////////////
-class bMoney {
-private: long
-double money; public:
-	bMoney();
-	bMoney(char s[]);
-	void madd(bMoney m1, bMoney m2);
-	void getmoney();
-	void putmoney();
+class bMoney
+{
+private:
+	string strMon;
+	long double number;
+
+public:
+	bMoney() : number(0) {}
+	void mstold()
+	{
+		cout << "Введите сумму с долларом на конце - " << endl;
+		getline(cin, strMon, '$');
+
+		int wlen = strMon.length();
+		int n = 0;
+		string num;
+
+		for (int j = 0; j < wlen; j++)
+			if (strMon[j] != '.' && strMon[j] != '$')
+				num.push_back(strMon[j]); ;
+		number = stold(num);
+	}
+	void madd(bMoney mon1, bMoney mon2)
+	{
+		number = mon1.number + mon2.number;
+	}
+	void display()const
+	{
+		cout << setiosflags(ios::fixed) << setiosflags(ios::showpoint) << setprecision(2) << endl << number << '$' << endl;
+	}
 };
 
 	/// ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -362,9 +387,9 @@ int main() {
 		for (j = 0; j < 52; j++)
 		{
 			int k = rand() % 52; // выбираем случайную карту
-			card temp = deck[j]; // и меняем ее с текущей
+			card usa = deck[j]; // и меняем ее с текущей
 			deck[j] = deck[k];
-			deck[k] = temp;
+			deck[k] = usa;
 		}
 		// показываем перемешанную колоду
 		cout << "\nПеремешанная колода:\n";
@@ -430,6 +455,7 @@ int main() {
 		Money money;
 		money.mstold();
 		money.display();
+
 	}
 	else if (zadanie == 8) {
 	cout << endl << "/// ///////////////////   №8   ////////////////////////////////////////////" << endl;
@@ -490,11 +516,18 @@ int main() {
 	cout << "Значение по этому индексу = " << mat.getel(indstrok, indtolb);
 }
 	else if (zadanie == 11) {
-	double val_for_11 = 0.0;
-	cout << "Введите денежную сумму: $"; cin >> val_for_11;
-	Money mn_for_11;
-	mn_for_11.ldtoms(val_for_11);
-	cout << endl;
 
+}
+	else if (zadanie == 12) {
+	bMoney money1, money2, moneysum;
+	char da;
+	do {
+		money1.mstold();
+		money2.mstold();
+		moneysum.madd(money1, money2);
+		moneysum.display();
+		cout << "Продолжаем? (Y/N)" << endl;
+		cin.get();
+	} while (cin.get() != 'N');
 }
 }
