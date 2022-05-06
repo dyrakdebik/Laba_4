@@ -5,6 +5,7 @@
 #include <cstring> 
 #include <string>
 #include <iomanip>
+#include <io.h>
 #define _CRT_SECURE_NO_WARNINGS 1
 using namespace std;
 /// ///////////////////   №1   ////////////////////////////////////////////
@@ -122,33 +123,62 @@ void card::display()
 	}
 }
 /// ///////////////////   №7/№11    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-class Money
-{
+class money {
 private:
-	string strMon;
-	string strMon1;
-	long double usa;
+	long double sum;
 public:
-	long double mstold() {
-		cout << "Введите гос.долг США (на конце знак доллара)" << endl;
-		getline(cin, strMon, '$');
+	long double mstold(char str[]) {
+		char temp[80];
+		int j = 0;
 
-		int wlen = strMon.length();
-		int n = 0;
-		string number;
+		for (int i = 0; i < strlen(str); i++) {
+			char ch = str[i];
 
-		for (int j = 0; j < wlen; j++)
-			if (strMon[j] != '.' && strMon[j] != '$')
-				number.push_back(strMon[j]); ;
-		usa = stold(number);
-		return usa;
+			if ((ch >= '0') && (ch <= '9'))
+				temp[j++] = ch;
+			else if (ch == '.')
+				temp[j++] = ch;
+		}
+		temp[j] = '\0';
+
+		char* stop;
+		sum = strtold(temp, &stop);
+		return sum;
 	}
-	void ldtoms(double temp_sum)
-	{
-		
-	}
-	void display()const {
-		cout << setiosflags(ios::fixed) << setiosflags(ios::showpoint) << setprecision(2) << endl << usa << endl;
+	void ldtoms(char str[]) {
+		char ustring[80];
+		stringstream woss;
+
+		woss << setiosflags(ios::fixed) << setprecision(2) << sum;
+
+		woss >> ustring;
+
+		int i = 0, n = 0, j;
+		int len = strlen(ustring);
+		char delim3 = ',';
+
+		str[i++] = '$';
+
+		if ((len - 3) % 3 == 2) {
+			str[i++] = ustring[n++];
+			str[i++] = ustring[n++];
+			str[i++] = delim3;
+		}
+		else if ((len - 3) % 3 == 1) {
+			str[i++] = ustring[n++];
+			str[i++] = delim3;
+		}
+
+		for (j = n; j < len - 3; j++) {
+			str[i++] = ustring[j];
+			if (((j - n + 1) % 3 == 0) && (j != len - 3 - 1))
+				str[i++] = delim3;
+		}
+
+		str[i++] = ustring[j++];
+		str[i++] = ustring[j++];
+		str[i++] = ustring[j];
+		str[i] = '\0';
 	}
 };
 
@@ -277,38 +307,87 @@ public:
 		}
 	}
 };
-/// ///////////////////   №11   /////////////////////////////////////////////////////////////////////////
+
 
 /// ///////////////////   №12    /////////////////////////////////////////////////////////////////////////
 class bMoney
 {
 private:
-	string strMon;
-	long double number;
-
+	long double sum;
 public:
-	bMoney() : number(0) {}
-	void mstold()
-	{
-		cout << "Введите сумму с долларом на конце - " << endl;
-		getline(cin, strMon, '$');
-
-		int wlen = strMon.length();
-		int n = 0;
-		string num;
-
-		for (int j = 0; j < wlen; j++)
-			if (strMon[j] != '.' && strMon[j] != '$')
-				num.push_back(strMon[j]); ;
-		number = stold(num);
+	bMoney() {
+		sum = 0.0L;
 	}
-	void madd(bMoney mon1, bMoney mon2)
-	{
-		number = mon1.number + mon2.number;
+	bMoney(const char s[]) {
+		mstold(s);
 	}
-	void display()const
+	long double mstold(const char str[])
 	{
-		cout << setiosflags(ios::fixed) << setiosflags(ios::showpoint) << setprecision(2) << endl << number << '$' << endl;
+		char temp[80];
+		int j = 0;
+		for (int i = 0; i < strlen(str); i++)
+		{
+			char ch = str[i];
+
+			if ((ch >= '0') && (ch <= '9'))
+				temp[j++] = ch;
+			else if (ch == '.')
+				temp[j++] = ch;
+		}
+		temp[j] = '\0';
+
+		char* stop;
+		sum = strtold(temp, &stop);
+		return sum;
+	}
+	void ldtoms(char str[])
+	{
+		char ustring[80];
+		stringstream woss;
+
+		woss << setiosflags(ios::fixed) << setprecision(2) << sum;
+		woss >> ustring;
+
+		int i = 0, n = 0, j;
+		int len = strlen(ustring);
+		char delim3 = ',';
+
+		str[i++] = '$';
+
+		if ((len - 3) % 3 == 2) {
+			str[i++] = ustring[n++];
+			str[i++] = ustring[n++];
+			str[i++] = delim3;
+		}
+		else if ((len - 3) % 3 == 1) {
+			str[i++] = ustring[n++];
+			str[i++] = delim3;
+		}
+
+		for (j = n; j < len - 3; j++) {
+			str[i++] = ustring[j];
+			if (((j - n + 1) % 3 == 0) && (j != len - 3 - 1))
+				str[i++] = delim3;
+		}
+
+		str[i++] = ustring[j++];
+		str[i++] = ustring[j++];
+		str[i++] = ustring[j];
+		str[i] = '\0';
+	}
+	void madd(bMoney m1, bMoney m2) {
+		sum = m1.sum + m2.sum;
+	}
+	void getmoney() {
+		char tms[80];
+		cout << "Введите денежную сумму (пример: '$1,234,567.99'):\n";
+		cin >> tms;
+		mstold(tms);
+	}
+	void putmoney() {
+		char tms[80];
+		ldtoms(tms);
+		cout << tms;
 	}
 };
 
@@ -452,9 +531,22 @@ int main() {
 	}
 	else if (zadanie == 7) {
 		cout << endl << "/// ///////////////////   №7   ////////////////////////////////////////////" << endl;
-		Money money;
-		money.mstold();
-		money.display();
+	money ms;
+	char tms[80];
+	long double res;
+	char ans;
+
+	do {
+		cout << "Введите денежную сумму (пример: '$1,234,567.99'):\n";
+		cin >> tms;
+
+		res = ms.mstold(tms);
+
+		cout << "Число типа long double: " << setiosflags(ios::fixed) << setprecision(2) << res << endl;
+
+		cout << "Продолжить (y/n)? "; 
+		cin >> ans;
+	} while (ans != 'n');
 
 	}
 	else if (zadanie == 8) {
@@ -516,18 +608,48 @@ int main() {
 	cout << "Значение по этому индексу = " << mat.getel(indstrok, indtolb);
 }
 	else if (zadanie == 11) {
+	money ms;
+	char tms[80];
+	long double res;
+	char ans;
 
+	do {
+		cout << "Введите денежную сумму (пример: '$1,234,567.99'):\n";
+		cin >> tms;
+
+		res = ms.mstold(tms);
+
+		cout << "Число типа long double: " << setiosflags(ios::fixed) << setprecision(2) << res << endl;
+
+		ms.ldtoms(tms);
+
+		cout << "Денежная строка: " << tms << endl;
+
+		cout << "Продолжить (y/n)? "; 
+		cin >> ans;
+	} while (ans != 'n');
 }
 	else if (zadanie == 12) {
-	bMoney money1, money2, moneysum;
-	char da;
+	const int MAX = 100;
+	bMoney ms[MAX];
+	char ans; 
+	int i = 0;
+
 	do {
-		money1.mstold();
-		money2.mstold();
-		moneysum.madd(money1, money2);
-		moneysum.display();
-		cout << "Продолжаем? (Y/N)" << endl;
-		cin.get();
-	} while (cin.get() != 'N');
+		if (i == MAX) {
+			cout << "Нельзя ввести больше " << MAX << " денежных сумм!" << endl;
+			break;
+		}
+		ms[i++].getmoney();
+
+		cout << "Продолжить (y/n)? "; 
+		cin >> ans;
+	} while (ans != 'n');
+	cout << endl;
+
+	bMoney msum;
+	for (int j = 0; j < i; j++)
+		msum.madd(msum, ms[j]);
+	cout << "Сумма введенных денежных сумм: "; msum.putmoney(); cout << endl;
 }
 }
