@@ -14,71 +14,67 @@ const double factor = PI / 180.0;
 class MyTime
 {
 private:
-	unsigned int hours, minutes, seconds;
+	int h, min, sec;
 public:
-	MyTime()
-	{
-		char sb = '0';
-		cout << "Введите значение времени в часах, минутах и секундах: ";
-		cin >> hours >> sb >> minutes >> sb >> seconds;
+	MyTime() {
+		char slash = '/';
+		cout << "Введите время (часы/минуты/секунды) - ";
+		cin >> h >> slash >> min >> slash >> sec;
 	}
-	void display()
-	{
-		cout << "Время: " << hours << ':' << minutes << ':' << seconds;
+	void display() {
+		cout << "Время - " << h << ':' << min << ':' << sec;
 	}
-	void operator+(MyTime& temp)
-	{
-		unsigned int total_seconds = 0;
-		total_seconds = 3600 * (hours + temp.hours) + 60 * (minutes + temp.minutes) + seconds + temp.seconds;
-		hours = total_seconds / 3600;
-		total_seconds -= hours * 3600;
-		minutes = total_seconds / 60;
-		total_seconds -= minutes * 60;
-		seconds = total_seconds;
-		cout << "Результат сложения: " << hours << ':' << minutes << ':' << seconds;
+	void operator +(MyTime & time2) {
+		int allsec;
+		allsec = 3600 * (h + time2.h) + 60 * (min + time2.min) + sec + time2.sec;
+		h = allsec / 3600;
+		allsec -= h * 3600;
+		min = allsec / 60;
+		allsec -= min * 60;
+		sec = allsec;
+		cout << "Результат сложения: " << h << ':' << min << ':' << sec;
 	}
-	void operator-(MyTime& temp)
-	{
-		unsigned int total_seconds = 0;
-		total_seconds = 3600 * (hours - temp.hours) + 60 * (minutes - temp.minutes) + seconds - temp.seconds;
-		hours = total_seconds / 3600;
-		total_seconds -= hours * 3600;
-		minutes = total_seconds / 60;
-		total_seconds -= minutes * 60;
-		seconds = total_seconds;
-		cout << "Результат вычитания: " << hours << ':' << minutes << ':' << seconds;
+	void operator -(MyTime & time2) {
+		unsigned int allsec = 0;
+		allsec = 3600 * (h - time2.h) + 60 * (min - time2.min) + sec - time2.sec;
+		h = allsec / 3600;
+		allsec -= h * 3600;
+		min = allsec / 60;
+		allsec -= min * 60;
+		sec = allsec;
+		cout << "Результат вычитания: " << h << ':' << min << ':' << sec;
 	}
-	void operator*(MyTime& temp)
+	void operator *(MyTime & time2)
 	{
-		unsigned int total_seconds = 0;
-		total_seconds = 3600 * (hours * temp.hours) + 60 * (minutes * temp.minutes) + seconds * temp.seconds;
-		hours = total_seconds / 3600;
-		total_seconds -= hours * 3600;
-		minutes = total_seconds / 60;
-		total_seconds -= minutes * 60;
-		seconds = total_seconds;
-		cout << "Результат умножения: " << hours << ':' << minutes << ':' << seconds;
+		unsigned int allsec = 0;
+		allsec = 3600 * (h * time2.h) + 60 * (min * time2.min) + sec * time2.sec;
+		h = allsec / 3600;
+		allsec -= h * 3600;
+		min = allsec / 60;
+		allsec -= min * 60;
+		sec = allsec;
+		cout << "Результат умножения: " << h << ':' << min << ':' << sec;
 	}
 	// Прибавить 1:00:00
 	MyTime& operator++() // Префикс
 	{
-		hours++;
+		h++;
 		return *this;
 	}
 	MyTime& operator++(int) // Постфикс
 	{
-		hours++;
+		h++;
 		return *this;
 	}
 	// Отнять 1:00:00
 	MyTime& operator--() // Префикс
 	{
-		hours--;
+		h--;
 		return *this;
 	}
 	MyTime& operator--(int) // Постфикс
 	{
-		hours--;
+		h--;
 		return *this;
 	}
 };
@@ -153,7 +149,7 @@ public:
 	// этот метод в перегруженных операциях сложения, вычитания, умножения и деления)
 	fraction lowterms() {
 		long tnum, tden, // две временные переменные для хранения числителя и знаменателя
-			temp,       // временная переменная для хранения значения при обмене
+			temp0,       // временная переменная для хранения значения при обмене
 			gcd;        // наибольший общий делитель, который нужно найти (greatest common divisor)
 
 		tnum = labs(num); // возьмем значения числителя и знаменателя по модулю
@@ -175,7 +171,8 @@ public:
 			// добьемся, чтобы числитель был больше
 			if (tnum < tden)                               // если числитель меньше знаменателя,
 			{
-				temp = tnum; tnum = tden; tden = temp;
+				temp0 = tnum; tnum = tden; 
+				tden = temp0;
 			} // меняем их местами
 
 			tnum = tnum - tden;
@@ -243,15 +240,15 @@ public:
 	{
 		cout << "Радиус = " << radius << "\nУгол в градусах = " << degrees << endl;
 	}
-	void operator+(const Polar& temp)
+	void operator+(const Polar& temp0)
 	{
 		double x = 0.0, x_t = 0.0, y = 0.0, y_t = 0.0, x_new = 0.0, y_new = 0.0, radius_new = 0.0, degrees_new = 0.0;
 		x = radius * cos(degrees * factor);
 		y = radius * sin(degrees * factor);
 		cout << "Координаты первой точки в прямоугольной системе координат: " << x
 			<< "; " << y << endl;
-		x_t = temp.radius * cos(temp.degrees * factor);
-		y_t = temp.radius * sin(temp.degrees * factor);
+		x_t = temp0.radius * cos(temp0.degrees * factor);
+		y_t = temp0.radius * sin(temp0.degrees * factor);
 		cout << "Координаты второй точки в прямоугольной системе координат: " << x_t << "; " << y_t << endl;
 		x_new = x + x_t;
 		y_new = y + y_t;
@@ -433,8 +430,8 @@ int main() {
 		for (int j = low; j <= up; j++)
 		{
 			// используем функцию справа от знака присваивания (=)
-			int temp = sa1[j];
-			cout << "Элемент " << j << " равен " << temp << endl;
+			int temp0 = sa1[j];
+			cout << "Элемент " << j << " равен " << temp0 << endl;
 		}
 
 	}
