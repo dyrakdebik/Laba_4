@@ -1,145 +1,164 @@
+#include <io.h> // для функции _setmode
 #include <iostream>
-#include <conio.h>
-#include <locale>
-#include <math.h>
-#include <cstring> 
-#include <string>
-#include <iomanip>
+#include <iomanip> // для манипуляторов setiosflags, setprecision
+#include <sstream>
 #define _CRT_SECURE_NO_WARNINGS 1
 using namespace std;
 const double PI = 3.141592653589793; // 15 знаков после точки
 // Множитель для преобразования градусов в радианы
 const double factor = PI / 180.0;
+const double RATE = 50.0; // курс обмена валют: 1 фунт = 50 долларов
 /// ///////////////////   №1   ////////////////////////////////////////////
-class MyTime
+class time
 {
-private:
-	int h, min, sec;
+private: 
+	float hrs, mins, secs; 
 public:
-	MyTime() {
-		char slash = '/';
-		cout << "Введите время (часы/минуты/секунды) - ";
-		cin >> h >> slash >> min >> slash >> sec;
-	}
-	void display() {
-		cout << "Время - " << h << ':' << min << ':' << sec;
-	}
-	void operator +(MyTime & time2) {
-		int allsec;
-		allsec = 3600 * (h + time2.h) + 60 * (min + time2.min) + sec + time2.sec;
-		h = allsec / 3600;
-		allsec -= h * 3600;
-		min = allsec / 60;
-		allsec -= min * 60;
-		sec = allsec;
-		cout << "Результат сложения: " << h << ':' << min << ':' << sec;
-	}
-	void operator -(MyTime & time2) {
-		unsigned int allsec = 0;
-		allsec = 3600 * (h - time2.h) + 60 * (min - time2.min) + sec - time2.sec;
-		h = allsec / 3600;
-		allsec -= h * 3600;
-		min = allsec / 60;
-		allsec -= min * 60;
-		sec = allsec;
-		cout << "Результат вычитания: " << h << ':' << min << ':' << sec;
-	}
-	void operator *(MyTime & time2)
+	time() : 
+		hrs(0), mins(0), secs(0) {} 
+	time(int h, int m, int s) : 
+		hrs(h), mins(m), secs(s) { }
+	void display() { 
+	cout << hrs << ":" << mins << ":" << secs; }
+	time operator + (time t2) //add two times 
 	{
-		unsigned int allsec = 0;
-		allsec = 3600 * (h * time2.h) + 60 * (min * time2.min) + sec * time2.sec;
-		h = allsec / 3600;
-		allsec -= h * 3600;
-		min = allsec / 60;
-		allsec -= min * 60;
-		sec = allsec;
-		cout << "Результат умножения: " << h << ':' << min << ':' << sec;
+		int s = secs + t2.secs; //add seconds 
+		int m = mins + t2.mins; //add minutes 
+		int h = hrs + t2.hrs; //add hours 
+		if( s > 59 ) //if secs overflow, 
+		{ s -= 60; m++; } // carry a minute 
+		if( m > 59 ) //if mins overflow, 
+		{ m -= 60; h++; } // carry an hour 
+		return time(h, m, s); //return temp value 
 	}
-	// Прибавить 1:00:00
-	MyTime& operator++() // Префикс
-	{
-		h++;
+	//ПРЕФИКСНАЯ
+	time& operator ++() {
+		this->hrs++;
+		this->mins++;
+		this->secs++;
 		return *this;
 	}
-	MyTime& operator++(int) // Постфикс
-	{
-		h++;
+	time& operator --() {
+		this->hrs--;
+		this->mins--;
+		this->secs--;
 		return *this;
 	}
-	// Отнять 1:00:00
-	MyTime& operator--() // Префикс
-	{
-		h--;
-		return *this;
+	//ПОСТФИКСНАЯ
+	time& operator ++(int magic) {
+		time temp(*this);
+		this->hrs++;
+		this->mins++;
+		this->secs++;
+		return temp;
 	}
-	MyTime& operator--(int) // Постфикс
-	{
-		h--;
-		return *this;
+	time& operator --(int magic) {
+		time temp(*this);
+		this->hrs--;
+		this->mins--;
+		this->secs--;
+		return temp;
 	}
-};
+	time operator - (time t2) //add two times 
+	{
+		int s = secs - t2.secs; //add seconds 
+		int m = mins - t2.mins; //add minutes 
+		int h = hrs - t2.hrs; //add hours 
+		if (s > 59) //if secs overflow, 
+		{
+			s -= 60; m++;
+		} // carry a minute 
+		else if (s < 0) {
+			s = 60 - s;
+			m--;
+		}
+		if (m > 59) //if mins overflow, 
+		{
+			m -= 60; h++;
+		} // carry an hour 
+		else if (m < 0) {
+			m = 60 - m;
+			h--;
+		}
+		if (h < 0) {
+			cout << "Время отрицательное - ошибка";
+		}
+		return time(h, m, s); //return temp value 
+	}
+	time(float h, float m, float s) :
+		hrs(h), mins(m), secs(s) { }
+	time operator * (time t2) //add two times 
+	{
+		float s = secs * t2.secs; //add seconds 
+		float m = mins * t2.mins; //add minutes 
+		float h = hrs * t2.hrs; //add hours 
+		int b;
+		if (s > 59) //if secs overflow, 
+		{
+			b = s / 60;
+			s = s-b*60;
+			m = m + b;
+		} // carry a minute 
+		if (m > 59) //if mins overflow, 
+		{
+			b = m / 60;
+			m = m - b * 60;
+			h = h+ b;
+		} // carry an hour 
+		return time(h, m, s); //return temp value 
+	}
+ };
 class fraction // класс, представляющий обыкновенную дробь
 {
 private:
-	int num; // числитель
-	int den; // знаменатель
+	int chisl;
+	int znam; 
 public:
-	// конструктор без аргументов
 	fraction(){ }
-	// конструктор с двумя аргументами
-	fraction(int n, int d) : num(n), den(d) { }
-	// метод для получения данных класса от пользователя с клавиатуры
-	void get()
-	{
-		char slash; // для косой черты
-		cout << "Введите обыкновенную дробь (в формате числитель/знаменатель): ";
-		cin >> num >> den; ///////////////////////////////////////////////////////////////////////////////////////ДРОБЬЬЬЬЬ////////////////////////////////////
+	fraction(int n, int d) : chisl(n), znam(d) { }
+	void get() {
+		char slash;
+		cout << "Введите дробь - ";
+		cin >> chisl >> slash >> znam;
 	}
-	// константный метод выводит поля объекта класса на экран
-	void display() const
-	{
-		cout << "Результат операции: " << num << '/' << den << endl;
+	void display() {
+		cout << "Результат операции: " << chisl << '/' << znam << endl;
 	}
-	// перегрузка операции сложения (+) для сложения двух обыкновенных дробей
 	fraction operator+ (fraction f) const
 	{
 		// создаем временный безымянный объект нашего класса с результатом сложения
 		// заданных обыкновенных дробей, применяем к нему сокращение до несократимого вида
 		// и возвращаем результат
-		return fraction(num * f.den + f.num * den,
-			den * f.den).lowterms();
+		return fraction(chisl * f.znam + f.chisl * znam, znam * f.znam).lowterms();
 	}
 	// перегрузка операции вычитания (-) для нахождения разности двух обыкновенных дробей
 	fraction operator- (fraction f) const
 	{
-		return fraction(num * f.den - f.num * den,
-			den * f.den).lowterms();
+		return fraction(chisl * f.znam - f.chisl * znam, znam * f.znam).lowterms();
 	}
 	// перегрузка операции умножения (*) для нахождения произведения двух обыкновенных дробей
 	fraction operator* (fraction f) const
 	{
-		return fraction(num * f.num,
-			den * f.den).lowterms();
+		return fraction(chisl * f.chisl, znam * f.znam).lowterms();
 	}
 	// перегрузка операции деления (/) для нахождения частного от деления
 	// одной обыкновенной дроби на другую
 	fraction operator/ (fraction f) const
 	{
-		return fraction(num * f.den,
-			den * f.num).lowterms();
+		return fraction(chisl * f.znam, znam * f.chisl).lowterms();
 	}
 	// перегрузка операции сравнения «равно» (==) для обыкновенных дробей
-	bool operator== (fraction f) const
+	bool operator == (fraction f) const
 	{
-		if ((num == f.num) && (den == f.den))
+		if ((chisl == f.chisl) && (znam == f.znam))
 			return true;
 		else
 			return false;
 	}
 	// перегрузка операции сравнения «не равно» (!=) для обыкновенных дробей
-	bool operator!= (fraction f) const
+	bool operator != (fraction f) const
 	{
-		if ((num == f.num) && (den == f.den))
+		if ((chisl == f.chisl) && (znam == f.znam))
 			return false;
 		else
 			return true;
@@ -148,78 +167,181 @@ public:
 	// (возвращение преобразованной дроби добавлено, чтобы можно было использовать
 	// этот метод в перегруженных операциях сложения, вычитания, умножения и деления)
 	fraction lowterms() {
-		long tnum, tden, // две временные переменные для хранения числителя и знаменателя
-			temp0,       // временная переменная для хранения значения при обмене
-			gcd;        // наибольший общий делитель, который нужно найти (greatest common divisor)
-
-		tnum = labs(num); // возьмем значения числителя и знаменателя по модулю
-		tden = labs(den); // (заголовочный файл cmath для функции labs не понадобился)
-
-		if (tden == 0) // проверка знаменателя на 0
-		{
-			cout << "Недопустимый знаменатель!"; exit(1);
+		long chisl0, znam0, temp0, odel;
+		chisl0 = labs(chisl);
+		znam0 = labs(znam);
+		if (znam0 == 0) {
+			cout << "Недопустимый знаменатель!"; ;
 		}
-		else if (tnum == 0) // проверка числителя на 0
-		{
-			num = 0; den = 1; 
-			return fraction(num, den);
+		else if (chisl0 == 0) {
+			chisl = 0; znam = 1; 
+			return fraction(chisl, znam);
 		}
 
 		// нахождение наибольшего общего делителя (Алгоритм Евклида)
-		while (tnum != 0)
+		while (chisl0 != 0)
 		{
 			// добьемся, чтобы числитель был больше
-			if (tnum < tden)                               // если числитель меньше знаменателя,
+			if (chisl0 < znam0)                               // если числитель меньше знаменателя,
 			{
-				temp0 = tnum; tnum = tden; 
-				tden = temp0;
+				temp0 = chisl0; chisl0 = znam0; 
+				znam0 = temp0;
 			} // меняем их местами
 
-			tnum = tnum - tden;
+			chisl0 = chisl0 - znam0;
 		}
-		gcd = tden;
+		odel = znam0;
 
-		num = num / gcd; // делим числитель и знаменатель на
-		den = den / gcd; // полученный наибольший общий делитель
+		chisl = chisl / odel; // делим числитель и знаменатель на
+		znam = znam / odel; // полученный наибольший общий делитель
 
 		// (возвращение преобразованной дроби добавлено, чтобы можно было использовать
 		// этот метод в перегруженных операциях сложения, вычитания, умножения и деления)
-		return fraction(num, den);
+		return fraction(chisl, znam);
 	}
 };
-/// ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-const int IMIT = 100;
-class safearray // класс, реализующий «безопасный» массив
+/// //////////////////////////////////////////////////8 ЗАдание//////////////////////////////////////////////////////////////////////
+class bMoney
 {
 private:
-	int arr[IMIT]; // наш массив
-	int lowerbound; // нижняя граница индекса массива
-	int upperbound; // верхняя граница индекса массива
+	long double sum;
 public:
-	// конструктор с двумя аргументами
-	safearray(int low, int up) : lowerbound(low), upperbound(up)
+	bMoney() {
+		sum = 0.0;
+	}
+		//	конструктор с одним параметром(преобразование из long double в bMoney)
+		// (с помощью служебного слова explicit делаем возможным использование
+		// конструктора только в виде конструктора, а не для неявных преобразований)
+	explicit bMoney(long double n) : sum(n){}
+	bMoney(const char s[]) {
+		mstold(s);
+	}
+	long double mstold(const char str[])
 	{
-		// проверим заданные пользователем границы на ошибки
-		if (lowerbound > upperbound)
+		char temp[100];
+		int j = 0;
+		for (int i = 0; i < strlen(str); i++)
 		{
-			cout << "Ошибка! Верхняя граница индекса массива не может быть меньше нижней.\n"; exit(1);
+			char simvol = str[i];
+
+			if ((simvol >= '0') && (simvol <= '9'))
+				temp[j++] = simvol;
+			else if (simvol == '.')
+				temp[j++] = simvol;
 		}
-		if (upperbound - lowerbound >= IMIT)
+		temp[j] = '\0';
+
+		char* stop;
+		sum = strtold(temp, &stop);
+		return sum;
+	}
+	void ldtoms(char str[])
+	{
+		char ustring[80];
+		stringstream woss;  
+		woss << setiosflags(ios::fixed) << setprecision(2) << sum;
+		woss >> ustring;
+
+		int i = 0, n = 0, j;
+		int len = strlen(ustring);
+		char delim3 = ',';
+
+		str[i++] = '$';
+
+		if ((len - 3) % 3 == 2) {
+			str[i++] = ustring[n++];
+			str[i++] = ustring[n++];
+			str[i++] = delim3;
+		}
+		else if ((len - 3) % 3 == 1) {
+			str[i++] = ustring[n++];
+			str[i++] = delim3;
+		}
+
+		for (j = n; j < len - 3; j++) {
+			str[i++] = ustring[j];
+			if (((j - n + 1) % 3 == 0) && (j != len - 3 - 1))
+				str[i++] = delim3;
+		}
+
+		str[i++] = ustring[j++];
+		str[i++] = ustring[j++];
+		str[i++] = ustring[j];
+		str[i] = '\0';
+	}
+	void getmoney() {
+		char USAdolg[100];
+		cin >> USAdolg;
+		mstold(USAdolg);
+	}
+	void putmoney() {
+		char USAdolg[80];
+		ldtoms(USAdolg);
+		cout << USAdolg;
+	}
+	bMoney operator+ (bMoney m) const {
+		return bMoney(sum + m.sum);
+	}
+	// операция нахождения разности двух объектов класса
+	bMoney operator- (bMoney m) const {
+		return bMoney(sum - m.sum);
+	}
+	// операция нахождения произведения объекта класса и числа типа long double
+	bMoney operator* (long double n) const {
+		return bMoney(sum * n);
+	}
+	// операция нахождения частного от деления объекта класса на другой объект класса
+	long double operator/ (bMoney m) const {
+		return sum / m.sum;
+	}
+	// операция нахождения частного от деления объекта класса на число типа long double
+	bMoney operator/ (long double n) const {
+		return bMoney(sum / n);
+	}
+	bMoney(sterling s)
+	{
+		// преобразование double(s) определено в классе sterling, в результате получаем
+		// сумму в десятичных фунтах, умножая которую на константу RATE переводим ее в доллары
+		sum = double(s) * RATE;
+	}
+	operator sterling()
+	{
+		// выражение (sum / RATE) — перевод суммы в долларах в десятичные фунты,
+		// далее создаем безымянный объект класса sterling с помощью конструктора
+		// с одним аргументом, который преобразует десятичные фунты в фунты,
+		// шиллинги и пенсы старой английской системы
+		return sterling(sum / RATE);
+	}
+};
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+const int LIMIT = 100;
+class safearray
+{
+private:
+	int arr[LIMIT];
+	int gran_snizy; 
+	int gran_sverhy; 
+public:
+	safearray(int niz, int vverh) : gran_snizy(niz), gran_sverhy(vverh)
+	{
+		if (gran_snizy > gran_sverhy)
 		{
-			cout << "Ошибка! В массиве не может быть больше " << IMIT << " элементов.\n"; exit(1);
+			int a = gran_snizy;
+			gran_snizy = gran_sverhy;
+			gran_sverhy = a;
+		}
+		if (gran_sverhy - gran_snizy >= LIMIT)
+		{
+			cout << "Слишком много элементов";
 		}
 	}
-	// обратите внимание, что функция возвращает ссылку!
 	int& operator[] (int n)
 	{
-		if (n < lowerbound || n > upperbound)
+		if (n < gran_snizy || n > gran_sverhy)
 		{
-			cout << "Ошибочный индекс!"; exit(1);
+			cout << "Неверный индекс";
 		}
-		return arr[n - lowerbound];
-		// выражение (n - lowerbound) отображает заданный пользователем индекс в реальный
+		return arr[n - gran_snizy];
 	}
 };
 
@@ -227,36 +349,29 @@ public:
 class Polar
 {
 private:
-	double radius, degrees;
+	double radius, gradys;
 public:
-	// Ввод данных
-	void set()
-	{
-		cout << "Введите радиус: "; cin >> radius;
-		cout << "Введите угол в градусах: "; cin >> degrees;
-	}
-	// Вывод данных
-	void get()
-	{
-		cout << "Радиус = " << radius << "\nУгол в градусах = " << degrees << endl;
+	void get() {
+		cout << "Введите радиус: "; 
+		cin >> radius;
+		cout << "Введите угол - "; 
+		cin >> gradys;
 	}
 	void operator+(const Polar& temp0)
 	{
-		double x = 0.0, x_t = 0.0, y = 0.0, y_t = 0.0, x_new = 0.0, y_new = 0.0, radius_new = 0.0, degrees_new = 0.0;
-		x = radius * cos(degrees * factor);
-		y = radius * sin(degrees * factor);
-		cout << "Координаты первой точки в прямоугольной системе координат: " << x
-			<< "; " << y << endl;
-		x_t = temp0.radius * cos(temp0.degrees * factor);
-		y_t = temp0.radius * sin(temp0.degrees * factor);
-		cout << "Координаты второй точки в прямоугольной системе координат: " << x_t << "; " << y_t << endl;
-		x_new = x + x_t;
-		y_new = y + y_t;
-		cout << "Координаты новой точки в прямоугольной системе координат: " << x_new << "; " << y_new << endl;
-		radius_new = sqrt(pow(x_new, 2) + pow(y_new, 2));
-		degrees_new = acos(x_new / radius_new) * 180 / PI;
-		cout << "Координаты новой точки в полярной системе координат: "
-			<< radius_new << "; " << degrees_new << endl;
+		double x1 = 0.0, x2 = 0.0, y1 = 0.0, y2 = 0.0, x3 = 0.0, y3 = 0.0, radius3 = 0.0, gradys3 = 0.0;
+		x1 = radius * cos(gradys * factor);
+		y1 = radius * sin(gradys * factor);
+		cout << "Координаты первой точки - " << x1 << "; " << y1 << endl;
+		x2 = temp0.radius * cos(temp0.gradys * factor);
+		y2 = temp0.radius * sin(temp0.gradys * factor);
+		cout << "Координаты второй точки - " << x2 << "; " << y2 << endl;
+		x3 = x1 + x2;
+		y3 = y1 + y2;
+		cout << "Координаты новой точки - " << x3 << "; " << y3 << endl;
+		radius3 = sqrt(pow(x3, 2) + pow(y3, 2));
+		gradys3 = acos(x3 / radius3) * 180 / PI;
+		cout << "Координаты новой точки в полярной системе - " << radius3 << "; " << gradys3 << endl;
 	}
 };
 /// ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -367,67 +482,131 @@ int main() {
 	cout << "Введите задание - ";
 	cin >> zadanie;
 	if (zadanie == 5) {
-		MyTime mt1;
-		cout << "mt1 = "; mt1.display(); cout << endl;
-		cout << "mt1++ = "; (mt1++).display(); cout << endl;
-		cout << "++mt1 = "; (++mt1).display(); cout << endl;
-		cout << "--mt1 = "; (--mt1).display(); cout << endl;
-		cout << "mt1-- = "; (mt1--).display(); cout << endl;
-		cout << "Итоговое mt1 = "; mt1.display(); cout << endl;
+		class time time1(5, 59, 59); //create and initialze 
+		class time time2(4, 30, 30); // two times 
+		class time time3; //create another 
+		time3 = time1 + time2; //add two times 
+		cout << "\ntime3 = "; 
+		time3.display(); //display result 
 		cout << endl;
+		++time3;
+		cout << "\n(префиксная) - сложение - time3 = ";
+		time3.display(); //display result
+		--time3;
+		--time3;
+		cout << "\n(префиксная) - вычитание - time3 = ";
+		time3.display(); //display result 
+		time3++;
+		time3++;
+		cout << "\n(постфиксная) - сложение - time3 = ";
+		time3.display(); //display result
+		time3--;
+		time3--;
+		cout << "\n(постфиксная) - вычитание - time3 = ";
+		time3.display(); //display result
+
+		cout << endl; return 0;
 
 	}
 	else if (zadanie == 6) {
-		MyTime mt1, mt2;
-		cout << "mt2 = "; mt2.display(); cout << endl;
-		cout << "mt1 - mt2:\n "; mt1 - mt2; cout << endl;
-		cout << "mt1 + mt2:\n "; mt1 + mt2; cout << endl;
-		cout << "mt1 * mt2:\n "; mt1* mt2; cout << endl << endl;;
+		class time time1(5, 59, 59); //create and initialze 
+		class time time2(4, 30, 30); // two times 
+		class time time3; //create another 
+		time3 = time1 - time2; //add two times 
+		cout << "\nВычитание - time3 = ";
+		time3.display(); //display result
+
+		time3 = time1 * time2; //add two times 
+		cout << "\nУмножение - time3 = ";
+		time3.display(); //display result
+		cout << endl;
+
 	}
 	else if (zadanie == 7) {
-		fraction fr1, fr2, fr3; // для хранения обыкновенных дробей
-		char oper;           // знак операции
+		fraction drob_raz, drob_dva, drob_rezylt, drob_vixod(0,1); // для хранения обыкновенных дробей
+		char slash = '/', oper;
 		cout << "Для выхода из программы введите значение 0/1 для первой и для второй дробей.\n\n";
 		do {
-			fr1.get(); // получим от пользователя первую обыкновенную дробь
-			cout << "Введите знак операции (+, -, *, /): "; 
+			drob_raz.get();
+			cout << "Введите знак - ";
 			cin >> oper;
-			fr2.get(); // получим от пользователя вторую обыкновенную дробь
+			drob_dva.get();
+			if (drob_raz == drob_vixod && drob_dva == drob_vixod) {
+				cout << "Всё(";
+				break;
+		}
+
 			switch (oper)
 			{
 			case '+':
-				fr3 = fr1 + fr2; fr3.display(); break;
+				drob_rezylt = drob_raz + drob_dva; 
+				drob_rezylt.display(); 
+				break;
 			case '-':
-				fr3 = fr1 - fr2; fr3.display(); break;
+				drob_rezylt = drob_raz - drob_dva; 
+				drob_rezylt.display(); 
+				break;
 			case '*':
-				fr3 = fr1 * fr2; fr3.display(); break;
+				drob_rezylt = drob_raz * drob_dva; 
+				drob_rezylt.display(); 
+				break;
 			case '/':
-				fr3 = fr1 / fr2; fr3.display(); break;
-			default: cout << "Введен неверный знак операции! Попробуйте еще." << endl;
+				drob_rezylt = drob_raz / drob_dva; 
+				drob_rezylt.display(); 
+				break;
+			default: 
+				cout << "Введен неверный знак операции! Попробуйте еще." << endl;
 			}
-
-		} while (true); // бесконечный цикл
+		} while (true); 
 
 	}
 	else if (zadanie == 8) {
-	
-
+		char da;
+		bMoney m1, m2, mres; 
+		long double ld, rezylt;
+		do {
+			cout << endl << "Введите первую денежную сумму - "; 
+			m1.getmoney();
+			cout << "Введите вторую денежную сумму - ";
+			m2.getmoney();
+			cout << "Введите число long double - "; 
+			cin >> ld;
+			mres = m1 + m2; 
+			cout << endl << "Сложение -  "; 
+			mres.putmoney(); 
+			cout << endl;
+			mres = m1 - m2; 
+			cout << "Вычитание - "; 
+			mres.putmoney(); 
+			cout << endl;
+			mres = m1 * ld;
+			cout << "Умножение на число - "; 
+			mres.putmoney(); 
+			cout << endl;
+			rezylt = m1 / m2; 
+			cout << "Деление (первое на второе) - " << rezylt << endl;
+			mres = m1 / ld;
+			cout << "Деление (на число) - "; 
+			mres.putmoney(); 
+			cout << endl << "Хотите ввести другие данные? ";
+			cin >> da; 
+		} while (da != 'N');
 	}
 	else if (zadanie == 9) {
-		int low, up; // для верхней и нижней границ индекса массива
+		int niz, vverh; // для верхней и нижней границ индекса массива
 
-		cout << "Введите нижнюю границу индекса массива : "; cin >> low;
-		cout << "Введите верхнюю границу индекса массива: "; cin >> up;
+		cout << "Введите нижнюю границу индекса массива : "; cin >> niz;
+		cout << "Введите верхнюю границу индекса массива: "; cin >> vverh;
 
-		safearray sa1(low, up);
+		safearray sa1(niz, vverh);
 
 		// задаем значения элементов
-		for (int j = low; j <= up; j++)
+		for (int j = niz; j <= vverh; j++)
 			// используем функцию слева от знака присваивания (=)
 			sa1[j] = j * 10;
 
 		// показываем элементы
-		for (int j = low; j <= up; j++)
+		for (int j = niz; j <= vverh; j++)
 		{
 			// используем функцию справа от знака присваивания (=)
 			int temp0 = sa1[j];
@@ -438,9 +617,9 @@ int main() {
 	else if (zadanie == 10) {
 		Polar p1, p2;
 		cout << "Ввод полярных координат для первой точки.\n";
-		p1.set();
+		p1.get();
 		cout << "Ввод полярных координат для второй точки.\n";
-		p2.set();
+		p2.get();
 		p1 + p2;
 		cout << endl;
 
@@ -455,7 +634,6 @@ int main() {
 	cout << "1. В десятичных фунтах: " << fixed << setprecision(2) << double(s1) << endl;
 	cout << "2. В десятичных фунтах: " << fixed << setprecision(2) << double(s2) << endl << endl;
 
-	// ДЕМОНСТРАЦИЯ ПЕРЕГРУЖЕННЫХ ОПЕРАЦИЙ:
 
 	s = s1 + s2;
 	cout << "Результат сложения этих сумм: "; 
@@ -477,6 +655,34 @@ int main() {
 	cout << endl;
 	}
 	else if (zadanie == 12) {
+	char da;  // для ответа пользователя о продолжении ввода (д/н)
+	int currency; // номер валюты
+	bMoney sd;    // денежная сумма в долларах
+	sterling sr;
+	do {
+
+		cout << "Введите номер валюты (1 — доллар, 2 — фунт): ";
+		cin >> currency;
+
+		if (currency == 1) // в долларах
+		{
+			sd.getmoney(); 
+			//sr = sd;
+			cout << "В старой английской системе: "; 
+			sr.putSterling();
+		}
+		else if (currency == 2) // в фунтах, шиллингах и пенсах
+		{
+			sr.getSterling(); // запрашиваем сумму в фунтах, шиллингах и пенсах
+			sd = sr;          // для преобразования используем
+							  // конструктор с одним аргументом из класса bMoney
+			cout << "В долларах: "; 
+			sd.putmoney();
+		}
+		cout << "Закончили? "; 
+		cin >> da; 
+		cout << endl;
+	} while (da != 'Y');
 
 	}
 }
