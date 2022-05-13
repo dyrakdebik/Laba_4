@@ -201,118 +201,7 @@ public:
 	}
 };
 /// //////////////////////////////////////////////////8 ЗАдание//////////////////////////////////////////////////////////////////////
-class bMoney
-{
-private:
-	long double sum;
-public:
-	bMoney() {
-		sum = 0.0;
-	}
-		//	конструктор с одним параметром(преобразование из long double в bMoney)
-		// (с помощью служебного слова explicit делаем возможным использование
-		// конструктора только в виде конструктора, а не для неявных преобразований)
-	explicit bMoney(long double n) : sum(n){}
-	bMoney(const char s[]) {
-		mstold(s);
-	}
-	long double mstold(const char str[])
-	{
-		char temp[100];
-		int j = 0;
-		for (int i = 0; i < strlen(str); i++)
-		{
-			char simvol = str[i];
 
-			if ((simvol >= '0') && (simvol <= '9'))
-				temp[j++] = simvol;
-			else if (simvol == '.')
-				temp[j++] = simvol;
-		}
-		temp[j] = '\0';
-
-		char* stop;
-		sum = strtold(temp, &stop);
-		return sum;
-	}
-	void ldtoms(char str[])
-	{
-		char ustring[80];
-		stringstream woss;  
-		woss << setiosflags(ios::fixed) << setprecision(2) << sum;
-		woss >> ustring;
-
-		int i = 0, n = 0, j;
-		int len = strlen(ustring);
-		char delim3 = ',';
-
-		str[i++] = '$';
-
-		if ((len - 3) % 3 == 2) {
-			str[i++] = ustring[n++];
-			str[i++] = ustring[n++];
-			str[i++] = delim3;
-		}
-		else if ((len - 3) % 3 == 1) {
-			str[i++] = ustring[n++];
-			str[i++] = delim3;
-		}
-
-		for (j = n; j < len - 3; j++) {
-			str[i++] = ustring[j];
-			if (((j - n + 1) % 3 == 0) && (j != len - 3 - 1))
-				str[i++] = delim3;
-		}
-
-		str[i++] = ustring[j++];
-		str[i++] = ustring[j++];
-		str[i++] = ustring[j];
-		str[i] = '\0';
-	}
-	void getmoney() {
-		char USAdolg[100];
-		cin >> USAdolg;
-		mstold(USAdolg);
-	}
-	void putmoney() {
-		char USAdolg[80];
-		ldtoms(USAdolg);
-		cout << USAdolg;
-	}
-	bMoney operator+ (bMoney m) const {
-		return bMoney(sum + m.sum);
-	}
-	// операция нахождения разности двух объектов класса
-	bMoney operator- (bMoney m) const {
-		return bMoney(sum - m.sum);
-	}
-	// операция нахождения произведения объекта класса и числа типа long double
-	bMoney operator* (long double n) const {
-		return bMoney(sum * n);
-	}
-	// операция нахождения частного от деления объекта класса на другой объект класса
-	long double operator/ (bMoney m) const {
-		return sum / m.sum;
-	}
-	// операция нахождения частного от деления объекта класса на число типа long double
-	bMoney operator/ (long double n) const {
-		return bMoney(sum / n);
-	}
-	bMoney(sterling s)
-	{
-		// преобразование double(s) определено в классе sterling, в результате получаем
-		// сумму в десятичных фунтах, умножая которую на константу RATE переводим ее в доллары
-		sum = double(s) * RATE;
-	}
-	operator sterling()
-	{
-		// выражение (sum / RATE) — перевод суммы в долларах в десятичные фунты,
-		// далее создаем безымянный объект класса sterling с помощью конструктора
-		// с одним аргументом, который преобразует десятичные фунты в фунты,
-		// шиллинги и пенсы старой английской системы
-		return sterling(sum / RATE);
-	}
-};
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 const int LIMIT = 100;
 class safearray
@@ -376,100 +265,142 @@ public:
 };
 /// ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-class sterling // класс, представляющий денежную сумму в старой английской системе
-{
+class sterling {
 private:
-	long pounds;   // фунты (1 фунт = 20 шиллингов = 240 пенсов)
-	int shillings; // шиллинги (1 шиллинг = 12 пенсов)
-	int pences;    // пенсы
+	long funt;  
+	int shill, penny;
 public:
-	// конструктор без аргументов
-	sterling() : pounds(0), shillings(0), pences(0)
-	{ }
-	// конструктор с одним аргументом
-	// (для преобразования десятичных фунтов в денежную сумму в старой системе)
+	sterling() : funt(0), shill(0), penny(0){}
 	sterling(double df)
 	{
-		// в этих формулах используется то обстоятельство, что при присвоении
-		// целочисленной переменной вещественного значения дробная часть отбрасывается
-		pounds = df;
-		shillings = (df - pounds) * 20;
-		// в случае пенсов необходимо округление до ближайшего целого (функция round),
-		// а не отбрасывание дробной части
-		pences = round(((df - pounds) * 20 - shillings) * 12);
+		funt = df;
+		shill = (df - funt) * 20;
+		// округление
+		penny = round(((df - funt) * 20 - shill) * 12);
 	}
-	// конструктор с тремя аргументами
-	sterling(long ps, int s, int p) : pounds(ps), shillings(s), pences(p)
-	{ }
-	// метод для получения от пользователя денежной суммы в старой системе
-	// в формате "£9.19.11"
-	void getSterling()
+	sterling(long ps, int s, int p) : funt(ps), shill(s), penny(p){}
+	void getSterling() {
+		char point;
+		cin >> funt >> point >> shill >> point >> penny;
+	}
+	void putSterling() const {
+		cout << funt << "." << shill << "." << penny;
+	}
+	operator double() const {
+		return (funt + shill / 20.0 + penny / 240.0);
+	}
+	sterling operator+ (sterling s) const {
+		return sterling(double(sterling(funt, shill, penny)) + double(s));
+	}
+	sterling operator- (sterling s) const {
+		return sterling(double(sterling(funt, shill, penny)) - double(s));
+	}
+	sterling operator* (double n) const {
+		return sterling(double(sterling(funt, shill, penny)) * n);
+	}
+	double operator/ (sterling s) const {
+		return (double(sterling(funt, shill, penny)) / double(s));
+	}
+	sterling operator/ (double n) const {
+		return sterling(double(sterling(funt, shill, penny)) / n);
+	}
+};
+class bMoney
+{
+private:
+	long double sum;
+public:
+	bMoney() {
+		sum = 0.0;
+	}
+	explicit bMoney(long double n) : sum(n) {}
+	bMoney(const char s[]) {
+		mstold(s);
+	}
+	long double mstold(const char str[])
 	{
-		// чтобы символ фунта отобразился в консоли, шрифт в консоли должен быть юникодным,
-		// например, шрифт "ucida Console" или "Consolas"
+		char temp[100];
+		int j = 0;
+		for (int i = 0; i < strlen(str); i++)
+		{
+			char simvol = str[i];
 
-		char separator; // для точки, разделяющей фунты, шиллинги и пенсы
-		cout << "Введите сумму (фунты, шиллинги и пенсы через точку): £";
-		cin >> pounds >> separator >> shillings >> separator >> pences;
-	}
-	// метод для вывода денежной суммы в старой системе на экран
-	// в формате "£9.19.11"
-	void putSterling() const
-	{
-		// чтобы символ фунта отобразился в консоли, шрифт в консоли должен быть юникодным,
-		// например, шрифт "ucida Console" или "Consolas"
+			if ((simvol >= '0') && (simvol <= '9'))
+				temp[j++] = simvol;
+			else if (simvol == '.')
+				temp[j++] = simvol;
+		}
+		temp[j] = '\0';
 
-		cout << "£" << pounds << "." << shillings << "." << pences;
+		char* stop;
+		sum = strtold(temp, &stop);
+		return sum;
 	}
-	// операция преобразования объекта класса (денежной суммы в старой системе)
-	// в число типа double (денежную сумму в десятичных фунтах)
-	operator double() const
+	void ldtoms(char str[])
 	{
-		// так как в этом арифметическом выражении используются вещественные числа
-		// (по умолчанию это тип double), то результат выражения тоже будет приведен
-		// к вещественному типу (double в данном случае)
-		return (pounds + shillings / 20.0 + pences / 240.0);
-	}
-	// перегрузка операции сложения (+) для сложения двух объектов класса
-	// (результат тоже будет объектом класса)
-	sterling operator+ (sterling s) const
-	{
-		// 1) sterling(pounds, shillings, pences) — создание безымянного объекта класса
-		// с помощью конструктора с тремя аргументами. Обозначим это выражение как s1
+		char ustring[80];
+		stringstream woss;
+		woss << setiosflags(ios::fixed) << setprecision(2) << sum;
+		woss >> ustring;
 
-		// 2) double(s1) и double(s) — создание безымянных переменных типа double с
-		// помощью операции преобразования объекта класса в число типа double,
-		// определенной выше (сумма из старой системы преобразуется в десятичные фунты)
+		int i = 0, n = 0, j;
+		int len = strlen(ustring);
+		char delim3 = ',';
 
-		// 3) sterling(double(s1) + double(s)) — создание безымянного объекта класса
-		// с помощью конструктора с одним аргументом (из десятичных фунтов в сумму
-		// в старой системе)
+		str[i++] = '$';
 
-		return sterling(double(sterling(pounds, shillings, pences)) + double(s));
+		if ((len - 3) % 3 == 2) {
+			str[i++] = ustring[n++];
+			str[i++] = ustring[n++];
+			str[i++] = delim3;
+		}
+		else if ((len - 3) % 3 == 1) {
+			str[i++] = ustring[n++];
+			str[i++] = delim3;
+		}
+
+		for (j = n; j < len - 3; j++) {
+			str[i++] = ustring[j];
+			if (((j - n + 1) % 3 == 0) && (j != len - 3 - 1))
+				str[i++] = delim3;
+		}
+
+		str[i++] = ustring[j++];
+		str[i++] = ustring[j++];
+		str[i++] = ustring[j];
+		str[i] = '\0';
 	}
-	// перегрузка операции вычитания (-) для нахождения разности двух объектов класса
-	// (результат тоже будет объектом класса)
-	sterling operator- (sterling s) const
-	{
-		return sterling(double(sterling(pounds, shillings, pences)) - double(s));
+	void getmoney() {
+		char USAdolg[100];
+		cin >> USAdolg;
+		mstold(USAdolg);
 	}
-	// перегрузка операции умножения (*) для нахождения произведения объекта класса
-	// и числа типа double (результатом будет объект класса)
-	sterling operator* (double n) const
-	{
-		return sterling(double(sterling(pounds, shillings, pences)) * n);
+	void putmoney() {
+		char USAdolg[80];
+		ldtoms(USAdolg);
+		cout << USAdolg;
 	}
-	// перегрузка операции деления (/) для нахождения частного от деления объекта
-	// класса на другой объект класса (результатом будет число типа double)
-	double operator/ (sterling s) const
-	{
-		return (double(sterling(pounds, shillings, pences)) / double(s));
+	bMoney operator + (bMoney m) const {
+		return bMoney(sum + m.sum);
 	}
-	// перегрузка операции деления (/) для нахождения частного от деления объекта
-	// класса на число типа double (результатом будет объект класса)
-	sterling operator/ (double n) const
-	{
-		return sterling(double(sterling(pounds, shillings, pences)) / n);
+	bMoney operator - (bMoney m) const {
+		return bMoney(sum - m.sum);
+	}
+	bMoney operator * (long double n) const {
+		return bMoney(sum * n);
+	}
+	long double operator / (bMoney m) const {
+		return sum / m.sum;
+	}
+	bMoney operator / (long double n) const {
+		return bMoney(sum / n);
+	}
+	/// ////////////12 задание/////////////////
+	bMoney(sterling s) {
+		sum = double(s) * RATE;
+	}
+	operator sterling() {
+		return sterling(sum / RATE);
 	}
 };
 
@@ -562,127 +493,108 @@ int main() {
 	}
 	else if (zadanie == 8) {
 		char da;
-		bMoney m1, m2, mres; 
-		long double ld, rezylt;
+		bMoney dolg1, dolg2, rez; 
+		long double chis, rezylt;
 		do {
 			cout << endl << "Введите первую денежную сумму - "; 
-			m1.getmoney();
+			dolg1.getmoney();
 			cout << "Введите вторую денежную сумму - ";
-			m2.getmoney();
+			dolg2.getmoney();
 			cout << "Введите число long double - "; 
-			cin >> ld;
-			mres = m1 + m2; 
+			cin >> chis;
+			rez = dolg1 + dolg2; 
 			cout << endl << "Сложение -  "; 
-			mres.putmoney(); 
+			rez.putmoney(); 
 			cout << endl;
-			mres = m1 - m2; 
+			rez = dolg1 - dolg2; 
 			cout << "Вычитание - "; 
-			mres.putmoney(); 
+			rez.putmoney(); 
 			cout << endl;
-			mres = m1 * ld;
+			rez = dolg1 * chis;
 			cout << "Умножение на число - "; 
-			mres.putmoney(); 
+			rez.putmoney(); 
 			cout << endl;
-			rezylt = m1 / m2; 
+			rezylt = dolg1 / dolg2; 
 			cout << "Деление (первое на второе) - " << rezylt << endl;
-			mres = m1 / ld;
+			rez = dolg1 / chis;
 			cout << "Деление (на число) - "; 
-			mres.putmoney(); 
+			rez.putmoney(); 
 			cout << endl << "Хотите ввести другие данные? ";
 			cin >> da; 
 		} while (da != 'N');
 	}
 	else if (zadanie == 9) {
-		int niz, vverh; // для верхней и нижней границ индекса массива
+		int niz, vverh;
 
 		cout << "Введите нижнюю границу индекса массива : "; cin >> niz;
 		cout << "Введите верхнюю границу индекса массива: "; cin >> vverh;
-
 		safearray sa1(niz, vverh);
-
-		// задаем значения элементов
-		for (int j = niz; j <= vverh; j++)
-			// используем функцию слева от знака присваивания (=)
+		for (int j = niz; j <= vverh; j++) {
 			sa1[j] = j * 10;
-
-		// показываем элементы
-		for (int j = niz; j <= vverh; j++)
-		{
-			// используем функцию справа от знака присваивания (=)
+		}
+		for (int j = niz; j <= vverh; j++) {
 			int temp0 = sa1[j];
 			cout << "Элемент " << j << " равен " << temp0 << endl;
 		}
 
 	}
 	else if (zadanie == 10) {
-		Polar p1, p2;
-		cout << "Ввод полярных координат для первой точки.\n";
-		p1.get();
-		cout << "Ввод полярных координат для второй точки.\n";
-		p2.get();
-		p1 + p2;
-		cout << endl;
+		Polar cord1, cord2;
+		cout << "Введите первую полярную координату - " << endl;
+		cord1.get();
+		cout << "Введите вторую полярную координату - " << endl;
+		cord2.get();
+		cord1 + cord2;
 
 	}
 	else if (zadanie == 11) {
-	sterling s1, s2, s; // денежные суммы в старой английской системе
-	double n;           // число типа double
-	cout << "1. "; s1.getSterling();
-	cout << "2. "; s2.getSterling(); cout << endl;
-
-	// покажем эти суммы в десятичных фунтах:
-	cout << "1. В десятичных фунтах: " << fixed << setprecision(2) << double(s1) << endl;
-	cout << "2. В десятичных фунтах: " << fixed << setprecision(2) << double(s2) << endl << endl;
-
-
+	sterling s1, s2, s;
+	double n;
+	cout << "Первая - "; 
+	s1.getSterling();
+	cout << "Вторая - "; 
+	s2.getSterling();
+	cout << endl << "Перевод в десятичные (первая) - " << fixed << setprecision(2) << double(s1) << endl;
+	cout << "Перевод в десятичные (вторая) - " << fixed << setprecision(2) << double(s2) << endl << endl;
 	s = s1 + s2;
-	cout << "Результат сложения этих сумм: "; 
+	cout << "Сложение - "; 
 	s.putSterling(); 
 	cout << endl;
 	s = s1 - s2;
-	cout << "Разность этих сумм: "; 
+	cout << "Разность - "; 
 	s.putSterling(); 
-	cout << endl;
-	s = s1 * 1.05;
-	cout << "Произведение первой суммы и числа 1,05: "; 
+	s = s1 * 1.1;
+	cout << endl << "Произведение суммы на число типа double (1.1) - "; 
 	s.putSterling(); 
 	cout << endl;
 	n = s1 / s2;
-	cout << "Частное от деления первой суммы на вторую: " << n << endl;
-	s = s1 / 3.5;
-	cout << "Частное от деления первой суммы на число 3,5: "; 
+	cout << "Деление первой на вторую - " << n << endl;
+	s = s1 / 2.2;
+	cout << "Деление суммы на число типа double (2.2) - " ; 
 	s.putSterling();
-	cout << endl;
 	}
 	else if (zadanie == 12) {
-	char da;  // для ответа пользователя о продолжении ввода (д/н)
-	int currency; // номер валюты
-	bMoney sd;    // денежная сумма в долларах
+	char da, valyt;
+	bMoney sd;
 	sterling sr;
 	do {
-
-		cout << "Введите номер валюты (1 — доллар, 2 — фунт): ";
-		cin >> currency;
-
-		if (currency == 1) // в долларах
-		{
+		cout << "Введите название валюты: - ";
+		cin >> valyt;
+		if (valyt == 'D') {
 			sd.getmoney(); 
-			//sr = sd;
-			cout << "В старой английской системе: "; 
+			sr = sd;
+			cout << "В старой английской системе - "; 
 			sr.putSterling();
 		}
-		else if (currency == 2) // в фунтах, шиллингах и пенсах
-		{
+		else if (valyt == 'F') {
 			sr.getSterling(); // запрашиваем сумму в фунтах, шиллингах и пенсах
 			sd = sr;          // для преобразования используем
 							  // конструктор с одним аргументом из класса bMoney
-			cout << "В долларах: "; 
+			cout << "В долларах - "; 
 			sd.putmoney();
 		}
-		cout << "Закончили? "; 
-		cin >> da; 
-		cout << endl;
+		cout << endl << "Закончили? "; 
+		cin >> da;
 	} while (da != 'Y');
-
 	}
 }
