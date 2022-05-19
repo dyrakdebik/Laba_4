@@ -1,0 +1,548 @@
+
+#include <iostream>
+#include <iomanip> 
+#include <cstring> 
+#define _CRT_SECURE_NO_WARNINGS 1
+using namespace std;
+const int LEN = 80, LIMIT = 100;
+/// ///////////////////////////////1,3,4 ZADANIE/////////////////////////////
+class publication {
+private:
+	string title;
+	float price;
+public:
+	void getdata() {
+		cout << "Введите тайтл - ";
+		cin >> title;
+		cout << "Введите прайс - ";
+		cin >> price;
+	}
+	void putdata() const {
+		cout << endl << "Тайтл - " << title << endl << "Прайс - " << price;
+	}
+};
+////////
+class sales {
+private: 
+	enum { months = 3 };
+	float salesArr[months];
+public:
+	void getdata();
+	void putdata() const;
+};
+//----------------------
+void sales::getdata() {
+	cout << "Введите sales за 3 месяца\n";
+	for (int j = 0; j < months; j++) {
+		cout << "   month" << j + 1 << ": ";
+		cin >> salesArr[j];
+	}
+}
+//----------------------
+void sales::putdata() const {
+	for (int j = 0; j < months; j++) {
+		cout << "\n Sales for month " << j + 1 << ": "; 
+		cout << salesArr[j];
+	}
+}
+
+/// ////////////////////////////
+class book : public publication, public sales{
+private:
+	int pages;
+public:
+	void getdata() {
+		publication::getdata();
+		cout << "Введите кол-во страниц - ";
+		cin >> pages;
+		sales::getdata();
+	}
+	void putdata() const {
+		publication::putdata();
+		cout << "\nСтраницы - " << pages;
+		sales::putdata();
+	}
+};
+////////
+class tape : public publication, public sales {
+private:
+	float time;
+public:
+	void getdata() {
+		publication::getdata();
+		cout << "Введите время книги в минутах - ";
+		cin >> time;
+		sales::getdata();
+	}
+	void putdata() const {
+		publication::putdata();
+		cout << "\nВремя в минутах - " << time;
+		sales::putdata();
+	}
+};
+class disk : public publication, public sales {
+private:
+	enum diskk {CD, DVD};
+	diskk tp;
+public:
+	void getdata() {
+		publication::getdata();
+		char dk;
+		cout << "Выберите тип диска (c/d)";
+		cin >> dk;
+		switch (dk) {
+		case 'c':
+			tp = CD;
+			break;
+		case 'd':
+			tp = DVD;
+			break;
+		default:
+			cout << "Не бывает такого";
+		}
+		sales::getdata();
+	}
+	void putdata() const {
+		publication::putdata();
+		switch (tp) {
+		case CD:
+			cout << "\nТип диска - CD";
+			break;
+		case DVD:
+			cout << "\nТип диска - DVD";
+			break;
+		}
+		sales::putdata();
+	}
+};
+/// ///////////////////////////////2/8 ZADANIE/////////////////////////////
+class String {
+protected:
+	static const int SZ = 80;
+	char str[SZ];
+public:
+	String() { str[0] = '\0'; }
+	String(char s[]) { 
+		strcpy_s(str, s);
+	}
+	void display() const {
+		cout << str;
+	}
+	operator char* () {
+		return str;
+	}
+};
+/////////
+class Pstring : public String {
+public:
+	Pstring(char s[]);
+};
+///////
+Pstring::Pstring(char s[]) {
+	if (strlen(s) > SZ - 1) {
+		for (int j = 0; j < SZ - 1; j++)
+			str[j] = s[j];
+		str[SZ-1] = '\0';
+	}
+	else
+		String(s);
+}
+///////
+class Pstring2 : public Pstring {
+public:
+	string left(unsigned int amount)
+	{
+		string temp = "";
+		for (int i = 0; i < amount; i++)
+		{
+			temp += str[i];
+		}
+		return temp;
+	}
+	string right(unsigned int amount)
+	{
+		string temp = "";
+		int len = strlen(str);
+		for (int i = len - amount; i < len; i++) {
+			temp += str[i];
+		}
+		return temp;
+	}
+	string mid(unsigned int amount, unsigned int elementary)
+	{
+		string temp = "";
+		for (int i = elementary - 1; i < elementary - 1 + amount; i++) {
+			temp += str[i];
+		}
+		return temp;
+	}
+};
+/// ///////////////////////////////5 ZADANIE/////////////////////////////
+class employee0 {
+private: 
+	char name[LEN];
+	unsigned long number;
+public: 
+	void getdata() {
+	cout << "\n Enter last name: "; 
+	cin >> name;
+	cout << " Enter number: "; 
+	cin >> number;
+}
+	void putdata() const {
+		cout << "\n Name: " << name;
+		cout << "\n Number: " << number;
+	}
+};
+class employee2 : private employee0 {
+private:
+	double compensation;
+	enum period {hour, mond, month};
+	period opl;
+public:
+	void getdata() {
+		char per;
+		cout << "Введите компенсацию - ";
+		cin >> compensation;
+		cout << "Введите период - (h-почасовая, m - по понедельникам, e - ежемесячно)";
+		cin >> per;
+		switch (per) {
+		case 'h':
+			opl = hour;
+			break;
+		case 'm':
+			opl = mond;
+			break;
+		case 'e':
+			opl = month;
+			break;
+		default:
+			cout << "Для кого я пишу буквы?";
+			break;
+		}
+	}
+	void putdata() {
+		cout << "Зарплата - " << compensation << endl;
+		cout << "Период оплаты - ";
+		switch (opl) {
+		case hour:
+			cout << "Почасовая";
+			break;
+		case mond:
+			cout << "Еженедельная";
+			break;
+		case month:
+			cout << "Ежемесячная";
+			break;
+		}
+	}
+
+};
+/// ///////////////////////////////6 ZADANIE/////////////////////////////
+class safearay {
+private:
+	int arr[LIMIT];
+public:
+	int& operator [](int n) {
+		if (n < 0 || n >= LIMIT) {
+			cout << "\nIndex out of bounds"; 
+			exit(1);
+		}
+		return arr[n];
+	}
+};
+class safegran : public safearay {
+private:
+	int granniz, granvverh, a=0;
+public:
+	safegran(int niz, int vverh) : granniz(niz), granvverh(vverh) {
+		if (granniz > granvverh) {
+			a = granniz;
+			granniz = granvverh;
+			granvverh = a;
+		}
+	}
+	int& operator[] (int n) {
+		if (n < granniz || n > granvverh) {
+			cout << "Ошибка";
+			exit(1);
+		}
+		return safearay::operator[] (n - granniz);
+	}
+};
+/// ///////////////////////////////7 ZADANIE/////////////////////////////
+class Counter {
+protected:
+	unsigned int count;
+public:
+	Counter() : count(0) {}
+	Counter(int c) : count(c) {}
+	unsigned int get_count() const {
+		return count;
+	}
+	Counter operator ++ () {
+		return Counter(++count);
+	}
+	Counter operator ++ (int) {
+		return Counter(++count);
+	}
+};
+/// ////-----------------------------------------------------------
+class CountDn : public Counter
+{
+public:
+	CountDn() : Counter() {}
+	CountDn(int c) : Counter(c) {}
+	CountDn operator -- () {
+		return CountDn(--count);
+	}
+	CountDn operator -- (int) {
+		return CountDn(--count);
+	}
+};
+/// ///////////////////////////////10 ZADANIE/////////////////////////////
+class Student //educational background
+{
+private:
+	char school[LEN]; // name of school or university
+	char degree[LEN]; // highest degree earned
+public:
+	void getedu()
+	{
+		cout << " Enter name of school or university: "; cin >> school;
+		cout << " Enter highest degree earned \n";
+		cout << " (Highschool, Bachelor's, Master's, PhD): "; cin >> degree;
+	}
+	void putedu() const
+	{
+		cout << "\n School or university: " << school;
+		cout << "\n Highest degree earned: " << degree;
+	}
+};
+class employee
+{
+private:
+	char name[LEN]; //employee name
+	unsigned long number; //employee number
+public:
+	void getdata()
+	{
+		cout << "\n Enter last name: "; cin >> name;
+		cout << " Enter number: "; cin >> number;
+	}
+	void putdata() const {
+		cout << "\n Name: " << name;
+		cout << "\n Number: " << number;
+	}
+};
+class Manager : private employee, private Student //management
+{
+private:
+	char title[LEN]; //"vice-president" etc.
+	double dues; //golf club dues
+public:
+	void getdata()
+	{
+		employee::getdata();
+		cout << " Enter title: "; cin >> title;
+		cout << " Enter golf club dues: "; cin >> dues;
+		Student::getedu();
+	}
+	void putdata() const
+	{
+		employee::putdata();
+		cout << "\n Title: " << title;
+		cout << "\n Golf club dues: " << dues;
+		Student::putedu();
+	}
+};
+class Executive : public Manager
+{
+protected:
+	unsigned int bonus, amount;
+public:
+	void getdata() {
+		Manager::getdata();
+		cout << " Введите размер годовой премии: "; cin >> bonus;
+		cout << " Введите кол-во акций в компании: "; cin >> amount;
+	}
+	void putdata() const
+	{
+		Manager::putdata();
+		cout << " Размер годовой премии: " << bonus << endl
+			<< " Кол-во акций в компании: " << amount << endl;
+	}
+};
+/// ///////////////////////////////11 ZADANIE/////////////////////////////
+struct Pair // пара чисел
+{
+	int x;
+	int y;
+};
+
+class Stack                   // класс, реализующий стек (базовый класс)
+{
+protected:                    // ЗАМЕТЬТЕ: не private!
+	// enum { MAX = 7 };      // немного нестандартный синтаксис
+	static const int MAX = 7; // количество элементов в массиве
+							  // (одна константа для всех объектов, статическая)
+	int st[MAX];              // стек в виде массива
+	int top;                  // вершина стека
+public:
+	Stack()                   // конструктор
+	{
+		top = -1;
+	}
+	void push(int var)        // поместить в стек
+	{
+		st[++top] = var;
+	}
+	int pop()                 // взять из стека
+	{
+		return st[top--];
+	}
+};
+
+class Stack2 : public Stack   // класс, реализующий стек (производный класс)
+{
+public:
+	void push(int var)        // поместить в стек
+	{
+		if (top >= MAX - 1)   // если стек полон, то ошибка
+		{
+			wcout << L"\nОшибка: стек полон!\n"; exit(1);
+		}
+		Stack::push(var);     // вызов метода push класса Stack
+	}
+	int pop()                 // взять из стека
+	{
+		if (top < 0)          // если стек пуст, то ошибка
+		{
+			wcout << L"\nОшибка: стек пуст!\n"; exit(1);
+		}
+		return Stack::pop();  // вызов метода pop класса Stack
+	}
+};
+
+// новый класс, реализующий стек, работающий с парой чисел (производный от Stack2)
+class pairStack : public Stack2
+{
+public:
+	void push(Pair unit) // поместить в стек блок из двух чисел
+	{
+		Stack2::push(unit.x); // поместить в стек первое число
+		Stack2::push(unit.y); // поместить в стек второе число
+	}
+	Pair pop()           // взять из стека блок из двух чисел
+	{
+		Pair temp_unit;
+		// извлекаем из стека числа в обратном порядке, так как стек организуется
+		// по принципу «последним вошёл, первым вышел»
+		temp_unit.y = Stack2::pop(); // берем из стека второе число
+		temp_unit.x = Stack2::pop(); // берем из стека первое число
+		return temp_unit;
+	}
+};
+/// ///////////////////////////////12 ZADANIE/////////////////////////////
+
+int main() {
+	setlocale(0, "");
+	int zadanie;
+	cout << "Введите номер задания - ";
+	cin >> zadanie;
+	if (zadanie == 1) {
+		book book1;
+		tape tape1;
+		book1.getdata();
+		tape1.getdata();
+		book1.putdata();
+		tape1.putdata();
+	}
+	else if (zadanie == 2) {
+		
+	}
+	else if (zadanie == 3) {
+		book book1;
+		tape tape1;
+		book1.getdata();
+		tape1.getdata();
+		book1.putdata();
+		tape1.putdata();
+	}
+	else if (zadanie == 4) {
+		disk disk1;
+		disk1.getdata();
+		disk1.putdata();
+	}
+	else if (zadanie == 5) {
+		employee0 e0;
+		employee2 e1;
+		e0.getdata();
+		e1.getdata();
+		e0.putdata();
+		e1.putdata();
+	}
+	else if (zadanie == 6) {
+		int niz, vverh;
+		cout << "Введите нижнюю границу - ";
+		cin >> niz;
+		cout << "Введите вверхнюю границу - ";
+		cin >> vverh;
+		safegran arr(niz, vverh);
+		for (int i = niz; i <= vverh; i++) {
+			arr[i] = i * 10;
+		}
+		for (int i = niz; i <= vverh; i++) {
+			int otvet=arr[i];
+			cout << i << " - " << otvet << endl;
+		}
+	}
+	else if (zadanie == 7) {
+		CountDn c1;
+		CountDn c2(100);
+		cout << "\nc1=" << c1.get_count();
+		cout << "\nc2=" << c2.get_count();
+		++c1; ++c1; ++c1;
+		cout << "\nc1=" << c1.get_count();
+		--c2; --c2;
+		cout << "\nc2=" << c2.get_count();
+		CountDn c3 = --c2;
+		cout << "\nc3=" << c3.get_count();
+		cout << endl; 
+		return 0;
+	}
+	else if (zadanie == 8) {
+		
+	}
+	else if (zadanie = 9) {
+		book b1;
+		tape t1;
+		b1.getdata();
+		t1.getdata();
+		b1.putdata();
+		t1.putdata();
+	}
+	else if (zadanie = 10) {
+		Executive exec;
+		exec.getdata();
+		exec.putdata();
+		cout << endl;
+	}
+	else if (zadanie = 11) {
+		Pair p1 = { 23, 56 },     // тестовые пары чисел
+			p2 = { 8, 0 },
+			p3 = { -34, 5 },
+			p4 = { 1003, -345 };
+
+		pairStack s1;             // стек
+		s1.push(p1);              // помещаем в стек пары чисел
+		s1.push(p2);
+		s1.push(p3);
+		// s1.push(p4);           // ошибка переполнения стека
+
+		Pair p;
+		p = s1.pop(); wcout << p.x << L", " << p.y << endl;
+		p = s1.pop(); wcout << p.x << L", " << p.y << endl;
+		p = s1.pop(); wcout << p.x << L", " << p.y << endl;
+	}
+}
