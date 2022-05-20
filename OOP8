@@ -1,11 +1,10 @@
-
 #include <iostream>
 #include <iomanip> 
 #include <cstring> 
 #define _CRT_SECURE_NO_WARNINGS 1
 using namespace std;
 const int LEN = 80, LIMIT = 100;
-/// ///////////////////////////////1,3,4 ZADANIE/////////////////////////////
+/// ///////////////////////////////1,3,4 и триллион после ZADANIE/////////////////////////////
 class publication {
 protected:
 	string title;
@@ -137,7 +136,7 @@ protected:
 public:
 	String() { str[0] = '\0'; }
 	String(char s[]) { 
-		strcpy_s(str, s);
+		strcpy(str, s);
 	}
 	void display() const {
 		cout << str;
@@ -315,254 +314,105 @@ public:
 	}
 };
 /// ///////////////////////////////10 ZADANIE/////////////////////////////
-class Student //educational background
-{
-private:
-	char school[LEN]; // name of school or university
-	char degree[LEN]; // highest degree earned
-public:
-	void getedu()
-	{
-		cout << " Enter name of school or university: "; cin >> school;
-		cout << " Enter highest degree earned \n";
-		cout << " (Highschool, Bachelor's, Master's, PhD): "; cin >> degree;
-	}
-	void putedu() const
-	{
-		cout << "\n School or university: " << school;
-		cout << "\n Highest degree earned: " << degree;
-	}
-};
-class employee
-{
-private:
-	char name[LEN]; //employee name
-	unsigned long number; //employee number
-public:
-	void getdata()
-	{
-		cout << "\n Enter last name: "; cin >> name;
-		cout << " Enter number: "; cin >> number;
-	}
-	void putdata() const {
-		cout << "\n Name: " << name;
-		cout << "\n Number: " << number;
-	}
-};
-class Manager : private employee, private Student //management
-{
-private:
-	char title[LEN]; //"vice-president" etc.
-	double dues; //golf club dues
-public:
-	void getdata()
-	{
-		employee::getdata();
-		cout << " Enter title: "; cin >> title;
-		cout << " Enter golf club dues: "; cin >> dues;
-		Student::getedu();
-	}
-	void putdata() const
-	{
-		employee::putdata();
-		cout << "\n Title: " << title;
-		cout << "\n Golf club dues: " << dues;
-		Student::putedu();
-	}
-};
-class Executive : public Manager
-{
-protected:
-	unsigned int bonus, amount;
-public:
-	void getdata() {
-		Manager::getdata();
-		cout << " Введите размер годовой премии: "; cin >> bonus;
-		cout << " Введите кол-во акций в компании: "; cin >> amount;
-	}
-	void putdata() const
-	{
-		Manager::putdata();
-		cout << " Размер годовой премии: " << bonus << endl
-			<< " Кол-во акций в компании: " << amount << endl;
-	}
-};
+class student { 
+private: 
+    char school[LEN];
+    char degree[LEN]; 
+public: 
+void getedu() { 
+    cout << " Enter name of school or university: ";
+    cin >> school; 
+    cout << " Enter highest degree earned \n"; 
+    cout << " (Highschool, Bachelor's, Master's, PhD): "; 
+    cin >> degree; } 
+void putedu() const { 
+    cout << "\n School or university: " << school; 
+    cout << "\n Highest degree earned: " << degree; 
+ } 
+ }; 
+//////////////////////////////////////////////////////////////// 
+class employee { 
+private: 
+    char name[LEN]; 
+    unsigned long number;
+public: 
+void getEmpl() { 
+    cout << "\n Enter last name: ";
+    cin >> name; 
+    cout << " Enter number: ";
+    cin >> number; 
+ } 
+ void putEmpl() const { 
+     cout << "\n Name: " << name; 
+     cout << "\n Number: " << number; 
+ } 
+ }; 
+//////////////////////////////////////////////////////////////// 
+class manager : private employee, private student{ 
+    private: 
+    char title[LEN]; //"vicepresident" etc. 
+    double dues; //golf club dues 
+public: 
+void getManag() { 
+    employee::getEmpl(); 
+    cout << " Enter title: ";
+    cin >> title; 
+    cout << " Enter golf club dues: ";
+    cin >> dues; 
+    student::getedu(); 
+} 
+ void putManag() const { 
+     employee::putEmpl(); 
+     cout << "\n Title: " << title; 
+     cout << "\n Golf club dues: " << dues; 
+     student::putedu(); 
+ } 
+ }; 
+ //---------
+ class executive : private manager {
+     protected:
+     double prem, akcio;
+     public:
+    void getExec() {
+         manager::getManag();
+         cout << "Введите размер премии - ";
+         cin >> prem;
+         cout << "Введите кол-во акций - ";
+         cin >> akcio;
+    }
+    void putExec() {
+         manager::putManag();
+         cout << "\nПремия - " << prem << endl << "Количество акций - " << akcio;
+    }
+ };
+//////////////////////////////////////////////////////////////// 
+class scientist : private employee, private student { 
+private: 
+    int pubs; 
+//number of publications 
+public: 
+void getScien() { 
+    employee::getEmpl(); 
+    cout << " Enter number of pubs: "; 
+    cin >> pubs; 
+    student::getedu(); 
+    
+} 
+void putScien() const { 
+    employee::putEmpl(); 
+    cout << "\n Number of publications: " << pubs; 
+    student::putedu(); 
+} 
+}; 
 /// ///////////////////////////////11 ZADANIE/////////////////////////////
-struct Pair // пара чисел
-{
-	int x;
-	int y;
+struct pair {
+    int x,y;
 };
-
-class Stack                   // класс, реализующий стек (базовый класс)
-{
-protected:                    // ЗАМЕТЬТЕ: не private!
-	// enum { MAX = 7 };      // немного нестандартный синтаксис
-	static const int MAX = 7; // количество элементов в массиве
-							  // (одна константа для всех объектов, статическая)
-	int st[MAX];              // стек в виде массива
-	int top;                  // вершина стека
-public:
-	Stack()                   // конструктор
-	{
-		top = -1;
-	}
-	void push(int var)        // поместить в стек
-	{
-		st[++top] = var;
-	}
-	int pop()                 // взять из стека
-	{
-		return st[top--];
-	}
-};
-
-class Stack2 : public Stack   // класс, реализующий стек (производный класс)
-{
-public:
-	void push(int var)        // поместить в стек
-	{
-		if (top >= MAX - 1)   // если стек полон, то ошибка
-		{
-			cout << "\nОшибка: стек полон!\n"; exit(1);
-		}
-		Stack::push(var);     // вызов метода push класса Stack
-	}
-	int pop()                 // взять из стека
-	{
-		if (top < 0)          // если стек пуст, то ошибка
-		{
-			cout << "\nОшибка: стек пуст!\n"; exit(1);
-		}
-		return Stack::pop();  // вызов метода pop класса Stack
-	}
-};
-
-// новый класс, реализующий стек, работающий с парой чисел (производный от Stack2)
-class pairStack : public Stack2
-{
-public:
-	void push(Pair unit) // поместить в стек блок из двух чисел
-	{
-		Stack2::push(unit.x); // поместить в стек первое число
-		Stack2::push(unit.y); // поместить в стек второе число
-	}
-	Pair pop()           // взять из стека блок из двух чисел
-	{
-		Pair temp_unit;
-		// извлекаем из стека числа в обратном порядке, так как стек организуется
-		// по принципу «последним вошёл, первым вышел»
-		temp_unit.y = Stack2::pop(); // берем из стека второе число
-		temp_unit.x = Stack2::pop(); // берем из стека первое число
-		return temp_unit;
-	}
+class stack {
+  protected:
+  
 };
 /// ///////////////////////////////12 ZADANIE/////////////////////////////
-class sterling {
-protected:
-	long pounds;
-	int shillings, pences;
-public:
-	sterling() : pounds(0), shillings(0), pences(0) {}
-	sterling(double df) {
-		pounds = df;
-		shillings = (df - pounds) * 20;
-		pences = round(((df - pounds) * 20 - shillings) * 12);
-	}
-	sterling(long ps, int s, int p) : pounds(ps), shillings(s), pences(p) {}
-	void getSterling() {
-		char separator;
-		cout << "Введите сумму (фунты, шиллинги и пенсы через точку): £";
-		cin >> pounds >> separator >> shillings >> separator >> pences;
-	}
-	void putSterling() const {
-		cout << "£" << pounds << "." << shillings << "." << pences;
-	}
-	operator double() const {
-		return (pounds + shillings / 20.0 + pences / 240.0);
-	}
-	sterling operator+ (sterling s) const {
-		return sterling(double(sterling(pounds, shillings, pences)) + double(s));
-	}
-	sterling operator- (sterling s) const {
-		return sterling(double(sterling(pounds, shillings, pences)) - double(s));
-	}
-	sterling operator* (double n) const {
-		return sterling(double(sterling(pounds, shillings, pences)) * n);
-	}
-	double operator/ (sterling s) const
-	{
-		return (double(sterling(pounds, shillings, pences)) / double(s));
-	}
-	sterling operator/ (double n) const {
-		return sterling(double(sterling(pounds, shillings, pences)) / n);
-	}
-};
-class sterfrac : public sterling
-{
-private:
-	int eighths;
-
-	// возможные значения:
-	// 0                                    (0/8 пенни)
-	// 1 — полуфартинг                      (1/8 пенни)
-	// 2 — фартинг                          (2/8 пенни или 1/4 пенни)
-	// 3 — фартинг и полуфартинг            (3/8 пенни)
-	// 4 — полупенни                        (4/8 пенни или 1/2 пенни)
-	// 5 — полупенни и полуфартинг          (5/8 пенни)
-	// 6 — полупенни и фартинг              (6/8 пенни или 3/4 пенни)
-	// 7 — полупенни, фартинг и полуфартинг (7/8 пенни)
-
-public:
-	sterfrac() : sterling(), eighths(0) { }
-	sterfrac(double df) {
-		pounds = df;
-		shillings = (df - pounds) * 20;
-		pences = ((df - pounds) * 20 - shillings) * 12;
-		eighths = round((((df - pounds) * 20 - shillings) * 12 - pences) * 8);
-	}
-	sterfrac(long ps, int s, int p, int e) : sterling(ps, s, p), eighths(e) { }
-	void getSterling() {
-		char separator;
-		int num, den; 
-		cout << "Введите сумму в формате '£9.19.11-1/4': £";
-		cin >> pounds >> separator >> shillings >> separator >> pences
-			>> separator >> num >> separator >> den;
-		if (den == 2) 
-			num = num * 4;
-		if (den == 4)
-			num = num * 2;
-		eighths = num;
-	}
-	void putSterling() const {
-		sterling::putSterling();
-		cout << "-";
-		switch (eighths) {
-		case 2: cout << "1/4"; break;
-		case 4: cout << "1/2"; break;
-		case 6: cout << "3/4"; break;
-		default: cout << eighths << "/8";
-		}
-	}
-	operator double() const {
-		return (sterling::operator double() + eighths / 1920.0);
-	}
-	sterfrac operator+ (sterfrac s) const {
-		return sterfrac(double(sterfrac(pounds, shillings, pences, eighths)) + double(s));
-	}
-	sterfrac operator- (sterfrac s) const {
-		return sterfrac(double(sterfrac(pounds, shillings, pences, eighths)) - double(s));
-	}
-	sterfrac operator* (double n) const {
-		return sterfrac(double(sterfrac(pounds, shillings, pences, eighths)) * n);
-	}
-	double operator/ (sterfrac s) const {
-		return (double(sterfrac(pounds, shillings, pences, eighths)) / double(s));
-	}
-	sterfrac operator/ (double n) const {
-		return sterfrac(double(sterfrac(pounds, shillings, pences, eighths)) / n);
-	}
-};
 int main() {
 	setlocale(0, "");
 	int zadanie;
@@ -622,44 +472,27 @@ int main() {
 		t1.putTape();
 	}
 	else if (zadanie = 10) {
-		Executive exec;
-		exec.getdata();
-		exec.putdata();
-		cout << endl;
+		executive m1; 
+		scientist s1, s2; 
+		laborer l1; 
+		cout << endl; 
+		cout << "\nEnter data for manager 1";
+		m1.getExec(); 
+		cout << "\nEnter data for scientist 1"; 
+		s1.getScien(); 
+		cout << "\nEnter data for scientist 2"; 
+		s2.getScien(); 
+		cout << "\nData on manager 1";
+		m1.putExec();  
+		cout << "\nData on scientist 1"; 
+		s1.putScien(); 
+		cout << "\nData on scientist 2"; 
+		s2.putScien(); 
+		cout << endl; 
 	}
 	else if (zadanie = 11) {
-		Pair p1 = { 23, 56 },     // тестовые пары чисел
-			p2 = { 8, 0 },
-			p3 = { -34, 5 },
-			p4 = { 1003, -345 };
-
-		pairStack s1;             // стек
-		s1.push(p1);              // помещаем в стек пары чисел
-		s1.push(p2);
-		s1.push(p3);
-		// s1.push(p4);           // ошибка переполнения стека
-
-		Pair p;
-		p = s1.pop(); cout << p.x << ", " << p.y << endl;
-		p = s1.pop(); cout << p.x << ", " << p.y << endl;
-		p = s1.pop(); cout << p.x << ", " << p.y << endl;
 	}
 	else if (zadanie = 12) {
-		sterfrac s1, s2, s;
-		double n;
-		cout << "1. "; s1.getSterling();
-		cout << "2. "; s2.getSterling(); cout << endl;
-		cout << "1. В десятичных фунтах: " << fixed << setprecision(2) << double(s1) << endl;
-		cout << "2. В десятичных фунтах: " << fixed << setprecision(2) << double(s2) << endl << endl;
-		s = s1 + s2;
-		cout << "Результат сложения этих сумм: "; s.putSterling(); cout << endl;
-		s = s1 - s2;
-		cout << "Разность этих сумм: "; s.putSterling(); cout << endl;
-		s = s1 * 1.05;
-		cout << "Произведение первой суммы и числа 1,05: "; s.putSterling(); cout << endl;
-		n = s1 / s2;
-		cout << "Частное от деления первой суммы на вторую: " << n << endl;
-		s = s1 / 3.5;
-		cout << "Частное от деления первой суммы на число 3,5: "; s.putSterling(); cout << endl;
+	
 	}
 }
