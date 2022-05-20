@@ -7,31 +7,45 @@ using namespace std;
 const int LEN = 80, LIMIT = 100;
 /// ///////////////////////////////1,3,4 ZADANIE/////////////////////////////
 class publication {
-private:
+protected:
 	string title;
 	float price;
 public:
-	void getdata() {
+	void getPubl() {
 		cout << "Введите тайтл - ";
 		cin >> title;
 		cout << "Введите прайс - ";
 		cin >> price;
 	}
-	void putdata() const {
+	void putPubl() const {
 		cout << endl << "Тайтл - " << title << endl << "Прайс - " << price;
+	}
+};
+class publication2 : public publication {
+protected:
+	string data;
+public:
+	void getData() {
+		getPubl();
+		cout << "Введите дату выхода книги - ";
+		cin >> data;
+	}
+	void putData() {
+		putPubl();
+		cout << "\nДата выхода книги - " << data;
 	}
 };
 ////////
 class sales {
-private: 
+protected:
 	enum { months = 3 };
 	float salesArr[months];
 public:
-	void getdata();
-	void putdata() const;
+	void getSale();
+	void putSale() const;
 };
 //----------------------
-void sales::getdata() {
+void sales::getSale() {
 	cout << "Введите sales за 3 месяца\n";
 	for (int j = 0; j < months; j++) {
 		cout << "   month" << j + 1 << ": ";
@@ -39,7 +53,7 @@ void sales::getdata() {
 	}
 }
 //----------------------
-void sales::putdata() const {
+void sales::putSale() const {
 	for (int j = 0; j < months; j++) {
 		cout << "\n Sales for month " << j + 1 << ": "; 
 		cout << salesArr[j];
@@ -47,46 +61,46 @@ void sales::putdata() const {
 }
 
 /// ////////////////////////////
-class book : public publication, public sales{
-private:
+class book : public publication2, public sales{
+protected:
 	int pages;
 public:
-	void getdata() {
-		publication::getdata();
+	void getBook() {
+		publication2::getData();
 		cout << "Введите кол-во страниц - ";
 		cin >> pages;
-		sales::getdata();
+		//sales::getSale();
 	}
-	void putdata() const {
-		publication::putdata();
+	void putBook() {
+		publication2::putData();
 		cout << "\nСтраницы - " << pages;
-		sales::putdata();
+		//sales::putSale();
 	}
 };
 ////////
-class tape : public publication, public sales {
-private:
+class tape : public publication2, public sales {
+protected:
 	float time;
 public:
-	void getdata() {
-		publication::getdata();
+	void getTape() {
+		publication2::getData();
 		cout << "Введите время книги в минутах - ";
 		cin >> time;
-		sales::getdata();
+		//sales::getSale();
 	}
-	void putdata() const {
-		publication::putdata();
+	void putTape() {
+		publication2::putData();
 		cout << "\nВремя в минутах - " << time;
-		sales::putdata();
+		//sales::putSale();
 	}
 };
 class disk : public publication, public sales {
-private:
+protected:
 	enum diskk {CD, DVD};
 	diskk tp;
 public:
-	void getdata() {
-		publication::getdata();
+	void getDisk() {
+		publication::getPubl();
 		char dk;
 		cout << "Выберите тип диска (c/d)";
 		cin >> dk;
@@ -100,10 +114,10 @@ public:
 		default:
 			cout << "Не бывает такого";
 		}
-		sales::getdata();
+		sales::getSale();
 	}
-	void putdata() const {
-		publication::putdata();
+	void putDisk() const {
+		publication::putPubl();
 		switch (tp) {
 		case CD:
 			cout << "\nТип диска - CD";
@@ -112,7 +126,7 @@ public:
 			cout << "\nТип диска - DVD";
 			break;
 		}
-		sales::putdata();
+		sales::putSale();
 	}
 };
 /// ///////////////////////////////2/8 ZADANIE/////////////////////////////
@@ -410,7 +424,7 @@ public:
 	{
 		if (top >= MAX - 1)   // если стек полон, то ошибка
 		{
-			wcout << L"\nОшибка: стек полон!\n"; exit(1);
+			cout << "\nОшибка: стек полон!\n"; exit(1);
 		}
 		Stack::push(var);     // вызов метода push класса Stack
 	}
@@ -418,7 +432,7 @@ public:
 	{
 		if (top < 0)          // если стек пуст, то ошибка
 		{
-			wcout << L"\nОшибка: стек пуст!\n"; exit(1);
+			cout << "\nОшибка: стек пуст!\n"; exit(1);
 		}
 		return Stack::pop();  // вызов метода pop класса Stack
 	}
@@ -444,35 +458,120 @@ public:
 	}
 };
 /// ///////////////////////////////12 ZADANIE/////////////////////////////
+class sterling {
+protected:
+	long pounds;
+	int shillings, pences;
+public:
+	sterling() : pounds(0), shillings(0), pences(0) {}
+	sterling(double df) {
+		pounds = df;
+		shillings = (df - pounds) * 20;
+		pences = round(((df - pounds) * 20 - shillings) * 12);
+	}
+	sterling(long ps, int s, int p) : pounds(ps), shillings(s), pences(p) {}
+	void getSterling() {
+		char separator;
+		cout << "Введите сумму (фунты, шиллинги и пенсы через точку): £";
+		cin >> pounds >> separator >> shillings >> separator >> pences;
+	}
+	void putSterling() const {
+		cout << "£" << pounds << "." << shillings << "." << pences;
+	}
+	operator double() const {
+		return (pounds + shillings / 20.0 + pences / 240.0);
+	}
+	sterling operator+ (sterling s) const {
+		return sterling(double(sterling(pounds, shillings, pences)) + double(s));
+	}
+	sterling operator- (sterling s) const {
+		return sterling(double(sterling(pounds, shillings, pences)) - double(s));
+	}
+	sterling operator* (double n) const {
+		return sterling(double(sterling(pounds, shillings, pences)) * n);
+	}
+	double operator/ (sterling s) const
+	{
+		return (double(sterling(pounds, shillings, pences)) / double(s));
+	}
+	sterling operator/ (double n) const {
+		return sterling(double(sterling(pounds, shillings, pences)) / n);
+	}
+};
+class sterfrac : public sterling
+{
+private:
+	int eighths;
 
+	// возможные значения:
+	// 0                                    (0/8 пенни)
+	// 1 — полуфартинг                      (1/8 пенни)
+	// 2 — фартинг                          (2/8 пенни или 1/4 пенни)
+	// 3 — фартинг и полуфартинг            (3/8 пенни)
+	// 4 — полупенни                        (4/8 пенни или 1/2 пенни)
+	// 5 — полупенни и полуфартинг          (5/8 пенни)
+	// 6 — полупенни и фартинг              (6/8 пенни или 3/4 пенни)
+	// 7 — полупенни, фартинг и полуфартинг (7/8 пенни)
+
+public:
+	sterfrac() : sterling(), eighths(0) { }
+	sterfrac(double df) {
+		pounds = df;
+		shillings = (df - pounds) * 20;
+		pences = ((df - pounds) * 20 - shillings) * 12;
+		eighths = round((((df - pounds) * 20 - shillings) * 12 - pences) * 8);
+	}
+	sterfrac(long ps, int s, int p, int e) : sterling(ps, s, p), eighths(e) { }
+	void getSterling() {
+		char separator;
+		int num, den; 
+		cout << "Введите сумму в формате '£9.19.11-1/4': £";
+		cin >> pounds >> separator >> shillings >> separator >> pences
+			>> separator >> num >> separator >> den;
+		if (den == 2) 
+			num = num * 4;
+		if (den == 4)
+			num = num * 2;
+		eighths = num;
+	}
+	void putSterling() const {
+		sterling::putSterling();
+		cout << "-";
+		switch (eighths) {
+		case 2: cout << "1/4"; break;
+		case 4: cout << "1/2"; break;
+		case 6: cout << "3/4"; break;
+		default: cout << eighths << "/8";
+		}
+	}
+	operator double() const {
+		return (sterling::operator double() + eighths / 1920.0);
+	}
+	sterfrac operator+ (sterfrac s) const {
+		return sterfrac(double(sterfrac(pounds, shillings, pences, eighths)) + double(s));
+	}
+	sterfrac operator- (sterfrac s) const {
+		return sterfrac(double(sterfrac(pounds, shillings, pences, eighths)) - double(s));
+	}
+	sterfrac operator* (double n) const {
+		return sterfrac(double(sterfrac(pounds, shillings, pences, eighths)) * n);
+	}
+	double operator/ (sterfrac s) const {
+		return (double(sterfrac(pounds, shillings, pences, eighths)) / double(s));
+	}
+	sterfrac operator/ (double n) const {
+		return sterfrac(double(sterfrac(pounds, shillings, pences, eighths)) / n);
+	}
+};
 int main() {
 	setlocale(0, "");
 	int zadanie;
 	cout << "Введите номер задания - ";
 	cin >> zadanie;
-	if (zadanie == 1) {
-		book book1;
-		tape tape1;
-		book1.getdata();
-		tape1.getdata();
-		book1.putdata();
-		tape1.putdata();
-	}
-	else if (zadanie == 2) {
-		
-	}
-	else if (zadanie == 3) {
-		book book1;
-		tape tape1;
-		book1.getdata();
-		tape1.getdata();
-		book1.putdata();
-		tape1.putdata();
-	}
-	else if (zadanie == 4) {
+	if (zadanie == 4) {
 		disk disk1;
-		disk1.getdata();
-		disk1.putdata();
+		disk1.getDisk();
+		disk1.putDisk();
 	}
 	else if (zadanie == 5) {
 		employee0 e0;
@@ -517,10 +616,10 @@ int main() {
 	else if (zadanie = 9) {
 		book b1;
 		tape t1;
-		b1.getdata();
-		t1.getdata();
-		b1.putdata();
-		t1.putdata();
+		b1.getBook();
+		t1.getTape();
+		b1.putBook();
+		t1.putTape();
 	}
 	else if (zadanie = 10) {
 		Executive exec;
@@ -541,8 +640,26 @@ int main() {
 		// s1.push(p4);           // ошибка переполнения стека
 
 		Pair p;
-		p = s1.pop(); wcout << p.x << L", " << p.y << endl;
-		p = s1.pop(); wcout << p.x << L", " << p.y << endl;
-		p = s1.pop(); wcout << p.x << L", " << p.y << endl;
+		p = s1.pop(); cout << p.x << ", " << p.y << endl;
+		p = s1.pop(); cout << p.x << ", " << p.y << endl;
+		p = s1.pop(); cout << p.x << ", " << p.y << endl;
+	}
+	else if (zadanie = 12) {
+		sterfrac s1, s2, s;
+		double n;
+		cout << "1. "; s1.getSterling();
+		cout << "2. "; s2.getSterling(); cout << endl;
+		cout << "1. В десятичных фунтах: " << fixed << setprecision(2) << double(s1) << endl;
+		cout << "2. В десятичных фунтах: " << fixed << setprecision(2) << double(s2) << endl << endl;
+		s = s1 + s2;
+		cout << "Результат сложения этих сумм: "; s.putSterling(); cout << endl;
+		s = s1 - s2;
+		cout << "Разность этих сумм: "; s.putSterling(); cout << endl;
+		s = s1 * 1.05;
+		cout << "Произведение первой суммы и числа 1,05: "; s.putSterling(); cout << endl;
+		n = s1 / s2;
+		cout << "Частное от деления первой суммы на вторую: " << n << endl;
+		s = s1 / 3.5;
+		cout << "Частное от деления первой суммы на число 3,5: "; s.putSterling(); cout << endl;
 	}
 }
