@@ -47,20 +47,20 @@ public:
 void sales::getSale() {
 	cout << "Введите sales за 3 месяца\n";
 	for (int j = 0; j < months; j++) {
-		cout << "   month" << j + 1 << ": ";
+		cout << "Месяц " << j + 1 << ": ";
 		cin >> salesArr[j];
 	}
 }
 //----------------------
 void sales::putSale() const {
 	for (int j = 0; j < months; j++) {
-		cout << "\n Sales for month " << j + 1 << ": "; 
+		cout << "\nПродажа за месяц " << j + 1 << ": ";
 		cout << salesArr[j];
 	}
 }
 
 /// ////////////////////////////
-class book : public publication2, public sales{
+class book : public publication2, public sales {
 protected:
 	int pages;
 public:
@@ -95,7 +95,7 @@ public:
 };
 class disk : public publication, public sales {
 protected:
-	enum diskk {CD, DVD};
+	enum diskk { CD, DVD };
 	diskk tp;
 public:
 	void getDisk() {
@@ -135,8 +135,8 @@ protected:
 	char str[SZ];
 public:
 	String() { str[0] = '\0'; }
-	String(char s[]) { 
-		strcpy(str, s);
+	String(char s[]) {
+		strcpy_s(str, s);
 	}
 	void display() const {
 		cout << str;
@@ -155,7 +155,7 @@ Pstring::Pstring(char s[]) {
 	if (strlen(s) > SZ - 1) {
 		for (int j = 0; j < SZ - 1; j++)
 			str[j] = s[j];
-		str[SZ-1] = '\0';
+		str[SZ - 1] = '\0';
 	}
 	else
 		String(s);
@@ -192,25 +192,25 @@ public:
 };
 /// ///////////////////////////////5 ZADANIE/////////////////////////////
 class employee0 {
-private: 
+private:
 	char name[LEN];
 	unsigned long number;
-public: 
+public:
 	void getdata() {
-	cout << "\n Enter last name: "; 
-	cin >> name;
-	cout << " Enter number: "; 
-	cin >> number;
-}
+		cout << "\nВведите имя: ";
+		cin >> name;
+		cout << "Введите номер: ";
+		cin >> number;
+	}
 	void putdata() const {
-		cout << "\n Name: " << name;
-		cout << "\n Number: " << number;
+		cout << "\nИмя: " << name;
+		cout << "\nНомер: " << number;
 	}
 };
 class employee2 : private employee0 {
 private:
 	double compensation;
-	enum period {hour, mond, month};
+	enum period { hour, mond, month };
 	period opl;
 public:
 	void getdata() {
@@ -235,7 +235,7 @@ public:
 		}
 	}
 	void putdata() {
-		cout << "Зарплата - " << compensation << endl;
+		cout << "\nЗарплата - " << compensation << endl;
 		cout << "Период оплаты - ";
 		switch (opl) {
 		case hour:
@@ -256,9 +256,9 @@ class safearay {
 private:
 	int arr[LIMIT];
 public:
-	int& operator [](int n) {
+	int& operator[](int n) {
 		if (n < 0 || n >= LIMIT) {
-			cout << "\nIndex out of bounds"; 
+			cout << "\nIndex out of bounds";
 			exit(1);
 		}
 		return arr[n];
@@ -266,20 +266,20 @@ public:
 };
 class safegran : public safearay {
 private:
-	int granniz, granvverh, a=0;
+	int granniz, granvverh;
 public:
 	safegran(int niz, int vverh) : granniz(niz), granvverh(vverh) {
 		if (granniz > granvverh) {
-			a = granniz;
-			granniz = granvverh;
-			granvverh = a;
+			if (granniz > granvverh) {
+				cout << "Ошибка верхней и нижней границы ";
+			}
+			if (granvverh - granniz >= LIMIT)
+				cout << "Ошибка. Слишком много элементов";
 		}
 	}
 	int& operator[] (int n) {
-		if (n < granniz || n > granvverh) {
+		if (n < granniz || n > granvverh)
 			cout << "Ошибка";
-			exit(1);
-		}
 		return safearay::operator[] (n - granniz);
 	}
 };
@@ -294,10 +294,10 @@ public:
 		return count;
 	}
 	Counter operator ++ () {
-		return Counter(++count);
+		return Counter(++count); // prefix
 	}
 	Counter operator ++ (int) {
-		return Counter(++count);
+		return Counter(++count); // postfix
 	}
 };
 /// ////-----------------------------------------------------------
@@ -313,100 +313,241 @@ public:
 		return CountDn(--count);
 	}
 };
+
 /// ///////////////////////////////10 ZADANIE/////////////////////////////
-class student { 
-private: 
-    char school[LEN];
-    char degree[LEN]; 
-public: 
-void getedu() { 
-    cout << " Enter name of school or university: ";
-    cin >> school; 
-    cout << " Enter highest degree earned \n"; 
-    cout << " (Highschool, Bachelor's, Master's, PhD): "; 
-    cin >> degree; } 
-void putedu() const { 
-    cout << "\n School or university: " << school; 
-    cout << "\n Highest degree earned: " << degree; 
- } 
- }; 
+class student {
+private:
+	char school[LEN];
+	char degree[LEN];
+public:
+	void getedu() {
+		cout << "Введите название школы или университета: ";
+		cin >> school;
+		cout << "Введите самую высокую заработанную степень \n";
+		cout << "(Highschool, Bachelor's, Master's, PhD): ";
+		cin >> degree;
+	}
+	void putedu() const {
+		cout << "\nШкола или университет: " << school;
+		cout << "\nСамая высокая степень: " << degree;
+	}
+};
 //////////////////////////////////////////////////////////////// 
-class employee { 
-private: 
-    char name[LEN]; 
-    unsigned long number;
-public: 
-void getEmpl() { 
-    cout << "\n Enter last name: ";
-    cin >> name; 
-    cout << " Enter number: ";
-    cin >> number; 
- } 
- void putEmpl() const { 
-     cout << "\n Name: " << name; 
-     cout << "\n Number: " << number; 
- } 
- }; 
+class employee {
+private:
+	char name[LEN];
+	unsigned long number;
+public:
+	void getEmpl() {
+		cout << "\nВведите фамилию: ";
+		cin >> name;
+		cout << "\nВведите номер: ";
+		cin >> number;
+	}
+	void putEmpl() const {
+		cout << "\nФамилия: " << name;
+		cout << "\nНомер: " << number;
+	}
+};
 //////////////////////////////////////////////////////////////// 
-class manager : private employee, private student{ 
-    private: 
-    char title[LEN]; //"vicepresident" etc. 
-    double dues; //golf club dues 
-public: 
-void getManag() { 
-    employee::getEmpl(); 
-    cout << " Enter title: ";
-    cin >> title; 
-    cout << " Enter golf club dues: ";
-    cin >> dues; 
-    student::getedu(); 
-} 
- void putManag() const { 
-     employee::putEmpl(); 
-     cout << "\n Title: " << title; 
-     cout << "\n Golf club dues: " << dues; 
-     student::putedu(); 
- } 
- }; 
- //---------
- class executive : private manager {
-     protected:
-     double prem, akcio;
-     public:
-    void getExec() {
-         manager::getManag();
-         cout << "Введите размер премии - ";
-         cin >> prem;
-         cout << "Введите кол-во акций - ";
-         cin >> akcio;
-    }
-    void putExec() {
-         manager::putManag();
-         cout << "\nПремия - " << prem << endl << "Количество акций - " << akcio;
-    }
- };
+class manager : private employee, private student {
+private:
+	char title[LEN]; //"vicepresident" etc. 
+	double dues; //golf club dues 
+public:
+	void getManag() {
+		employee::getEmpl();
+		cout << "Введите название: ";
+		cin >> title;
+		cout << "Введите взносы в гольф-клуб: ";
+		cin >> dues;
+		student::getedu();
+	}
+	void putManag() const {
+		employee::putEmpl();
+		cout << "\nНазвание: " << title;
+		cout << "\nВзносы в гольф клуб: " << dues;
+		student::putedu();
+	}
+};
+//---------
+class executive : private manager {
+protected:
+	double prem, akcio;
+public:
+	void getExec() {
+		manager::getManag();
+		cout << "Введите размер премии - ";
+		cin >> prem;
+		cout << "Введите кол-во акций - ";
+		cin >> akcio;
+	}
+	void putExec() {
+		manager::putManag();
+		cout << "\nПремия - " << prem << endl << "Количество акций - " << akcio;
+	}
+};
 //////////////////////////////////////////////////////////////// 
-class scientist : private employee, private student { 
-private: 
-    int pubs; 
-//number of publications 
-public: 
-void getScien() { 
-    employee::getEmpl(); 
-    cout << " Enter number of pubs: "; 
-    cin >> pubs; 
-    student::getedu(); 
-    
-} 
-void putScien() const { 
-    employee::putEmpl(); 
-    cout << "\n Number of publications: " << pubs; 
-    student::putedu(); 
-} 
-}; 
+class scientist : private employee, private student {
+private:
+	int pubs;
+	//number of publications 
+public:
+	void getScien() {
+		employee::getEmpl();
+		cout << "Введите кол-во публикаций: ";
+		cin >> pubs;
+		student::getedu();
+
+	}
+	void putScien() const {
+		employee::putEmpl();
+		cout << "\nКоличество публикаций: " << pubs;
+		student::putedu();
+	}
+};
+class laborer : public employee //laborer 
+{
+};
 /// ///////////////////////////////11 ZADANIE/////////////////////////////
+struct Pair {
+	int x, y;
+};
+class Stack {
+protected:
+	static const int max = 7;
+	int st[max], top;
+public:
+	Stack() { top = -1; }
+	void push(int var) {
+		st[++top] = var;
+	}
+	int pop() {
+		return st[top--];
+	}
+};
+class Stack2 : public Stack {
+public:
+	void push(int var) {
+		if (top >= max - 1)
+			cout << "Стек полон";
+		Stack::push(var);
+	}
+	int pop() {
+		if (top < 0)
+			cout << "Стек пуст";
+		return Stack::pop();
+	}
+};
+class pairStack : public Stack2 {
+public:
+	void push(Pair unit) {
+		Stack::push(unit.x);
+		Stack::push(unit.y);
+	}
+	Pair pop() {
+		Pair temp;
+		temp.y = Stack2::pop();
+		temp.x = Stack2::pop();
+		return temp;
+	}
+};
 
 /// ///////////////////////////////12 ZADANIE/////////////////////////////
+class sterling {
+protected:
+	int funt, shill, penny;
+public:
+	sterling() : funt(0), shill(0), penny(0) {}
+	sterling(double d) {
+		funt = d;
+		shill = (d - funt) * 20;
+		penny = round(((d - funt) * 20 - shill) * 12);
+	}
+	sterling(int f, int s, int p) : funt(f), shill(s), penny(p) {}
+	void getSter() {
+		char point;
+		cout << "Введите сумму(1.1.1) - ";
+		cin >> funt >> point >> shill >> point >> penny;
+	}
+	void putSter() const {
+		char point = '.';
+		cout << funt << point << shill << point << penny;
+	}
+	operator double() const {
+		return (funt + shill / 20.0 + penny / 240.0);
+	}
+	sterling operator + (sterling s) const {
+		return sterling(double(sterling(funt, shill, penny)) + double(s));
+	}
+	sterling operator - (sterling s) const {
+		return sterling(double(sterling(funt, shill, penny)) - double(s));
+	}
+	sterling operator / (sterling s) const {
+		return sterling(double(sterling(funt, shill, penny)) / double(s));
+	}
+	sterling operator * (sterling s) const {
+		return sterling(double(sterling(funt, shill, penny)) * double(s));
+	}
+};
+class sterfrac : public sterling {
+private:
+	int eighths;
+public:
+	sterfrac() : sterling(), eighths(0) {}
+	sterfrac(double d) {
+		funt = d;
+		shill = (d - funt) * 20;
+		penny = ((d - funt) * 20 - shill) * 12;
+		eighths = round((((d - funt) * 20 - shill) * 12 - penny) * 8);
+	}
+	sterfrac(int f, int s, int p, int e) : sterling(f, s, p), eighths(e) {}
+	void getSter() {
+		int chisl, del;
+		char point;
+		cout << "Введите сумму(1.1.1-1/4) - ";
+		cin >> funt >> point >> shill >> point >> penny >> point >> chisl >> point >> del;
+		if (del == 2)
+			chisl = chisl * 4;
+		if (del == 4)
+			chisl = chisl * 2;
+		eighths = chisl;
+	}
+	void putSter() const {
+		sterling::putSter();
+		cout << " - ";
+		switch (eighths) {
+		case 2:
+			cout << "1/4";
+			break;
+		case 4:
+			cout << "1/2";
+			break;
+		case 6:
+			cout << "3/4";
+			break;
+		default:
+			cout << eighths << "/8";
+		}
+	}
+	operator double() const {
+		return (sterling::operator double() + eighths / 1920);
+	}
+	sterfrac operator + (sterfrac s) const {
+		return sterfrac(double(sterfrac(funt, shill, penny, eighths)) + double(s));
+	}
+	sterfrac operator - (sterfrac s) const {
+		return sterfrac(double(sterfrac(funt, shill, penny, eighths)) - double(s));
+	}
+	sterfrac operator / (sterfrac s) const {
+		return sterfrac(double(sterfrac(funt, shill, penny, eighths)) / double(s));
+	}
+	sterfrac operator * (sterfrac s) const {
+		return sterfrac(double(sterfrac(funt, shill, penny, eighths)) * double(s));
+	}
+
+};
+/// ////////////////////////////////////////////////////////////////////////////
 int main() {
 	setlocale(0, "");
 	int zadanie;
@@ -436,7 +577,7 @@ int main() {
 			arr[i] = i * 10;
 		}
 		for (int i = niz; i <= vverh; i++) {
-			int otvet=arr[i];
+			int otvet = arr[i];
 			cout << i << " - " << otvet << endl;
 		}
 	}
@@ -451,13 +592,17 @@ int main() {
 		cout << "\nc2=" << c2.get_count();
 		CountDn c3 = --c2;
 		cout << "\nc3=" << c3.get_count();
-		cout << endl; 
+		cout << endl;
+		c2++; c2++;
+		cout << "c2=" << c2.get_count() << endl;
+		c1--; c1--;
+		cout << "c1=" << c1.get_count();
 		return 0;
 	}
 	else if (zadanie == 8) {
-		
+
 	}
-	else if (zadanie = 9) {
+	else if (zadanie == 9) {
 		book b1;
 		tape t1;
 		b1.getBook();
@@ -465,272 +610,64 @@ int main() {
 		b1.putBook();
 		t1.putTape();
 	}
-	else if (zadanie = 10) {
-		executive m1; 
-		scientist s1, s2; 
-		laborer l1; 
-		cout << endl; 
-		cout << "\nEnter data for manager 1";
-		m1.getExec(); 
-		cout << "\nEnter data for scientist 1"; 
-		s1.getScien(); 
-		cout << "\nEnter data for scientist 2"; 
-		s2.getScien(); 
-		cout << "\nData on manager 1";
-		m1.putExec();  
-		cout << "\nData on scientist 1"; 
-		s1.putScien(); 
-		cout << "\nData on scientist 2"; 
-		s2.putScien(); 
-		cout << endl; 
+	else if (zadanie == 10) {
+		executive m1;
+		scientist s1, s2;
+		laborer l1;
+		cout << endl;
+		cout << "\nВведите данные для менеджера 1";
+		m1.getExec();
+		cout << "\nВведите данные для scientist 1";
+		s1.getScien();
+		cout << "\nВведите данные для scientist 2";
+		s2.getScien();
+		cout << "\nВведите данные для laborer 1";
+		l1.getEmpl();
+		cout << "\nДанные manager 1";
+		m1.putExec();
+		cout << "\nДанные scientist 1";
+		s1.putScien();
+		cout << "\nДанные scientist 2";
+		s2.putScien();
+		cout << "\nДанные laborer 1";
+		l1.putEmpl();
+		cout << endl;
 	}
-	else if (zadanie = 11) {
+	else if (zadanie == 11) {
+		Pair p1 = { 11,22 }, p2 = { 10,20 }, p3 = { 1,2 };
+		pairStack s1;
+		s1.push(p1);
+		s1.push(p2);
+		s1.push(p3);
+		Pair temp;
+		temp = s1.pop();
+		cout << temp.x << "," << temp.y << endl;
+		temp = s1.pop();
+		cout << temp.x << "," << temp.y << endl;
+		temp = s1.pop();
+		cout << temp.x << "," << temp.y << endl;
 	}
-	else if (zadanie = 12) {
-	
+	else if (zadanie == 12) {
+		sterfrac s1, s2, s;
+		double n;
+		cout << "1 - ";
+		s1.getSter();
+		cout << "2 - ";
+		s2.getSter();
+		cout << "1 - в десятичных фунтах: " << fixed << setprecision(2) << double(s1) << endl;
+		cout << "2 - в десятичных фунтах: " << fixed << setprecision(2) << double(s2) << endl;
+		cout << "1 - в десятичных фунтах: " << double(s1) << endl;
+		s = s1 + s2;
+		cout << "Сумма - ";
+		s.putSter();
+		s = s1 - s2;
+		cout << endl << "Разность - ";
+		s.putSter();
+		s = s1 / s2;
+		cout << endl << "Дереление - ";
+		s.putSter();
+		s = s1 * s2;
+		cout << endl << "Умножение - ";
+		s.putSter();
 	}
 }
-
-
-
-
-
-
-
-
-
-
-/// ///////////////////////////////11 ZADANIE/////////////////////////////
-/******************************************************************************
-
-                              Online C++ Compiler.
-               Code, Compile, Run and Debug C++ program online.
-Write your code in this editor and press "Run" button to compile and execute it.
-
-*******************************************************************************/
-
-#include <iostream>
-#include <iomanip> 
-#include <cstring> 
-#define _CRT_SECURE_NO_WARNINGS 1
-using namespace std;
-const int LEN = 80, LIMIT = 100;
-
-struct Pair {
-    int x, y;
-};
-class Stack {
-protected:
-    static const int max = 7;
-    int st[max], top;
-public:
-    Stack() {
-        top = -1;
-
-    }
-    void push(int var) {
-        st[++top] = var;
-    }
-    int pop() {
-        return st[top--];
-    }
-};
-class Stack2 : public Stack {
-public:
-    void push(int var) {
-        if (top >= max - 1) {
-            cout << "Стек полон";
-            exit(1);
-        }
-        Stack::push(var);
-    }
-    int pop() {
-        if (top < 0) {
-            cout << "Стек пуст";
-            exit(1);
-        }
-        return Stack::pop();
-    }
-};
-class pairStack : public Stack2 {
-public:
-    void push(Pair unit) {
-        Stack::push(unit.x);
-        Stack::push(unit.y);
-    }
-    Pair pop() {
-        Pair temp;
-        temp.y = Stack2::pop();
-        temp.x = Stack2::pop();
-        return temp;
-    }
-};
-int main() {
-    Pair p1 = { 11,22 }, p2 = { 10,20 }, p3 = { 1,2 };
-    pairStack s1;
-    s1.push(p1);
-    s1.push(p2);
-    s1.push(p3);
-    Pair p;
-    p = s1.pop();
-    cout << p.x << ", " << p.y << endl;
-    p = s1.pop();
-    cout << p.x << ", " << p.y << endl;
-    p = s1.pop();
-    cout << p.x << ", " << p.y << endl;
-}
-
-/// ///////////////////////////////12 ZADANIE/////////////////////////////
-
-/******************************************************************************
-
-                              Online C++ Compiler.
-               Code, Compile, Run and Debug C++ program online.
-Write your code in this editor and press "Run" button to compile and execute it.
-
-*******************************************************************************/
-
-#include <iostream>
-#include <iomanip> 
-#include <cstring> 
-#define _CRT_SECURE_NO_WARNINGS 1
-using namespace std;
-const int LEN = 80, LIMIT = 100;
-
-class sterling {
-protected:
-    int funt, shill, penny;
-public:
-    sterling() : funt(0), shill(0), penny(0) {}
-    sterling(double d) {
-        funt = d;
-        shill = (d - funt) * 20;
-        penny = round(((d - funt) * 20 - shill) * 12);
-    }
-    sterling(int f, int s, int p) : funt(f), shill(s), penny(p) {}
-    void getSter() {
-        char point;
-        cout << "Введите сумму(1.1.1) - ";
-        cin >> funt >> point >> shill >> point >> penny;
-    }
-    void putSter() const{
-        char point = '.';
-        cout << funt << point << shill << point << penny;
-    }
-    operator double() const {
-        return (funt + shill / 20.0 + penny / 240.0);
-    }
-    sterling operator + (sterling s) const {
-        return sterling(double(sterling(funt, shill, penny)) + double(s));
-    }
-    sterling operator - (sterling s) const {
-        return sterling(double(sterling(funt, shill, penny)) - double(s));
-    }
-    sterling operator / (sterling s) const {
-        return sterling(double(sterling(funt, shill, penny)) / double(s));
-    }
-    sterling operator / (double n) const {
-        return sterling(double(sterling(funt, shill, penny)) / n);
-    }
-    sterling operator * (double n) const {
-        return sterling(double(sterling(funt, shill, penny)) * n);
-    }
-};
-class sterfrac : public sterling {
-private:
-    int eighths;
-public:
-    sterfrac() : sterling(), eighths(0) {}
-    sterfrac(double d) {
-        funt = d;
-        shill = (d - funt) * 20;
-        penny = ((d - funt) * 20 - shill) * 12;
-        eighths = round((((d - funt) * 20 - shill) * 12 - penny) * 8);
-    }
-    sterfrac(int f, int s, int p, int e) : sterling(f, s, p), eighths(e) {}
-    void getSter() {
-        int chisl, del;
-        char point;
-        cout << "Введите сумму(1.1.1-1/4) - ";
-        cin >> funt >> point >> shill >> point >> penny >> point >> chisl >> point >> del;
-        if (del == 2)
-            chisl = chisl * 4;
-        if (del == 4)
-            chisl = chisl * 2;
-        eighths = chisl;
-    }
-    void putSter() const {
-        sterling::putSter();
-        cout << " - ";
-        switch (eighths) {
-        case 2:
-            cout << "1/4";
-            break;
-        case 4:
-            cout << "1/2";
-            break;
-        case 6:
-            cout << "3/4";
-            break;
-        default:
-            cout << eighths << "/8";
-        }
-    }
-    operator double() const {
-        return (sterling::operator double() + eighths / 1920);
-    }
-    sterfrac operator + (sterfrac s) const {
-        return sterfrac(double(sterfrac(funt, shill, penny, eighths)) + double(s));
-    }
-    sterfrac operator - (sterfrac s) const {
-        return sterfrac(double(sterfrac(funt, shill, penny, eighths)) - double(s));
-    }
-    sterfrac operator / (sterfrac s) const {
-        return sterfrac(double(sterfrac(funt, shill, penny, eighths)) / double(s));
-    }
-    sterfrac operator / (double n) const {
-        return sterfrac(double(sterfrac(funt, shill, penny, eighths)) / n);
-    }
-    sterfrac operator * (double n) const {
-        return sterfrac(double(sterfrac(funt, shill, penny, eighths)) * n);
-    }
-
-};
-int main() {
-    setlocale(0, "");
-    sterfrac s1, s2, s;
-    double n;
-    cout << "1 - ";
-    s1.getSter();
-    cout << "2 - ";
-    s2.getSter();
-
-    cout << "1 - в десятичных фунтах: " << fixed << setprecision(2) << double(s1) << endl;
-    cout << "2 - в десятичных фунтах: " << fixed << setprecision(2) << double(s2) << endl;
-
-    s = s1 + s1;
-    cout << "Сумма - ";
-    s.putSter();
-    s = s1 - s2;
-    cout << endl << "Разность - ";
-    s.putSter();
-    s = s1 / s2;
-    cout << endl << "Дереление - ";
-    s.putSter();
-    s = s1 / 1.2;
-    cout << endl << "Деление на 1.2 - ";
-    s.putSter();
-    s = s1 * 1.2;
-    cout << endl << "Умножение на 1.2 - ";
-    s.putSter();
-
-}
-
-
-
-
-
-
-
-
-
