@@ -131,13 +131,11 @@ public:
 /// ///////////////////////////////2/8 ZADANIE/////////////////////////////
 class String {
 protected:
-	static const int SZ = 80;
+	enum { SZ = 80 };
 	char str[SZ];
 public:
 	String() { str[0] = '\0'; }
-	String(char s[]) {
-		strcpy_s(str, s);
-	}
+	String(const char s[]) { strcpy_s(str, s); } // convert string to String 
 	void display() const {
 		cout << str;
 	}
@@ -148,46 +146,47 @@ public:
 /////////
 class Pstring : public String {
 public:
-	Pstring(char s[]);
-};
-///////
-Pstring::Pstring(char s[]) {
-	if (strlen(s) > SZ - 1) {
-		for (int j = 0; j < SZ - 1; j++)
-			str[j] = s[j];
-		str[SZ - 1] = '\0';
+	Pstring() : String() {}
+	Pstring(const char s[]) : String(string0(s)) {}
+	const char* string0(const char s[]) { // ПРОВЕРКА НА КОЛ-ВО СИМВОЛОВ
+		if (strlen(s) >= SZ) {
+			char s0[SZ];
+			int i;
+			for (i = 0; i < SZ - 1; i++)
+				s0[i] = s[i];
+			s0[i] = '\0';
+			return s0;
+		}
+		else
+			return s;
 	}
-	else
-		String(s);
-}
+};
 ///////
 class Pstring2 : public Pstring {
 public:
-	string left(unsigned int amount)
-	{
-		string temp = "";
-		for (int i = 0; i < amount; i++)
-		{
-			temp += str[i];
-		}
-		return temp;
+	Pstring2() : Pstring() {}
+	Pstring2(const char s[]) : Pstring(s) {}
+	Pstring2 left(Pstring2 OsnStr, int virez) {
+		int i;
+		for (i = 0; i < virez; i++)
+			str[i] = OsnStr[i];
+		str[i] = '\0';
+		return Pstring2(str);
 	}
-	string right(unsigned int amount)
-	{
-		string temp = "";
-		int len = strlen(str);
-		for (int i = len - amount; i < len; i++) {
-			temp += str[i];
-		}
-		return temp;
+	Pstring2 right(Pstring2 OsnStr, int virez) {
+		int j = 0;
+		for (int i = strlen(OsnStr) - virez; i < strlen(OsnStr); i++)
+			str[j++] = OsnStr[i];
+		str[j] = '\0';
+		return Pstring2(str);
 	}
-	string mid(unsigned int amount, unsigned int elementary)
+	Pstring2 mid(Pstring2 OsnStr,int pos, int virez)
 	{
-		string temp = "";
-		for (int i = elementary - 1; i < elementary - 1 + amount; i++) {
-			temp += str[i];
-		}
-		return temp;
+		int j = 0;
+		for (int i = pos; i < pos + virez; i++)
+			str[j++] = OsnStr[i];
+		str[j] = '\0';
+		return Pstring2(str);
 	}
 };
 /// ///////////////////////////////5 ZADANIE/////////////////////////////
@@ -313,7 +312,6 @@ public:
 		return CountDn(--count);
 	}
 };
-
 /// ///////////////////////////////10 ZADANIE/////////////////////////////
 class student {
 private:
@@ -499,10 +497,10 @@ public:
 		funt = d;
 		shill = (d - funt) * 20;
 		penny = ((d - funt) * 20 - shill) * 12;
-		eighths = round((((d - funt) * 20 - shill) * 12 - penny) * 8);
+		eighths = round((((d-funt)*20-shill)*12-penny)*8);
 	}
 	sterfrac(int f, int s, int p, int e) : sterling(f, s, p), eighths(e) {}
-	void getSter() {
+	void getSterE() {
 		int chisl, del;
 		char point;
 		cout << "Введите сумму(1.1.1-1/4) - ";
@@ -513,7 +511,7 @@ public:
 			chisl = chisl * 2;
 		eighths = chisl;
 	}
-	void putSter() const {
+	void putSterE() const {
 		sterling::putSter();
 		cout << " - ";
 		switch (eighths) {
@@ -531,7 +529,7 @@ public:
 		}
 	}
 	operator double() const {
-		return (sterling::operator double() + eighths / 1920);
+		return (sterling::operator double() + eighths / 1920.0);
 	}
 	sterfrac operator + (sterfrac s) const {
 		return sterfrac(double(sterfrac(funt, shill, penny, eighths)) + double(s));
@@ -600,7 +598,24 @@ int main() {
 		return 0;
 	}
 	else if (zadanie == 8) {
-
+		Pstring2 s1 = "Ура, товарищи! ";
+		Pstring2 s2 = "Мы победим!";
+		Pstring2 s3 = "Эта строка имеет очень большую длину и мы можем быть уверены, что она не " "уместится в отведенный буфер, что приведет к непредсказуемым последствиям.";
+		s1.display();
+		cout << endl;
+		s3.display();
+		cout << endl;
+		cout << "Было:   s1 = "; s1.display(); cout << endl;
+		cout << "        s2 = "; s2.display(); cout << endl;
+		s2.left(s1, 3);
+		cout << "Стало1: s1 = "; s1.display(); cout << endl;
+		cout << "        s2 = "; s2.display(); cout << endl;
+		s2.mid(s1, 5, 5);
+		cout << "Стало2: s1 = "; s1.display(); cout << endl;
+		cout << "        s2 = "; s2.display(); cout << endl;
+		s2.right(s1, 4);
+		cout << "Стало3: s1 = '"; s1.display(); cout << "'" << endl;
+		cout << "        s2 = '"; s2.display(); cout << "'" << endl;
 	}
 	else if (zadanie == 9) {
 		book b1;
@@ -651,23 +666,22 @@ int main() {
 		sterfrac s1, s2, s;
 		double n;
 		cout << "1 - ";
-		s1.getSter();
+		s1.getSterE();
 		cout << "2 - ";
-		s2.getSter();
+		s2.getSterE();
 		cout << "1 - в десятичных фунтах: " << fixed << setprecision(2) << double(s1) << endl;
 		cout << "2 - в десятичных фунтах: " << fixed << setprecision(2) << double(s2) << endl;
-		cout << "1 - в десятичных фунтах: " << double(s1) << endl;
 		s = s1 + s2;
 		cout << "Сумма - ";
-		s.putSter();
+		s.putSterE();
 		s = s1 - s2;
 		cout << endl << "Разность - ";
-		s.putSter();
+		s.putSterE();
 		s = s1 / s2;
 		cout << endl << "Дереление - ";
-		s.putSter();
+		s.putSterE();
 		s = s1 * s2;
 		cout << endl << "Умножение - ";
-		s.putSter();
+		s.putSterE();
 	}
 }
