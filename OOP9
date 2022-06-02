@@ -1,0 +1,413 @@
+#include <io.h> // для функции _setmode
+#include <fcntl.h> // для константы _O_U16TEXT
+#include <iostream>
+#include <cctype>
+#include <cstring>
+#define _CRT_SECURE_NO_WARNINGS 1
+using namespace std;
+const int LEN = 100; // Для массивов
+char sb = '0'; // Для хранения ненужных символов
+float fmemory[100]; // Глобальный массив для задания 12 на 100 элементов
+int fmem_top = 0; // Глобальный индекс fmemory, показывающий на следующее свободное
+ // по очереди доступное место для сохранения значения
+int pmemory[100]; // Глобальный массив для задания 12 на 100 элементов
+int pmem_top = 0; // Аналогично fmem_top, только он для массива pmemory
+void addarray(const int* pArr_1, const int* pArr_2, int* pArr, const int size_of_arr)
+{
+	for (int i = 0; i < size_of_arr; i++)
+	{
+		pArr[i] = pArr_1[i] + pArr_2[i];
+	}
+}
+int compwcs(const wchar_t* s1, const wchar_t* s2)
+{
+	while (*s1 && *s2)      // пока не достигнут конец ни одной из строк,
+	{                       // сравниваем их посимвольно:
+		if (*s1 > *s2)      // если символ первой строки больше символа второй,
+			return 1;       // возвращаем 1 (первая строка больше второй)
+		else if (*s1 < *s2) // если символ первой строки меньше символа второй,
+			return -1;      // возвращаем -1 (первая строка меньше второй)
+		s1++; s2++;         // переходим к следующему символу в каждой из строк
+	}
+
+	// если программа дошла сюда, значит был достигнут конец либо одной из строк,
+	// либо конец обеих строк одновременно, при этом короткая строка полностью
+	// совпадает с началом длинной
+
+	if (!*s1 && !*s2)       // если строки равны по длине и совпадают посимвольно,
+		return 0;           // возвращаем 0 (строки равны)
+	else if (!*s1)          // если первая строка короче, а посимвольно строки совпадают,
+		return -1;          // возвращаем -1 (первая строка меньше второй)
+	else                    // если вторая строка короче, а посимвольно строки совпадают,
+		return 1;           // возвращаем 1 (первая строка больше второй)
+}
+class person
+{
+protected:
+	string name;
+	float salary;
+public:
+	void setData()
+	{
+		cout << "Enter name: "; cin >> name;
+		cout << "Enter salary: "; cin >> salary;
+	}
+	void printData()
+	{
+		cout << endl << name;
+		cout << endl << salary;
+	}
+	string getName()
+	{
+		return name;
+	}
+	float getSalary()
+	{
+		return salary;
+	}
+};
+void salsort(person** pp, int n)
+{
+	for (int j = 0; j < n - 1; j++)     // внешний цикл
+		for (int k = j + 1; k < n; k++) // внутренний цикл
+			// если первый объект больше второго (сравниваются зарплаты людей),
+			if ((*(pp + j))->getSalary() > (*(pp + k))->getSalary())
+			{
+				person* tempptr = *(pp + j); // то меняем указатели на них местами
+				*(pp + j) = *(pp + k);       // в массиве указателей
+				*(pp + k) = tempptr;
+			}
+}
+struct link // one element of list
+{
+	int data;
+	link* next; //pointer to next link
+};
+class linklist //a list of links
+{
+private:
+	link* first; //pointer to first link
+public:
+	linklist()
+	{
+		first = nullptr;
+	} // no first link
+	void additem(int d); // add data item (one link)
+	void display(); //display all links
+};
+void linklist::additem(int d) //add data item
+{
+	link* current = first; //set ptr to first link
+	link* newlink = new link; //make a new link
+	newlink->data = d; //give it data
+	if (first == nullptr)
+	{
+			first = newlink; // Запомянаем первый элемент
+		newlink->next = nullptr;
+		return;
+	}
+	for (;;)
+	{
+		if (current->next == nullptr)
+		{
+			current->next = newlink;
+			break;
+		}
+		else
+		{
+			current = current->next; //move to next link
+		}
+	}
+	newlink->next = nullptr;
+	current = nullptr;
+}
+void linklist::display() //display all links
+{
+	link* current = first; //set ptr to first link
+	while (current != nullptr)
+	{
+		cout << current->data << endl;
+		current = current->next; //move to next link
+	}
+}
+class narrays // класс, представляющий единым массивом n отдельных массивов
+{
+private:
+	const int NUMARRAYS; // количество отдельных массивов
+	const int MAXSIZE;   // количество элементов в каждом из отдельных массивов
+	int** ap;            // указатель на массив указателей на отдельные массивы типа int
+public:
+	narrays(int na, int ms) : NUMARRAYS(na), MAXSIZE(ms) // конструктор
+	{
+		// выделим память под массив указателей на отдельные массивы
+		ap = new int* [NUMARRAYS];
+		// выделим память под нужное количество отдельных массивов нужного размера
+		for (int j = 0; j < NUMARRAYS; j++)
+			*(ap + j) = new int[MAXSIZE];
+	}
+	~narrays() // деструктор
+	{
+		// освобождаем память, выделенную ранее под отдельные массивы
+		for (int j = 0; j < NUMARRAYS; j++)
+			delete[] * (ap + j);
+		// освобождаем память, выделенную ранее под массив указателей на отдельные массивы
+		delete[] ap;
+	}
+	int& operator[] (int n) // перегрузка операции индексации
+	{
+		int j = n / MAXSIZE; // номер отдельного массива (целочисленное деление)
+		int k = n % MAXSIZE; // индекс элемента в отдельном массиве
+		return *(*(ap + j) + k);
+	}
+};
+
+class Float // класс, моделирующий переменную типа float
+{
+private:
+	int addr; // адрес в памяти, по которому хранится значение нашей переменной
+			  // (в нашей модели это индекс массива, представляющего память компьютера)
+public:
+	Float(float value)     // конструктор с одним аргументом
+	{
+		fmemory[fmem_top] = value; // сохраняем значение нашей переменной в «память»
+		addr = fmem_top;           // запоминаем «адрес» нашей переменной в «памяти»
+		fmem_top++;                // изменяем индекс, указывающий на следующее свободное
+								   // место в «памяти»
+	}
+	int operator& () const // перегрузка операции & получения адреса переменной в памяти
+	{
+		return addr;
+	}
+};
+
+class ptrFloat // класс, моделирующий указатель на значение типа float
+{
+private:
+	int addr; // адрес в памяти, по которому хранится значение нашего указателя
+			  // (в нашей модели это индекс массива, представляющего память компьютера)
+public:
+	ptrFloat(int value)      // конструктор с одним аргументом
+	{
+		pmemory[pmem_top] = value; // сохраняем значение нашего указателя в «память»
+		addr = pmem_top;           // запоминаем «адрес» нашего указателя в «памяти»
+		pmem_top++;                // изменяем индекс, указывающий на следующее свободное
+								   // место в «памяти»
+	}
+	float& operator* () const // перегрузка операции * разыменования указателя
+	{
+		return fmemory[pmemory[addr]];
+	}
+};
+const int SIZE = 10;
+const int MAXSIZE = 10,   // количество элементов в массиве
+NUMARRAYS = 10; // количество массивов
+/// ////////////////////////////////////////////////////////////////////////////
+int main() {
+	setlocale(0, "");
+	int zadanie;
+	cout << "Введите номер задания - ";
+	cin >> zadanie;
+	if (zadanie == 1) {
+		float flarr[100]; //array for numbers
+		char ch; //user decision
+		int num = 0; //counts numbers input
+		do {
+			cout << "Enter number: "; //get numbers from user
+			cin >> *(flarr + num++); //until user answers 'n'
+			cout << " Enter another (y/n)? ";
+			cin >> ch;
+		} while (ch != 'n');
+		float total = 0.0; //total starts at 0
+		for (int k = 0; k < num; k++) //add numbers to total
+			total += *(flarr + k);
+		float average = total / num; //find and display average
+		cout << "Average is " << average << endl;
+	}
+	else if (zadanie == 2) {
+
+	}
+	else if (zadanie == 3) {
+	}
+	else if (zadanie == 4) {
+
+	}
+	else if (zadanie == 5) {
+		int arr[LEN], arr_1[LEN], arr_2[LEN];
+		for (int i = 0; i < LEN; i++) // Заполняем первый и второй массивы
+		{
+			arr_1[i] = i + 1;
+			arr_2[i] = (i + 1) * 10;
+		}
+		addarray(arr_1, arr_2, arr, LEN);
+		for (int i = 0; i < LEN; i++) // Выводим элементы всех массивов
+		{
+			cout << "arr_1[" << i << "] = " << arr_1[i] << endl;
+			cout << "arr_2[" << i << "] = " << arr_2[i] << endl;
+			cout << "arr[" << i << "] = " << arr[i] << endl;
+			cout << endl;
+		}
+	}
+	else if (zadanie == 6) {
+		const wchar_t* str1, * str2; // строки для сравнения
+
+	// При сортировке фамилий по возрастанию (то есть по алфавиту) фамилии
+	// отсортируются так (фамилия выше (ближе к началу алфавита) считается меньшей):
+	// 1. Petrov
+	// 2. Архангельский
+	// 3. Петров
+	// 4. Петровский
+	// 5. Сидоров
+	// 6. Яковлев
+	// 7. сидоров (с прописной буквы)
+
+		str1 = L"Сидоров"; str2 = L"Петровский"; // результат: 1 (str1 > str2)
+		wcout << L'"' << str1 << L"\", \"" << str2 << L"\", результат: " << compwcs(str1, str2) << endl;
+
+		str1 = L"Петровский"; str2 = L"Сидоров"; // результат: -1 (str1 < str2)
+		wcout << L'"' << str1 << L"\", \"" << str2 << L"\", результат: " << compwcs(str1, str2) << endl;
+
+		str1 = L"Петров"; str2 = L"Петров"; // результат: 0 (str1 == str2)
+		wcout << L'"' << str1 << L"\", \"" << str2 << L"\", результат: " << compwcs(str1, str2) << endl;
+
+		str1 = L"Петров"; str2 = L"Петровский"; // результат: -1 (str1 < str2)
+		wcout << L'"' << str1 << L"\", \"" << str2 << L"\", результат: " << compwcs(str1, str2) << endl;
+
+		str1 = L"Петровcкий"; str2 = L"Петров"; // результат: 1 (str1 > str2)
+		wcout << L'"' << str1 << L"\", \"" << str2 << L"\", результат: " << compwcs(str1, str2) << endl;
+
+		// Предположим, оператор ошибся и ввел фамилию с прописной буквы: "сидоров". Такая фамилия
+		// в списке станет после всех фамилий, введенных с ЗАГЛАВНОЙ буквы, так как коды
+		// прописных букв в Юникоде больше, чем коды ЗАГЛАВНЫХ
+
+		str1 = L"сидоров"; str2 = L"Яковлев"; // результат: 1 (str1 > str2)
+		wcout << L'"' << str1 << L"\", \"" << str2 << L"\", результат: " << compwcs(str1, str2) << endl;
+
+		// Предположим, оператор ввел одну из фамилий латиницей: "Petrov". В списке фамилий
+		// фамилии, введенные латиницей, станут выше, чем фамилии, введенные кириллицей, так как
+		// коды латинских букв в Юникоде меньше, чем коды кириллических
+
+		str1 = L"Petrov"; str2 = L"Архангельский"; // результат: -1 (str1 < str2)
+		wcout << L'"' << str1 << L"\", \"" << str2 << L"\", результат: " << compwcs(str1, str2) << endl;
+
+		return 0;
+	}
+	else if (zadanie == 7) {
+		void salsort(person**, int); // прототип функции сортировки
+		person* persPtr[100];        // массив указателей на объекты класса «человек»
+		int n = 0;                   // количество людей в массиве
+		wchar_t choice;              // хранит выбор пользователя ('д'/'н' — «да»/«нет»)
+		// создадим список объектов класса «человек», указатели на которые будем
+	// хранить в массиве указателей persPtr
+		do
+		{
+			persPtr[n] = new person;             // создаем новый объект
+			wcout << L"Субъект " << n << endl;
+			persPtr[n]->setData();               // получаем от пользователя данные человека
+			n++;                                 // увеличение счетчика объектов
+			wcout << L"Продолжаем ввод (d/n)? "; // спрашиваем, закончен ли ввод
+			wcin >> choice;
+		} while (choice == L'd');
+
+		wcout << L"\nНеотсортированный список:"; // выведем полученный от пользователя
+		for (int j = 0; j < n; j++)              // список объектов класса person,
+		{                                        // указатели на которые содержатся в
+			wcout << endl << L"Субъект " << j;   // массиве persPtr
+			(*(persPtr + j))->printData();
+		}
+		wcout << endl;
+
+		salsort(persPtr, n); // отсортируем указатели на объекты класса person
+							 // в массиве указателей persPtr
+
+		wcout << L"\nОтсортированный список:";   // выведем тот же список объектов класса
+		for (int j = 0; j < n; j++)              // person после сортировки
+		{
+			wcout << endl << L"Субъект " << j;
+			(*(persPtr + j))->printData();
+		}
+		wcout << endl;
+	}
+	else if (zadanie == 8) {
+	linklist li;
+	li.additem(25);
+	li.additem(36);
+	li.additem(49);
+	li.additem(64);
+	li.additem(81);
+	li.display();
+	}
+
+	else if (zadanie == 9) {
+		int a0[SIZE], a1[SIZE], a2[SIZE], a3[SIZE], a4[SIZE],
+			a5[SIZE], a6[SIZE], a7[SIZE], a8[SIZE], a9[SIZE];
+
+		// массив указателей на массивы
+		int* ap[] = { a0, a1, a2, a3, a4, a5, a6, a7, a8, a9 };
+
+		int j, k; // индексы для обращения к элементам массивов
+
+		// заполним массивы тестовыми данными
+		for (j = 0; j < SIZE; j++)
+			for (k = 0; k < SIZE; k++)
+				ap[j][k] = (j * 10 + k) * 10;
+
+		// выведем тестовые данные, хранящиеся в массивах, на экран
+		for (j = 0; j < SIZE; j++)
+			for (k = 0; k < SIZE; k++)
+				wcout << ap[j][k] << ((k == SIZE - 1) ? L'\n' : L' ');
+	}
+	else if (zadanie == 10) {
+		int j, k;           // индексы для обращения к элементам массивов
+		int* ap[NUMARRAYS]; // массив указателей на массивы
+
+		// определим нужное количество массивов нужного размера
+		for (j = 0; j < NUMARRAYS; j++)
+			*(ap + j) = new int[MAXSIZE];
+
+		// заполним массивы тестовыми данными
+		for (j = 0; j < NUMARRAYS; j++)
+			for (k = 0; k < MAXSIZE; k++)
+				*(*(ap + j) + k) = (j * 10 + k) * 10;
+		// ap[j][k] = (j * 10 + k) * 10; // так тоже можно
+
+	// выведем тестовые данные, хранящиеся в массивах, на экран
+		for (j = 0; j < NUMARRAYS; j++)
+			for (k = 0; k < MAXSIZE; k++)
+				wcout << *(*(ap + j) + k) << ((k == MAXSIZE - 1) ? L'\n' : L' ');
+	}
+	else if (zadanie == 11) {
+	int numarr;  // количество отдельных массивов
+	int sizearr; // количество элементов в каждом из отдельных массивов
+
+	wcout << L"Введите количество отдельных массивов (больше 0): "; wcin >> numarr;
+	wcout << L"Введите количество элементов в каждом отдельном массиве (больше 0): "; wcin >> sizearr;
+	wcout << endl;
+
+	narrays arr(numarr, sizearr); // массив, объединяющий отдельные массивы в одно целое
+	int i;                        // индекс единого массива
+
+	// заполним единый массив тестовыми данными
+	for (i = 0; i < numarr * sizearr; i++)
+		arr[i] = i * 10;
+
+	// выведем тестовые данные, хранящиеся в едином массиве, на экран
+	for (i = 0; i < numarr * sizearr; i++)
+		wcout << arr[i] << ((i % sizearr == sizearr - 1) ? L'\n' : L' ');
+	}
+	else if (zadanie == 12) {
+	Float var1 = 1.234f; // объявим и инициализируем две «переменные типа Float»
+	Float var2 = 5.678f;
+
+	ptrFloat ptr1 = &var1; // объявим два «указателя на значения типа Float»
+	ptrFloat ptr2 = &var2; // и инициализируем их «адресами» вышеобъявленных «переменных»
+
+	wcout << L"*ptr1 = " << *ptr1 << endl; // неявно извлечём значения переменных var1 и var2
+	wcout << L"*ptr2 = " << *ptr2 << endl << endl; // и покажем их на экране
+
+	*ptr1 = 7.123f; // присвоим новые значения переменным,
+	*ptr2 = 8.456f; // на которые указывают указатели ptr1 и ptr2
+
+	wcout << L"*ptr1 = " << *ptr1 << endl; // неявно извлечём значения переменных var1 и var2
+	wcout << L"*ptr2 = " << *ptr2 << endl; // и покажем их на экране
+	}
+}
