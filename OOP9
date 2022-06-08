@@ -26,7 +26,7 @@ public:
 		delete[] str; // освобождаем память
 	}
 	void display() const {
-		wcout << str; //выводим строку
+		cout << str; //выводим строку
 	}
 	void upit() {
 		int dlina = strlen(str);
@@ -35,26 +35,76 @@ public:
 	}
 };
 ////////////////////////////////  Для задания №3  ///////////////////////////////////////////////////
-void bsort(char** pp, int n) //sort pointers to strings
-{
-	void order(char**, char**); //prototype
-	int j, k; //indexes to array
-	for (j = 0; j < n - 1; j++) //outer loop
-		for (k = j + 1; k < n; k++) //inner loop starts at outer
-			order(pp + j, pp + k); //order the pointer contents
+void order(const char**, const char**); // прототип функции сортировки двух элементов массива
+void bsort(const char** ptr, int n) {
+	for (int i = 0; i < n - 1; i++)      // внешний цикл
+		for (int j = i + 1; j < n; j++)  // внутренний цикл
+			order(ptr + i, ptr + j);     // упорядочим два выбранных элемента
 }
-void order(char** pp1, char** pp2) //orders two pointers
-{ //if string in 1st is
-	if (strcmp(*pp1, *pp2) > 0) //larger than in 2nd,
-	{
-		char* tempptr = *pp1; //swap the pointers
-		*pp1 = *pp2;
-		*pp2 = tempptr;
+void order(const char** s1, const char** s2) {
+	if (strcmp(*s1, *s2) > 0) { // если первая строка больше второй, то меняем их местами
+		const char* temp = *s1;
+		*s1 = *s2;
+		*s2 = temp;
 	}
 }
+////////////////////////////////  Для задания №4  ///////////////////////////////////////////////////
 
-////////////////////////////////  Для задания №2  ///////////////////////////////////////////////////
+////////////////////////////////  Для задания №8  ///////////////////////////////////////////////////
+struct link     // элемент списка
+{
+	int data;   // данные
+	link* next; // указатель на следующий элемент списка
+};
 
+class linklist            // класс, представляющий связный список
+{
+private:
+	link* first;          // указатель на первый элемент списка
+public:
+	linklist()            // конструктор без аргументов
+	{
+		first = NULL;
+	} // первого элемента пока нет
+	void additem(int d);  // добавление элемента списка
+	void display();       // вывод на экран данных из всех элементов списка
+};
+
+void linklist::additem(int d) // добавление элемента списка в его конец
+{
+	link* newlink = new link; // выделяем память под новый элемент списка
+	newlink->data = d;        // сохраняем в него данные
+	newlink->next = NULL;     // новый элемент — последний в списке
+
+	// найдем конец списка, чтобы добавить в него новый элемент
+	if (first)                       // если список не пуст,
+	{
+		link* current = first;       // начинаем поиск с первого элемента
+		while (current->next)        // если текущий элемент не является последним,
+			current = current->next; // переходим в цикле к следующему элементу списка
+		current->next = newlink;     // вставляем в конец списка новый элемент
+	}
+	else                             // иначе, если список пуст
+		first = newlink;             // вставляем новый элемент первым в списке
+}
+
+void linklist::display() // вывод на экран данных из всех элементов списка
+{
+	link* current = first;              // начинаем с первого элемента
+	while (current)                     // пока указатель на текущий элемент
+	{                                   // не равен NULL (что означает конец списка)
+		wcout << current->data << endl; // выводим данные
+		current = current->next;        // переходим к следующему элементу
+	}
+}
+////////////////////////////////  Для задания №5  ///////////////////////////////////////////////////
+void addarray(const int* pArr_1, const int* pArr_2, int* pArr, const int size_of_arr)
+{
+	for (int i = 0; i < size_of_arr; i++) {
+		pArr[i] = pArr_1[i] + pArr_2[i];
+	}
+}
+////////////////////////////////  Для задания №6  ///////////////////////////////////////////////////
 int compstr(const char* pc_str_1, const char* pc_str_2, const int size_of_arr)
 {
 	for (int i = 0; i < size_of_arr; i++) {
@@ -63,63 +113,30 @@ int compstr(const char* pc_str_1, const char* pc_str_2, const int size_of_arr)
 		}
 		else {
 			if (pc_str_1[i] > pc_str_2[i]) {
-					return 1;
+				return 1;
 			}
 		}
 	}
 	return 0;
 }
-
-void addarray(const int* pArr_1, const int* pArr_2, int* pArr, const int size_of_arr)
-{
-	for (int i = 0; i < size_of_arr; i++) {
-		pArr[i] = pArr_1[i] + pArr_2[i];
-	}
-}
-int compwcs(const char* s1, const char* s2)
-{
-	while (*s1 && *s2)      // пока не достигнут конец ни одной из строк,
-	{                       // сравниваем их посимвольно:
-		if (*s1 > *s2)      // если символ первой строки больше символа второй,
-			return 1;       // возвращаем 1 (первая строка больше второй)
-		else if (*s1 < *s2) // если символ первой строки меньше символа второй,
-			return -1;      // возвращаем -1 (первая строка меньше второй)
-		s1++; s2++;         // переходим к следующему символу в каждой из строк
-	}
-
-	// если программа дошла сюда, значит был достигнут конец либо одной из строк,
-	// либо конец обеих строк одновременно, при этом короткая строка полностью
-	// совпадает с началом длинной
-
-	if (!*s1 && !*s2)       // если строки равны по длине и совпадают посимвольно,
-		return 0;           // возвращаем 0 (строки равны)
-	else if (!*s1)          // если первая строка короче, а посимвольно строки совпадают,
-		return -1;          // возвращаем -1 (первая строка меньше второй)
-	else                    // если вторая строка короче, а посимвольно строки совпадают,
-		return 1;           // возвращаем 1 (первая строка больше второй)
-}
-class person
-{
+////////////////////////////////  Для задания №7  ///////////////////////////////////////////////////
+class person {
 protected:
 	string name;
 	float salary;
 public:
-	void setData()
-	{
+	void setData() {
 		cout << "Enter name: "; cin >> name;
 		cout << "Enter salary: "; cin >> salary;
 	}
-	void printData()
-	{
+	void printData() {
 		cout << endl << name;
 		cout << endl << salary;
 	}
-	string getName()
-	{
+	string getName() {
 		return name;
 	}
-	float getSalary()
-	{
+	float getSalary() {
 		return salary;
 	}
 };
@@ -135,60 +152,8 @@ void salsort(person** pp, int n)
 				*(pp + k) = tempptr;
 			}
 }
-struct link // one element of list
-{
-	int data;
-	link* next; //pointer to next link
-};
-class linklist //a list of links
-{
-private:
-	link* first; //pointer to first link
-public:
-	linklist()
-	{
-		first = nullptr;
-	} // no first link
-	void additem(int d); // add data item (one link)
-	void display(); //display all links
-};
-void linklist::additem(int d) //add data item
-{
-	link* current = first; //set ptr to first link
-	link* newlink = new link; //make a new link
-	newlink->data = d; //give it data
-	if (first == nullptr)
-	{
-			first = newlink; // Запомянаем первый элемент
-		newlink->next = nullptr;
-		return;
-	}
-	for (;;)
-	{
-		if (current->next == nullptr)
-		{
-			current->next = newlink;
-			break;
-		}
-		else
-		{
-			current = current->next; //move to next link
-		}
-	}
-	newlink->next = nullptr;
-	current = nullptr;
-}
-void linklist::display() //display all links
-{
-	link* current = first; //set ptr to first link
-	while (current != nullptr)
-	{
-		cout << current->data << endl;
-		current = current->next; //move to next link
-	}
-}
-class narrays // класс, представляющий единым массивом n отдельных массивов
-{
+////////////////////////////////  Для задания #11  ///////////////////////////////////////////////////
+class narrays { // класс, представляющий единым массивом n отдельных массивов
 private:
 	const int NUMARRAYS; // количество отдельных массивов
 	const int MAXSIZE;   // количество элементов в каждом из отдельных массивов
@@ -217,7 +182,7 @@ public:
 		return *(*(ap + j) + k);
 	}
 };
-
+////////////////////////////////  Для задания №12  ///////////////////////////////////////////////////
 class Float // класс, моделирующий переменную типа float
 {
 private:
@@ -298,7 +263,14 @@ int main() {
 			cout << *(arrptrs + i) << endl;
 	}
 	else if (zadanie == 4) {
+		linklist li;    // создаем связный список
 
+		li.additem(25); // добавляем четыре элемента в список
+		li.additem(36);
+		li.additem(49);
+		li.additem(64);
+
+		li.display();   // выводим весь список
 	}
 	else if (zadanie == 5) {
 		int arr[LEN], arr_1[LEN], arr_2[LEN];
@@ -320,15 +292,21 @@ int main() {
 		char c_str_1[LEN], c_str_2[LEN];
 		for (;;)
 		{
-			cout << "Введите что-нибдуь в c_str_1: "; cin >> c_str_1;
-			cout << "Введите что-нибудь в c_str_2: "; cin >> c_str_2;
+			cout << "Введите что-нибдуь в c_str_1: "; 
+			cin >> c_str_1;
+			cout << "Введите что-нибудь в c_str_2: "; 
+			cin >> c_str_2;
 			switch (compstr(c_str_1, c_str_2, strlen(c_str_1)))
 			{
-			case -1: cout << "Первая строка идет первой по алфавиту\n"; break;
-			case 0: cout << "Строки равны\n"; break;
-			case 1: cout << "Вторая строка идет первой по алфавиту\n"; break;
+			case -1: cout << "Первая строка идет первой по алфавиту\n"; 
+				break;
+			case 0: cout << "Строки равны\n"; 
+				break;
+			case 1: cout << "Вторая строка идет первой по алфавиту\n"; 
+				break;
 			}
-			cout << "Продолжить? (y / n): "; cin >> sb;
+			cout << "Продолжить? (y / n): "; 
+			cin >> sb;
 			if (sb == 'n')
 			{
 				break;
@@ -384,17 +362,13 @@ int main() {
 	else if (zadanie == 9) {
 		int a0[SIZE], a1[SIZE], a2[SIZE], a3[SIZE], a4[SIZE],
 			a5[SIZE], a6[SIZE], a7[SIZE], a8[SIZE], a9[SIZE];
-
 		// массив указателей на массивы
 		int* ap[] = { a0, a1, a2, a3, a4, a5, a6, a7, a8, a9 };
-
 		int j, k; // индексы для обращения к элементам массивов
-
 		// заполним массивы тестовыми данными
 		for (j = 0; j < SIZE; j++)
 			for (k = 0; k < SIZE; k++)
 				ap[j][k] = (j * 10 + k) * 10;
-
 		// выведем тестовые данные, хранящиеся в массивах, на экран
 		for (j = 0; j < SIZE; j++)
 			for (k = 0; k < SIZE; k++)
