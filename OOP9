@@ -4,14 +4,8 @@
 #include <cstring>
 #define _CRT_SECURE_NO_WARNINGS 1
 using namespace std;
-const int LEN = 100; // Для массивов
-const int DAYS = 7; //количество указателей в массиве
+const int LEN = 100, DAYS = 7; // Для массивов
 char sb = '0'; // Для хранения ненужных символов
-float fmemory[100]; // Глобальный массив для задания 12 на 100 элементов
-int fmem_top = 0; // Глобальный индекс fmemory, показывающий на следующее свободное
- // по очереди доступное место для сохранения значения
-int pmemory[100]; // Глобальный массив для задания 12 на 100 элементов
-int pmem_top = 0; // Аналогично fmem_top, только он для массива pmemory
 ////////////////////////////////  Для задания №2  ///////////////////////////////////////////////////
 class String {//user-defined string type
 private:
@@ -22,7 +16,7 @@ public:
 		str = new char[dlina + 1]; // выделяем под нее память
 		strcpy(str, s); // и копируем строку
 	}
-	~String() { // деструктор
+	~String() {
 		delete[] str; // освобождаем память
 	}
 	void display() const {
@@ -37,8 +31,8 @@ public:
 ////////////////////////////////  Для задания №3  ///////////////////////////////////////////////////
 void order(const char**, const char**); // прототип функции сортировки двух элементов массива
 void bsort(const char** ptr, int n) {
-	for (int i = 0; i < n - 1; i++)      // внешний цикл
-		for (int j = i + 1; j < n; j++)  // внутренний цикл
+	for (int i = 0; i < n - 1; i++)
+		for (int j = i + 1; j < n; j++)
 			order(ptr + i, ptr + j);     // упорядочим два выбранных элемента
 }
 void order(const char** s1, const char** s2) {
@@ -48,76 +42,80 @@ void order(const char** s1, const char** s2) {
 		*s2 = temp;
 	}
 }
-////////////////////////////////  Для задания №4  ///////////////////////////////////////////////////
-
-////////////////////////////////  Для задания №8  ///////////////////////////////////////////////////
-struct link     // элемент списка
-{
+////////////////////////////////  Для задания №4/8  ///////////////////////////////////////////////////
+struct link {
 	int data;   // данные
 	link* next; // указатель на следующий элемент списка
 };
-
-class linklist            // класс, представляющий связный список
-{
+class linklist {
 private:
 	link* first;          // указатель на первый элемент списка
 public:
-	linklist()            // конструктор без аргументов
-	{
-		first = NULL;
-	} // первого элемента пока нет
-	void additem(int d);  // добавление элемента списка
-	void display();       // вывод на экран данных из всех элементов списка
+	linklist() {
+		first = NULL; // первого элемента нет
+	}
+	void additem(int d);	// добавление в список для №4
+	void additem1(int d);  // добавление в список для №8
+	void display();       // вывод на экран
 };
-
-void linklist::additem(int d) // добавление элемента списка в его конец
-{
+void linklist::additem(int d) {
+	link* newlink = new link; // выделяем память под новый элемент списка
+	newlink->data = d;        // сохраняем в него данные
+	newlink->next = first;    // указатель на следующий элемент списка теперь будет указывать на тот, который был первым до этого
+	first = newlink;          // первым теперь стал только что созданный элемент, это значит что элементы будут доваляться в начало списка
+}
+void linklist::additem1(int d) {
 	link* newlink = new link; // выделяем память под новый элемент списка
 	newlink->data = d;        // сохраняем в него данные
 	newlink->next = NULL;     // новый элемент — последний в списке
 
-	// найдем конец списка, чтобы добавить в него новый элемент
-	if (first)                       // если список не пуст,
-	{
-		link* current = first;       // начинаем поиск с первого элемента
-		while (current->next)        // если текущий элемент не является последним,
-			current = current->next; // переходим в цикле к следующему элементу списка
+	// нужно найти конец списка
+	if (first) { // если список не пустой
+		link* current = first;
+		while (current->next)
+			current = current->next;
 		current->next = newlink;     // вставляем в конец списка новый элемент
 	}
-	else                             // иначе, если список пуст
-		first = newlink;             // вставляем новый элемент первым в списке
+	else
+		first = newlink;             // иначе вставляем новый элемент первым
 }
 
 void linklist::display() // вывод на экран данных из всех элементов списка
 {
-	link* current = first;              // начинаем с первого элемента
-	while (current)                     // пока указатель на текущий элемент
-	{                                   // не равен NULL (что означает конец списка)
+	link* current = first;
+	while (current) {
 		wcout << current->data << endl; // выводим данные
 		current = current->next;        // переходим к следующему элементу
 	}
 }
 ////////////////////////////////  Для задания №5  ///////////////////////////////////////////////////
-void addarray(const int* pArr_1, const int* pArr_2, int* pArr, const int size_of_arr)
-{
-	for (int i = 0; i < size_of_arr; i++) {
-		pArr[i] = pArr_1[i] + pArr_2[i];
-	}
+void addarrays(float* arrraz, float* arrdva, float* arrtri, int kolvo) { // складывает элементы первых двух массивов 
+	for (int i = 0; i < kolvo; i++)
+		*(arrtri + i) = *(arrraz + i) + *(arrdva + i);
+}
+void display(float* a, int kolvo) { // вывод элементов массива
+	for (int i = 0; i < kolvo; i++)
+		cout << *(a + i) << ((i != kolvo - 1) ? ", " : "");
 }
 ////////////////////////////////  Для задания №6  ///////////////////////////////////////////////////
-int compstr(const char* pc_str_1, const char* pc_str_2, const int size_of_arr)
+int compstr(const char* s1, const char* s2) // сравниваются две строки и...
+												  // если первая строка больше второй выдает - 1
+												  // если первая строка меньше второй выдает - -1
+												  // если первая строка равна второй выдает - 0
 {
-	for (int i = 0; i < size_of_arr; i++) {
-		if (pc_str_1[i] < pc_str_2[i]) {
+	while (*s1 && *s2) { // сравнивает символы пока не проверит все у обеих строк
+		if (*s1 > *s2)
+			return 1;
+		else if (*s1 < *s2)
 			return -1;
-		}
-		else {
-			if (pc_str_1[i] > pc_str_2[i]) {
-				return 1;
-			}
-		}
+		s1++; s2++; // идем к след. символам
 	}
-	return 0;
+	if (!*s1 && !*s2)       // если строки по длине равны и их символы совпадают
+		return 0;
+	else if (!*s1)          // если первая строка короче, а посимвольно строки совпадают,
+		return -1;
+	else                    // если вторая строка короче, а посимвольно строки совпадают,
+		return 1;
 }
 ////////////////////////////////  Для задания №7  ///////////////////////////////////////////////////
 class person {
@@ -126,8 +124,10 @@ protected:
 	float salary;
 public:
 	void setData() {
-		cout << "Enter name: "; cin >> name;
-		cout << "Enter salary: "; cin >> salary;
+		cout << "Введите имя - "; 
+		cin >> name;
+		cout << "Введите зарплату - "; 
+		cin >> salary;
 	}
 	void printData() {
 		cout << endl << name;
@@ -140,105 +140,93 @@ public:
 		return salary;
 	}
 };
-void salsort(person** pp, int n)
-{
-	for (int j = 0; j < n - 1; j++)     // внешний цикл
-		for (int k = j + 1; k < n; k++) // внутренний цикл
-			// если первый объект больше второго (сравниваются зарплаты людей),
-			if ((*(pp + j))->getSalary() > (*(pp + k))->getSalary())
-			{
-				person* tempptr = *(pp + j); // то меняем указатели на них местами
-				*(pp + j) = *(pp + k);       // в массиве указателей
-				*(pp + k) = tempptr;
+void salsort(person** pp, int n) {
+	for (int i = 0; i < n - 1; i++)
+		for (int j = i + 1; j < n; j++)
+			if ((*(pp + i))->getSalary() > (*(pp + j))->getSalary()) { // если первый зарплата больше второй
+				person* ptr0 = *(pp + i); // то меняем указатели на них местами в массиве указателей
+				*(pp + i) = *(pp + j);
+				*(pp + j) = ptr0;
 			}
 }
 ////////////////////////////////  Для задания #11  ///////////////////////////////////////////////////
-class narrays { // класс, представляющий единым массивом n отдельных массивов
+class narrays {
 private:
-	const int NUMARRAYS; // количество отдельных массивов
-	const int MAXSIZE;   // количество элементов в каждом из отдельных массивов
+	const int NUMARRAYS; // количество массивов
+	const int MAXSIZE;   // количество элементов
 	int** ap;            // указатель на массив указателей на отдельные массивы типа int
 public:
-	narrays(int na, int ms) : NUMARRAYS(na), MAXSIZE(ms) // конструктор
-	{
-		// выделим память под массив указателей на отдельные массивы
-		ap = new int* [NUMARRAYS];
-		// выделим память под нужное количество отдельных массивов нужного размера
-		for (int j = 0; j < NUMARRAYS; j++)
+	narrays(int na, int ms) : NUMARRAYS(na), MAXSIZE(ms) {
+		ap = new int* [NUMARRAYS]; // выделим память под массив указателей на отдельные массивы
+		for (int j = 0; j < NUMARRAYS; j++) // выделим память под нужное количество отдельных массивов нужного размера
 			*(ap + j) = new int[MAXSIZE];
 	}
-	~narrays() // деструктор
-	{
-		// освобождаем память, выделенную ранее под отдельные массивы
+	~narrays() { // освобождаем память
 		for (int j = 0; j < NUMARRAYS; j++)
 			delete[] * (ap + j);
-		// освобождаем память, выделенную ранее под массив указателей на отдельные массивы
 		delete[] ap;
 	}
-	int& operator[] (int n) // перегрузка операции индексации
-	{
-		int j = n / MAXSIZE; // номер отдельного массива (целочисленное деление)
-		int k = n % MAXSIZE; // индекс элемента в отдельном массиве
+	int& operator[] (int n) { // перегрузка операции индексации
+		int j = n / MAXSIZE; // номер отдельного массива
+		int k = n % MAXSIZE; // индекс элемента
 		return *(*(ap + j) + k);
 	}
 };
 ////////////////////////////////  Для задания №12  ///////////////////////////////////////////////////
-class Float // класс, моделирующий переменную типа float
-{
+// для типа float
+const int fm_SIZE = 100; // размер памяти
+float fmemory[fm_SIZE];  // массив, представляющий часть памяти компьютера
+int fmem_top = 0;        // следующее свободное место
+// для адресов
+const int pm_SIZE = 100; // размер памяти
+int pmemory[pm_SIZE];    // массив, представляющий часть памяти компьютера
+int pmem_top = 0;        // следующее свободное место
+class Float { // класс, моделирующий переменную типа float
 private:
-	int addr; // адрес в памяти, по которому хранится значение нашей переменной
-			  // (в нашей модели это индекс массива, представляющего память компьютера)
+	int addr; // адрес в памяти, по которому хранится значение переменной
 public:
-	Float(float value)     // конструктор с одним аргументом
-	{
-		fmemory[fmem_top] = value; // сохраняем значение нашей переменной в «память»
-		addr = fmem_top;           // запоминаем «адрес» нашей переменной в «памяти»
-		fmem_top++;                // изменяем индекс, указывающий на следующее свободное
-								   // место в «памяти»
+	Float(float value) {
+		fmemory[fmem_top] = value; // сохраняем значение переменной
+		addr = fmem_top;           // запоминаем адрес переменной
+		fmem_top++;
 	}
-	int operator& () const // перегрузка операции & получения адреса переменной в памяти
-	{
+	int operator& () const { // перегрузка операции & получения адреса переменной в памяти
 		return addr;
 	}
 };
-
 class ptrFloat // класс, моделирующий указатель на значение типа float
 {
 private:
-	int addr; // адрес в памяти, по которому хранится значение нашего указателя
-			  // (в нашей модели это индекс массива, представляющего память компьютера)
+	int addr;
 public:
-	ptrFloat(int value)      // конструктор с одним аргументом
-	{
-		pmemory[pmem_top] = value; // сохраняем значение нашего указателя в «память»
-		addr = pmem_top;           // запоминаем «адрес» нашего указателя в «памяти»
-		pmem_top++;                // изменяем индекс, указывающий на следующее свободное
-								   // место в «памяти»
+	ptrFloat(int value) {  // конструктор с одним аргументом
+		pmemory[pmem_top] = value; // сохраняем значение указателя
+		addr = pmem_top;           // запоминаем адрес указателя
+		pmem_top++;
 	}
-	float& operator* () const // перегрузка операции * разыменования указателя
-	{
+	float& operator* () const { // перегрузка операции * разыменования указателя
 		return fmemory[pmemory[addr]];
 	}
 };
-const int SIZE = 10;
-const int MAXSIZE = 10,   // количество элементов в массиве
-NUMARRAYS = 10; // количество массивов
 /// ////////////////////////////////////////////////////////////////////////////
 int main() {
 	setlocale(0, "");
 	int zadanie;
+	char da;
+	const int MAXSIZE = 10; // количество элементов в массиве
+	const int NUMARRAYS = 10; // количество массивов
 	cout << "Введите номер задания - ";
 	cin >> zadanie;
 	if (zadanie == 1) {
 		int kolv, j;
 		float* ptr; // указатель на массив
-		float sum=0;  // сумма чисел
-		cout << "Введите количество чисел - "; 
+		float sum = 0;  // сумма чисел
+		cout << "Введите количество чисел - ";
 		cin >> kolv;
 		ptr = new float[kolv]; // выделяем память для массива на основе введенного количества чисел
 		cout << "Введите ваши числа - " << endl;
 		for (j = 0; j < kolv; j++) {
-			cout << j+1 << ". ";
+			cout << j + 1 << ". ";
 			cin >> *(ptr + j);
 		}
 		for (j = 0; j < kolv; j++)
@@ -247,15 +235,15 @@ int main() {
 	}
 	else if (zadanie == 2) {
 		String s1 = "He who laughs last laughs best.";
-		cout << "Оригинал - "; 
+		cout << "Оригинал - ";
 		s1.display();
 		s1.upit();
-		cout << endl << "В верхнем регистре - "; 
+		cout << endl << "В верхнем регистре - ";
 		s1.display();
 	}
 	else if (zadanie == 3) {
 		const char* arrptrs[DAYS] = {
-			"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday" 
+			"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"
 		};
 		cout << "\nUnsorted:\n";
 		bsort(arrptrs, DAYS);
@@ -265,167 +253,135 @@ int main() {
 	else if (zadanie == 4) {
 		linklist li;    // создаем связный список
 
-		li.additem(25); // добавляем четыре элемента в список
+		li.additem(25); // добавляем элементы
 		li.additem(36);
 		li.additem(49);
 		li.additem(64);
-
 		li.display();   // выводим весь список
 	}
 	else if (zadanie == 5) {
-		int arr[LEN], arr_1[LEN], arr_2[LEN];
-		for (int i = 0; i < LEN; i++) // Заполняем первый и второй массивы
-		{
-			arr_1[i] = i + 1;
-			arr_2[i] = (i + 1) * 10;
-		}
-		addarray(arr_1, arr_2, arr, LEN);
-		for (int i = 0; i < LEN; i++) // Выводим элементы всех массивов
-		{
-			cout << "arr_1[" << i << "] = " << arr_1[i] << endl;
-			cout << "arr_2[" << i << "] = " << arr_2[i] << endl;
-			cout << "arr[" << i << "] = " << arr[i] << endl;
-			cout << endl;
-		}
+		const int kolvo = 5;
+		float arrraz[kolvo] = { 1.5, 2.5, 3.5, 4.5, 1 }, arrdva[kolvo] = { 0.5, 5.5, 1.5, 3.5, 2 }, arrtri[kolvo];
+		addarrays(arrraz, arrdva, arrtri, kolvo);
+		cout << "Массив 1 - ";
+		display(arrraz, kolvo);
+		cout << endl << "Массив 2 - ";
+		display(arrdva, kolvo);
+		cout << endl << "Массив 3 (сумма) - ";
+		display(arrtri, kolvo);
 	}
 	else if (zadanie == 6) {
-		char c_str_1[LEN], c_str_2[LEN];
-		for (;;)
-		{
-			cout << "Введите что-нибдуь в c_str_1: "; 
-			cin >> c_str_1;
-			cout << "Введите что-нибудь в c_str_2: "; 
-			cin >> c_str_2;
-			switch (compstr(c_str_1, c_str_2, strlen(c_str_1)))
-			{
-			case -1: cout << "Первая строка идет первой по алфавиту\n"; 
+		char s1[100], s2[100];
+		for (;;) {
+			cout << "Введите первую строку - ";
+			cin >> s1;
+			cout << "Введите вторую строку - ";
+			cin >> s2;
+			switch (compstr(s1, s2)) {
+			case -1: cout << "Первая строка идет по алфавиту раньше (-1) \n";
 				break;
-			case 0: cout << "Строки равны\n"; 
+			case 0: cout << "Строки равны (0) \n";
 				break;
-			case 1: cout << "Вторая строка идет первой по алфавиту\n"; 
+			case 1: cout << "Вторая строка идет по алфавиту раньше (1) \n";
 				break;
 			}
-			cout << "Продолжить? (y / n): "; 
-			cin >> sb;
-			if (sb == 'n')
-			{
+			cout << "Продолжить? (d/n): ";
+			cin >> da;
+			if (da == 'n') {
 				break;
 			}
 		}
 	}
 	else if (zadanie == 7) {
 		void salsort(person**, int); // прототип функции сортировки
-		person* persPtr[100];        // массив указателей на объекты класса «человек»
-		int n = 0;                   // количество людей в массиве
-		char choice;              // хранит выбор пользователя ('д'/'н' — «да»/«нет»)
-		// создадим список объектов класса «человек», указатели на которые будем
-	// хранить в массиве указателей persPtr
-		do
-		{
+		person* persPtr[100];   // массив указателей на объекты класса
+		int n = 0;
+		do { // создаем список объектов
 			persPtr[n] = new person;             // создаем новый объект
-			cout << "Субъект " << n << endl;
+			cout << "Сотрудник " << n+1 << endl;
 			persPtr[n]->setData();               // получаем от пользователя данные человека
-			n++;                                 // увеличение счетчика объектов
-			cout << "Продолжаем ввод (d/n)? "; // спрашиваем, закончен ли ввод
-			cin >> choice;
-		} while (choice == 'd');
+			n++;
+			cout << "Продолжаем ввод (d/n)? ";
+			cin >> da;
+		} while (da == 'd');
 
-		cout << "\nНеотсортированный список:"; // выведем полученный от пользователя
-		for (int j = 0; j < n; j++)              // список объектов класса person,
-		{                                        // указатели на которые содержатся в
-			cout << endl << "Субъект " << j;   // массиве persPtr
-			(*(persPtr + j))->printData();
+		cout << endl << "Неотсортированный список - "; 
+		for (int i = 0; i < n; i++) {                
+			cout << endl << "Сотрудник " << i+1;
+			(*(persPtr + i))->printData(); // выведем полученный список
 		}
 		cout << endl;
+		salsort(persPtr, n); // отсортируем указатели на объекты класса person в массиве указателей persPtr
 
-		salsort(persPtr, n); // отсортируем указатели на объекты класса person
-							 // в массиве указателей persPtr
-
-		cout << "\nОтсортированный список:";   // выведем тот же список объектов класса
-		for (int j = 0; j < n; j++)              // person после сортировки
-		{
-			cout << endl << "Субъект " << j;
-			(*(persPtr + j))->printData();
+		cout << endl << "Отсортированный список:";   // выведем список после сортировки
+		for (int i = 0; i < n; i++)  {
+			cout << endl << "Сотрудник " << i+1;
+			(*(persPtr + i))->printData();
 		}
-		cout << endl;
 	}
 	else if (zadanie == 8) {
-	linklist li;
-	li.additem(25);
-	li.additem(36);
-	li.additem(49);
-	li.additem(64);
-	li.additem(81);
-	li.display();
+		linklist li;
+		li.additem1(25); // добавляем элементы
+		li.additem1(36);
+		li.additem1(49);
+		li.additem1(64);
+		li.display();
 	}
 
 	else if (zadanie == 9) {
-		int a0[SIZE], a1[SIZE], a2[SIZE], a3[SIZE], a4[SIZE],
-			a5[SIZE], a6[SIZE], a7[SIZE], a8[SIZE], a9[SIZE];
-		// массив указателей на массивы
-		int* ap[] = { a0, a1, a2, a3, a4, a5, a6, a7, a8, a9 };
-		int j, k; // индексы для обращения к элементам массивов
-		// заполним массивы тестовыми данными
-		for (j = 0; j < SIZE; j++)
-			for (k = 0; k < SIZE; k++)
+		int a0[10], a1[10], a2[10], a3[10], a4[10], a5[10], a6[10], a7[10], a8[10], a9[10]; // массивы
+		int* ap[] = { a0, a1, a2, a3, a4, a5, a6, a7, a8, a9 }; // массив указателей на массивы
+		int j, k;
+		// заполняем массивы
+		for (j = 0; j < 10; j++)
+			for (k = 0; k < 10; k++)
 				ap[j][k] = (j * 10 + k) * 10;
-		// выведем тестовые данные, хранящиеся в массивах, на экран
-		for (j = 0; j < SIZE; j++)
-			for (k = 0; k < SIZE; k++)
-				cout << ap[j][k] << ((k == SIZE - 1) ? '\n' : ' ');
+		// выводим данные
+		for (j = 0; j < 10; j++)
+			for (k = 0; k < 10; k++)
+				cout << ap[j][k] << ((k == 10 - 1) ? '\n' : ' ');
 	}
 	else if (zadanie == 10) {
-		int j, k;           // индексы для обращения к элементам массивов
+		int j, k;
 		int* ap[NUMARRAYS]; // массив указателей на массивы
-
 		// определим нужное количество массивов нужного размера
 		for (j = 0; j < NUMARRAYS; j++)
 			*(ap + j) = new int[MAXSIZE];
-
-		// заполним массивы тестовыми данными
+		// заполняем массивы
 		for (j = 0; j < NUMARRAYS; j++)
 			for (k = 0; k < MAXSIZE; k++)
 				*(*(ap + j) + k) = (j * 10 + k) * 10;
-		// ap[j][k] = (j * 10 + k) * 10; // так тоже можно
-
-	// выведем тестовые данные, хранящиеся в массивах, на экран
+		// выводим данные
 		for (j = 0; j < NUMARRAYS; j++)
 			for (k = 0; k < MAXSIZE; k++)
 				cout << *(*(ap + j) + k) << ((k == MAXSIZE - 1) ? '\n' : ' ');
 	}
 	else if (zadanie == 11) {
-	int numarr;  // количество отдельных массивов
-	int sizearr; // количество элементов в каждом из отдельных массивов
-
-	cout << "Введите количество отдельных массивов (больше 0): "; cin >> numarr;
-	cout << "Введите количество элементов в каждом отдельном массиве (больше 0): "; cin >> sizearr;
-	cout << endl;
-
-	narrays arr(numarr, sizearr); // массив, объединяющий отдельные массивы в одно целое
-	int i;                        // индекс единого массива
-
-	// заполним единый массив тестовыми данными
-	for (i = 0; i < numarr * sizearr; i++)
-		arr[i] = i * 10;
-
-	// выведем тестовые данные, хранящиеся в едином массиве, на экран
-	for (i = 0; i < numarr * sizearr; i++)
-		cout << arr[i] << ((i % sizearr == sizearr - 1) ? '\n' : ' ');
+		int kolvoarr;  // количество отдельных массивов
+		int sizearr; // количество элементов в каждом из отдельных массивов
+		cout << "Введите количество массивов - "; 
+		cin >> kolvoarr;
+		cout << "Введите количество элементов в каждом из массивов - "; 
+		cin >> sizearr;
+		cout << endl;
+		narrays arr(kolvoarr, sizearr); // массив, объединяющий отдельные массивы в одно целое
+		// заполняем этот массив
+		for (int i = 0; i < kolvoarr * sizearr; i++)
+			arr[i] = i * 10;
+		// выводим данные из этого массива
+		for (int i = 0; i < kolvoarr * sizearr; i++)
+			cout << arr[i] << ((i % sizearr == sizearr - 1) ? '\n' : ' ');
 	}
 	else if (zadanie == 12) {
-	Float var1 = 1.234f; // объявим и инициализируем две «переменные типа Float»
-	Float var2 = 5.678f;
-
-	ptrFloat ptr1 = &var1; // объявим два «указателя на значения типа Float»
-	ptrFloat ptr2 = &var2; // и инициализируем их «адресами» вышеобъявленных «переменных»
-
-	cout << "*ptr1 = " << *ptr1 << endl; // неявно извлечём значения переменных var1 и var2
-	cout << "*ptr2 = " << *ptr2 << endl << endl; // и покажем их на экране
-
-	*ptr1 = 7.123f; // присвоим новые значения переменным,
-	*ptr2 = 8.456f; // на которые указывают указатели ptr1 и ptr2
-
-	cout << "*ptr1 = " << *ptr1 << endl; // неявно извлечём значения переменных var1 и var2
-	cout << "*ptr2 = " << *ptr2 << endl; // и покажем их на экране
+		Float var1 = 1.234; // определяем и инициализируем переменные
+		Float var2 = 5.678;
+		ptrFloat ptr1 = &var1; // определяем и инициализируем указатели
+		ptrFloat ptr2 = &var2;
+		cout << "*ptr1 = " << *ptr1 << endl; // получаем значения переменных и выводим на экран
+		cout << "*ptr2 = " << *ptr2 << endl << endl;
+		*ptr1 = 7.123; // присваиваем новые значения переменным, адресованным через указатели
+		*ptr2 = 8.456;
+		cout << "*ptr1 = " << *ptr1 << endl; // снова получаем значения и выводим на экран
+		cout << "*ptr2 = " << *ptr2 << endl;
 	}
 }
