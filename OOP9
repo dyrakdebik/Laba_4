@@ -1,4 +1,4 @@
-#include <io.h> // для функции _setmode
+#include <io.h> 
 #include <iostream>
 #include <cctype>
 #include <cstring>
