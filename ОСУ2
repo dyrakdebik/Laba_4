@@ -1,0 +1,427 @@
+#include <iostream>
+#include <stdlib.h>
+#include <string.h>
+
+using namespace std;
+
+
+struct telConStruct {
+    char name[64];
+    char date[64];
+    char teacher[64];
+    int scoresCount;
+    char scores[64];
+    bool isEmpty;
+};
+class Database {
+private:
+    telConStruct* _data;
+    int _databaseSize;
+    char* _filePath;
+
+public:
+    Database(int databaseSize, string filePath)
+    {
+        _databaseSize = databaseSize;
+        _filePath = new char[filePath.length() + 1];
+        strcpy(_filePath, filePath.c_str());
+
+        _data = new telConStruct[_databaseSize];
+
+        for (int i = 0; i < _databaseSize; i++)
+            _data[i].isEmpty = true;
+    }
+    ~Database()
+    {
+        delete[] _data;
+    }
+
+    void Delete(int index)
+    {
+        _data[index].isEmpty = true;
+    }
+
+    int FindEmpty() {
+        for (size_t i = 0; i < _databaseSize; i++)
+            if (_data[i].isEmpty == true)
+                return i;
+
+        return -1;
+    }
+
+
+
+    void Add(int index, telConStruct newdata) {
+        _data[index] = newdata;
+        _data[index].isEmpty = false;
+    }
+
+    telConStruct* Get(int index)
+    {
+        if (!_data[index].isEmpty)   return &_data[index];
+        else
+        {
+            throw "Пусто значение";
+            NULL;
+        }
+    }
+
+    telConStruct* GetAll()
+    {
+        telConStruct* result = new telConStruct[_databaseSize];
+
+        for (int i = 0; i < _databaseSize; i++)
+        {
+            if (_data[i].isEmpty == false)
+                result[i] = _data[i];
+        }
+
+        return result;
+    }
+
+    telConStruct* SearchName(string search)
+    {
+        for (int i = 0; i < _databaseSize; i++)
+        {
+            if (_data[i].isEmpty) continue;
+
+            if (string(_data[i].name).find(search) != string::npos)
+            {
+                return &_data[i];
+            }
+        }
+        throw;
+        return NULL;
+    }
+
+    telConStruct* SearchDate(string search)
+    {
+        for (int i = 0; i < _databaseSize; i++)
+        {
+            if (_data[i].isEmpty) continue;
+
+            if (string(_data[i].date).find(search) != string::npos)
+            {
+                return &_data[i];
+            }
+        }
+        throw;
+        return NULL;
+    }
+
+    telConStruct* SearchTeacher(string search)
+    {
+        for (int i = 0; i < _databaseSize; i++)
+        {
+            if (_data[i].isEmpty) continue;
+
+            if (string(_data[i].teacher).find(search) != string::npos)
+            {
+                return &_data[i];
+            }
+        }
+        throw;
+        return NULL;
+    }
+
+    telConStruct* SearchScoresCount(int search)
+    {
+        int min = 1000;
+        telConStruct* minStruct = new telConStruct;
+        bool checked = false;
+        for (int i = 0; i < _databaseSize; i++)
+        {
+            if (abs(search - _data[i].scoresCount) <= min)
+            {
+                min = abs(search - _data[i].scoresCount);
+                minStruct = &_data[i];
+                checked = true;
+            }
+        }
+        if (checked == true) return minStruct;
+        else
+        {
+            throw "Ошибка";
+            return NULL;
+        }
+    }
+
+    template<typename TempVal>
+    telConStruct* SearchMin(TempVal(*selectorFunction)(telConStruct))
+    {
+        TempVal min = selectorFunction(_data[0]);
+        int indexMin = -1;
+        for (int i = 1; i < _databaseSize; i++)
+        {
+            if ((!_data[i].isEmpty) && (selectorFunction(_data[i]) <= min))
+            {
+                indexMin = i;
+                min = selectorFunction(_data[i]);
+            }
+
+        }
+        if (indexMin == -1)
+        {
+            return &_data[0];
+        }
+        return &_data[indexMin];
+    }
+
+    void Sort(bool (*f)(telConStruct, telConStruct))
+    {
+        for (int i = 0; i < _databaseSize - 1; i++)
+        {
+            for (int j = 0; j < _databaseSize - i - 1; j++)
+            {
+                if (f(_data[j], _data[j + 1]) && (!_data[j].isEmpty && !_data[j + 1].isEmpty))
+                {
+                    telConStruct temp = _data[j];
+                    _data[j] = _data[j + 1];
+                    _data[j + 1] = temp;
+                }
+            }
+        }
+    }
+
+    void Restore()
+    {
+        FILE* file;
+        fopen_s(&file, _filePath, "rb");
+
+        for (int i = 0; i < _databaseSize; i++)
+        {
+            fread(&_data[i], sizeof(telConStruct), 1, file);
+        }
+
+        fclose(file);
+    }
+
+    void Save()
+    {
+        FILE* file;
+        fopen_s(&file, _filePath, "wb");
+
+        for (int i = 0; i < _databaseSize; i++)
+        {
+            if (!_data[i].isEmpty)
+            {
+                fwrite(&_data[i], sizeof(telConStruct), 1, file);
+            }
+        }
+
+        fclose(file);
+    }
+};
+
+
+void setStructures(Database* db)
+{
+    string date;
+    for (int i = 0; i < 2; i++)
+    {
+        telConStruct newStruct;
+
+
+
+        cout << "Экзамен: ";
+        cin >> newStruct.name;
+
+        cout << "Дата: ";
+        cin >> newStruct.date;
+
+        cout << "Преподаватель: ";
+        cin >> newStruct.teacher;
+
+        cout << "Кол-во оценок: ";
+        int c;
+        cin >> c;
+        newStruct.scoresCount = (int) c;
+
+        cout << "Оценки: ";
+        cin >> newStruct.scores;
+        cout << endl;
+
+
+        db->Add(i, newStruct);
+    }
+}
+
+void printData(telConStruct* structure, bool notice = false)
+{
+    for (size_t i = 0; i < sizeof(structure); i++)
+    {
+        if (structure[i].isEmpty || (notice && i != 0))
+            break;
+        cout << structure[i].name << endl;
+
+
+        cout << structure[i].date << endl
+            << structure[i].teacher << endl
+            << structure[i].scoresCount << endl
+            << structure[i].scores << endl;
+
+        cout << endl;
+    }
+}
+
+int main()
+{
+    setlocale(0, "");
+    Database* db = new Database(5, "Mydb.bin");
+    telConStruct* myStruct;
+    telConStruct* structArray;
+    int command;
+    int check = 0;
+    string date;
+    cout << "Список команд:\n0-Ввод данных\n1-Сохранение файла\n2-Чтение файла\n3-Взять структуру из БД"
+        << "\n4-Взять все элементы\n5-Поиск свободного элемента\n6-Поиск по экзамену\n7-Поиск по дате\n8-Поиск по преподователю\n9-Поиск по кол-ву оценок"
+        << "\n10-Очистка элемента массива\n11-Поиск минимума по кол-ву оценок\n12-Сортировка по возрастанию по кол-ву оценок\n13-Сортировка по убыванию по кол-ву оценок\n14-Выход из программы\n\n";
+    do
+    {
+        cout << "Введите команду: ";
+        cin >> command;
+        check++;
+        if (false)
+        {
+            cout << "\nСначала введите 0\n\n";
+            continue;
+        }
+        switch (command)
+        {
+        case 0:
+            cout << "\nВвод данных:\n";
+            setStructures(db);
+            break;
+        case 1:
+            cout << "Сохранение данных\n";
+            db->Save();
+            cout << "Удаление файла........\n";
+            delete db;
+            db = new Database(5, "Mydb.bin");
+            //cout << "Чтение файла\n";
+            //db->Restore();
+            break;
+        case 2:
+            cout << "Чтение файла\n";
+            db->Restore();
+            break;
+        case 3:
+            cout << "\nВзять структуру из БД\n";
+            cout << "Введите искомый элемент: ";
+            int el;
+            cin >> el;
+            try
+            {
+                myStruct = db->Get(el);
+                printData(myStruct, true);
+            }
+            catch (...)
+            {
+                cout << "Вы хотели взять пустой элемент\n";
+                break;
+            }
+            break;
+        case 4:
+            cout << "\nВзять все элементы\n";
+            structArray = db->GetAll();
+            printData(structArray);
+            break;
+        case 5:
+            cout << "Поиск свободного индекса: " << db->FindEmpty() << endl;
+            break;
+        case 6:
+            cout << "\nПоиск по Экзамену:\n";
+            char buff[64];
+            cout << "Название: ";
+            cin >> buff;
+            try
+            {
+                myStruct = db->SearchName(buff);
+                printData(myStruct, true);
+            }
+            catch (...)
+            {
+                cout << "Не удалось найти\n";
+            }
+            break;
+        case 7:
+            cout << "\nПоиск по дате:\n";
+            //char buff[64];
+            cout << "Дата: ";
+            cin >> buff;
+            try
+            {
+                myStruct = db->SearchDate(buff);
+                printData(myStruct, true);
+            }
+            catch (...)
+            {
+                cout << "Не удалось найти\n";
+            }
+            break;
+        case 8:
+            cout << "\nПоиск по Преподователю:\nФамилия: ";
+            //char buff[64];
+
+            cin >> buff;
+            try
+            {
+                myStruct = db->SearchTeacher(buff);
+                printData(myStruct, true);
+            }
+            catch (...)
+            {
+                cout << "Не удалось найти\n";
+            }
+            break;
+        case 9:
+            cout << "\nПоиск по оценкам:\nКол-во: ";
+            int buffI;
+
+            cin >> buffI;
+            try {
+                myStruct = db->SearchScoresCount((int)buffI);
+                printData(myStruct, true);
+            }
+            catch (...)
+            {
+                cout << "Не удалось найти\n";
+            }
+            break;
+        case 10:
+            cout << "\nОчистка элемента массива:\nВведите желаемый элемент: ";
+            cin >> el;
+            db->Delete(el);
+            cout << "Элемент очищен!\n";
+            break;
+        case 11:
+            cout << "\nПоиск минимума\n";
+            try
+            {
+                myStruct = db->SearchMin<int>([](telConStruct structure)
+                    { return structure.scoresCount; });
+                printData(myStruct, true);
+            }
+            catch (...)
+            {
+                cout << "Не удалось найти минимум\n";
+            }
+        case 12:
+            cout << "\nСортировка:\n";
+            db->Sort([](telConStruct s1, telConStruct s2)
+                { return (s1.scoresCount) > (s2.scoresCount); });
+            structArray = db->GetAll();
+            printData(structArray);
+            break;
+        case 13:
+            cout << "\nСортировка:\n";
+            db->Sort([](telConStruct s1, telConStruct s2)
+                { return (s1.scoresCount) < (s2.scoresCount); });
+            structArray = db->GetAll();
+            printData(structArray);
+            break;
+        }
+    } while (command != 14);
+
+    return 0;
+}
