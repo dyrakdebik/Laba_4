@@ -1,4 +1,163 @@
+#include <iostream>
 
+using namespace std;
+class queue {
+private:
+    int len;
+    int* arr;
+    int head, end, count;
+public:
+    queue(int m) {
+        len = m;
+        head, end = 0;
+        arr = new int[m];
+        count = 0;
+    }
+
+    ~queue() {
+        delete[] arr;
+    }
+
+    void add(int a) {
+        if (count == len)
+            throw "Очередь заполнена!\n";
+        else {
+            count++;
+            arr[end] = a;
+            end = (end + 1) % len;
+        }
+    }
+
+    int extract() {
+        int ans;
+
+        if (count == 0)
+            throw "Очередь пустa!\n\n";
+        else {
+            count--;
+            ans = arr[head];
+            head = (head + 1) % len;
+            return ans;
+        }
+
+    }
+};
+
+int main() {
+    setlocale(0, "");
+    int num, len, m;
+    char symb;
+
+    cout << "Элементов в очереди - ";
+    cin >> len;
+    queue one(len);
+    while (true) {
+        cout << "Для добавление введите '+'\nдля извлечения '-'\n";
+        cin >> symb;
+
+        if (symb == '+') {
+            cout << "Введите значение: ";
+            cin >> num;
+            try {
+                one.add(num);
+            }
+            catch (...) {
+                cout << "Очередь заполнена!" << endl;
+            }
+        }
+        else {
+            try {
+                m = one.extract();
+                cout << m << endl;
+            }
+            catch (...) {
+                cout << "Очередь пуста!" << endl;
+            }
+            cout << endl;
+        }
+    }
+
+    return 0;
+}
+
+
+СТЭК
+
+
+#include <iostream>
+
+using namespace std;
+class stack {
+private:
+    int N;
+    int* arr;
+    int top;
+
+public:
+    stack(int m) {
+        N = m;
+        top = -1;
+        arr = new int[m];
+    }
+
+    ~stack() {
+        delete[] arr;
+    }
+
+    void push(int a) {
+        if (top == N - 1)
+            throw "Стек переполнен!\n";
+        else {
+            top++;
+            arr[top] = a;
+        }
+    }
+
+    int pop() {
+        int ans;
+        if (top >= 0) {
+            ans = arr[top];
+            top--;
+            return ans;
+        } else
+            throw "Стек пуст!\n\n";
+    }
+};
+
+int main() {
+    setlocale(0, "");
+    int N, value;
+    char symb;
+
+    cout << "Элементов в стэке: ";
+    cin >> N;
+    stack one(N);
+
+    while (true) {
+        cout << "Для добавление введите '+'\nдля извлечения '-'\n ";
+        cin >> symb;
+        if (symb == '+') {
+            cout << "Введите значение: ";
+            cin >> value;
+            try {
+                one.push(value);
+            }
+            catch (...) {
+                cout << "Стек переполнен!" << endl;
+            }
+        } else {
+            try {
+                cout << one.pop();
+            }
+            catch (...) {
+                cout << "Стек пуст!" << endl;
+            }
+            cout << endl;
+        }
+    }
+
+    return 0;
+}
 ////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////
