@@ -1,0 +1,299 @@
+#include <iostream>
+#include <stdlib.h>
+#include <string.h>
+#include <io.h>
+#include <assert.h>
+
+using namespace std;
+struct bin_node {
+    int num;
+    bin_node* left;
+    bin_node* right;
+};
+
+class bin_tree
+{
+private:
+    bin_node* root;
+    int count;
+    char* _filePath;
+    
+public:
+    bin_tree() {  };
+
+    bin_tree* tree_create(string filePath) {
+        bin_tree* temp_tree = (bin_tree*) malloc(sizeof * temp_tree);
+        if (temp_tree == NULL)
+            return NULL;
+        
+        temp_tree->_filePath = new char[filePath.length() + 1];
+        strcpy(temp_tree->_filePath, filePath.c_str());
+
+        temp_tree->count = 0;
+        temp_tree->root = NULL;
+        return temp_tree;
+    }
+
+    int node_search(int num) {
+        bin_node* node;
+
+        if (this == NULL)
+            return NULL;
+
+        node = root;
+
+        while (true) {
+            if (node == NULL)
+                return NULL;
+            else if (node->num == num)
+                return 1;
+            else if (node->num > num)
+                node = node->left;
+            else
+                node = node->right;
+        }
+    }
+
+    int node_add(int num) {
+        bin_node* node, **temp_node;
+
+        if (this == NULL)
+            return NULL;
+
+        temp_node = &root;
+        node = root;
+
+        while (true) {
+            if (node == NULL) {
+                *temp_node = (bin_node*)malloc(sizeof * node);
+                node = *temp_node;
+                if (node == NULL)
+                    return NULL;
+                node->num = num;
+                node->left = node->right = NULL;
+                count++;
+                return 0;
+            }
+            else if (node->num == num)
+                return 1;
+            else if (node->num > num) {
+                temp_node = &node->left;
+                node = node->left;
+            }
+            else {
+                temp_node = &node->right;
+                node = node->right;
+            }
+        }
+    }
+
+    void node_order(bin_node* node, int* arr, int* i) {
+        if (node->left != NULL)
+            node_order(node->left, arr, i);
+        arr[*i] = node->num;
+        *i += 1;
+        if (node->right != NULL)
+            node_order(node->right, arr, i);
+    }
+
+    int* node_orderGet() {
+        if (root == NULL)
+            return NULL;
+        int p = 0;
+        int* i = &p;
+        int* arr = new int[count]();
+        node_order(root, arr, i);
+        return arr;
+    }
+
+    int Len() {
+        return count;
+    }
+
+    void Restore()
+    {
+        FILE* file;
+        fopen_s(&file, _filePath, "rb");
+        int* arr = new int[count];
+
+        int i = 0;
+        while (!feof(file)) {
+            fread(&arr[i], sizeof(int), 1, file);
+            if (feof(file))
+                break;
+            node_add(arr[i]);
+            i++;
+        }
+            
+        fclose(file);
+    }
+
+    void Save()
+    {
+        FILE* file;
+        fopen_s(&file, _filePath, "wb");
+        int* arr;
+        arr = node_orderGet();
+
+        for (int i = 0; i < count; i++)
+            fwrite(&arr[i], sizeof(int), 1, file);
+
+        fclose(file);
+    }
+
+    void Text_Export()
+    {
+        FILE* file;
+        fopen_s(&file, "result.txt", "w");
+        int* arr;
+        arr = node_orderGet();
+
+        for (int i = 0; i < count; i++) {
+            fprintf(file, "%d ", arr[i]);
+        }
+
+        fclose(file);
+    }
+
+    int delete_node(int item)
+    {
+        bin_node** q, *z;
+
+        assert(this->root != NULL);
+        q = &this->root;
+        z = this->root;
+
+        for (;;) {
+            if (z == NULL)
+                return 0;
+            else if (item == z->num)
+                break;
+            else if (item > z->num) {
+                q = &z->right;
+                z = z->right;
+            } else {
+                q = &z->left;
+                z = z->left;
+            }
+        }
+        if (z->right == NULL)
+            *q = z->left;
+        else {
+            bin_node* y = z->right;
+
+            if (y->left == NULL) {
+                y->left = z->left;
+                *q = y;
+            } else {
+                struct bin_node* x = y->left;
+                while (x->left != NULL) {
+                    y = x;
+                    x = y->left;
+                }
+                y->left = x->right;
+                x->left = z->left;
+                x->right = z->right;
+                *q = x;
+            }
+        }
+        this->count--;
+        free(z);
+        return 1;
+    }
+};
+
+int main()
+{
+    setlocale(0, "");
+    bin_tree* tree = NULL;
+    int userInput, numInput, result;
+    int* arr;
+
+    while (true) {
+        cout << "Выберите действие: "
+            << "\n1 - Создать бинарное дерево"
+            << "\n2 - Добавить элемент"
+            << "\n3 - Поиск элемента"
+            << "\n4 - Вывести все элементы"
+            << "\n5 - Вывод дерева в текстовый файл"
+            << "\n6 - Сохранение дерева"
+            << "\n7 - Чтение дерева из файла"
+            << "\n8 - Удаление элемента"
+            << "\n0 - Выход"
+            << "\n\nВаш выбор: ";
+
+        cin >> userInput;
+        cout << endl;
+
+        switch (userInput)
+        {
+        case 0:
+            return 0;
+            break;
+        case 1:
+            tree = tree->tree_create("Mytree.bin");
+            if (tree != NULL)
+                cout << "Успешно создано";
+            else
+                cout << "Нехватает памяти для создания";
+            break;
+        case 2:
+            cout << "Введите новый элемент: ";
+            cin >> numInput;
+
+            result = tree->node_add(numInput);
+            if (result == 0)
+                cout << "Элемент добавлен";
+            else if (result == 1)
+                cout << "Такое число уже есть";
+            else if (result == NULL)
+                cout << "Ошибка";
+            break;
+        case 3:
+            cout << "Введите искомый элемент: ";
+            cin >> numInput;
+
+            result = tree->node_search(numInput);
+            if (result)
+                cout << "Элемент найден";
+            else if (result == NULL)
+                cout << "Элемент не найден или дерево пустое";
+            break;
+        case 4:
+            cout << "Элементы дерева: \n";
+            arr = tree->node_orderGet();
+            if (arr == NULL) {
+                cout << "Дерево пустое";
+                break;
+            }
+            for (int i = 0; i < tree->Len(); i++)
+                cout << arr[i] << endl;
+            break;
+        case 5:
+            tree->Text_Export();
+            cout << "Дерево записано";
+            break;
+        case 6:
+            tree->Save();
+            cout << "Дерево сохранено";
+            break;
+        case 7:
+            tree->Restore();
+            cout << "Дерево прочтено";
+            break;
+        case 8:
+            cout << "Введите новый элемент: ";
+            cin >> numInput;
+            result = tree->delete_node(numInput);
+            if (result == 1)
+                cout << "Элемент удален";
+            else
+                cout << "Элемент не найден или дерево пустое";
+            break;
+        default:
+            cout << "Такой команды нет";
+            break;
+        }
+        cout << "\n\n";
+    }
+}
