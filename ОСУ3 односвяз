@@ -1,0 +1,413 @@
+#include <iostream>;
+#include <cstdlib>;
+
+using namespace std;
+
+struct vershok {
+	int number;
+	int date;
+	int during;
+	int code;
+	vershok* r;
+};
+
+struct tree {
+	int count = 0;
+	vershok* head = NULL;
+	vershok* tail = NULL;
+};
+
+tree* create_tree(void) {
+	struct tree* maintree = (tree*) malloc(sizeof * maintree);
+	if (maintree == NULL)
+		return NULL;
+	maintree->count = 0;
+	maintree->head = NULL;
+	maintree->tail = NULL;
+	return maintree;
+}
+
+vershok* el_output(tree* maintree) {
+	vershok* node = maintree->head;
+	vershok* arr = new vershok[maintree->count];
+	if (node == NULL)
+		return NULL;
+	
+	for (int i = 0; ; i++) {
+		arr[i] = *node;
+		if (node->r != NULL)
+			node = node->r;
+		else
+			break;
+	}
+	return arr;
+}
+
+int push_front(vershok* data, tree* maintree) {
+	vershok* node = maintree->head;
+
+	if (node == NULL) {
+		maintree->tail = data;
+		data->r = NULL;
+	}
+	else
+		data->r = node;
+	maintree->head = data;
+	maintree->count++;
+	return 1;
+}
+
+int pull_front(tree* maintree) {
+	vershok* node = maintree->head;
+	
+	if (node == NULL)
+		return 0;
+	vershok* tmp = node;
+	if (node->r != NULL) {
+		node = node->r;
+		maintree->head = node;
+	}
+	else 
+	{
+		maintree->head = NULL;
+		maintree->tail = NULL;
+	}
+	
+	delete tmp;
+	maintree->count--;
+	return 1;
+}
+
+int push_end(vershok* data, tree* maintree) {
+	vershok* node = maintree->tail;
+
+	if (node == NULL)
+		maintree->head = data;
+	else
+		node->r = data;
+	maintree->tail = data;
+	data->r = NULL;
+	maintree->count++;
+	
+	return 1;
+}
+
+int pull_end(tree* maintree) {
+	vershok* node = maintree->tail;
+
+	if (node == NULL)
+		return 0;
+	vershok* tmp = node;
+	if (maintree->count != 1) {
+		node = maintree->head;
+		while (node->r->r != NULL)
+			node = node->r;
+		node->r = NULL;
+		maintree->tail = node;
+	}
+	else
+	{
+		maintree->head = NULL;
+		maintree->tail = NULL;
+	}
+
+	delete tmp;
+	maintree->count--;
+	return 1;
+}
+
+vershok* number_search(int num, tree* maintree) {
+	vershok* node = maintree->head;
+	if (node == NULL)
+		return NULL;
+	while (true)
+	{
+		if (node->number == num)
+			return node;
+		else if (node->r != NULL) 
+			node = node->r;
+		else
+			break;
+	}
+	
+	return NULL;
+}
+
+vershok* date_search(int num, tree* maintree) {
+	vershok* node = maintree->head;
+	if (node == NULL)
+		return NULL;
+	while (true)
+	{
+		if (node->date == num)
+			return node;
+		else if (node->r != NULL)
+			node = node->r;
+		else
+			break;
+	}
+
+	return NULL;
+}
+
+vershok* during_search(int num, tree* maintree) {
+	vershok* node = maintree->head;
+	if (node == NULL)
+		return NULL;
+	while (true)
+	{
+		if (node->during == num)
+			return node;
+		else if (node->r != NULL)
+			node = node->r;
+		else
+			break;
+	}
+
+	return NULL;
+}
+
+vershok* code_search(int num, tree* maintree) {
+	vershok* node = maintree->head;
+	if (node == NULL)
+		return NULL;
+	while (true)
+	{
+		if (node->code == num)
+			return node;
+		else if (node->r != NULL)
+			node = node->r;
+		else
+			break;
+	}
+
+	return NULL;
+}
+
+int pull_versh(vershok* data, tree* maintree) {
+	vershok* node = data;
+	if (node == NULL)
+		return NULL;
+	if (maintree->count == 1)
+	{
+		maintree->head = NULL;
+		maintree->tail = NULL;
+		delete node;
+		maintree->count--;
+		return 1;
+	}
+	if (node == maintree->head) {
+		pull_front(maintree);
+		return 1;
+	}
+	else if (node == maintree->tail) {
+		pull_end(maintree);
+		return 1;
+	}
+	else {
+		vershok* current = maintree->head;
+		while (current->r != node)
+			current = current->r;
+		current->r = data->r;
+	}
+
+	delete node;
+	maintree->count--;
+	return 1;
+}
+
+int push_after(vershok* data, vershok* origin, tree* maintree) {
+	if (origin->r != NULL) 
+		data->r = origin->r;
+	else {
+		data->r = NULL;
+		maintree->tail = data;
+	}
+
+	origin->r = data;
+	maintree->count++;
+	return 1;
+}
+
+int main() {
+	setlocale(0, "");
+	
+	int command, num, num2;
+	bool exit = true;
+	vershok* arr = NULL;
+	vershok* res = NULL;
+	
+	tree* maintree = NULL;
+	while (exit)
+	{
+		cout << "\nКоманды:"
+			<< "\n1 - Создание списка"
+			<< "\n2 - Добавление элемента в конец списка"
+			<< "\n3 - Добавление элемента в начало списка"
+			<< "\n4 - Удаление конечного элемента списка"
+			<< "\n5 - Удаление начального элемента списка"
+			<< "\n6 - Поиск элемента по заданному значению поля структуры"
+			<< "\n7 - Вывод данных"
+			<< "\n0 - Для выхода"
+			<< endl << endl;
+
+		cout << "\nВаш выбор: ";
+		cin >> command;
+
+		switch (command) {
+		case 0:
+			exit = false;
+			break;
+		case 1:
+			maintree = create_tree();
+			if (maintree == NULL)
+				cout << "\nНе удалось выделить память";
+			else
+				cout << "\nСписок создан";
+			break;
+		case 2:
+			arr = (vershok*)malloc(sizeof * arr);
+			cout << "\nВведите номер телефона: ";
+			cin >> num;
+			arr->number = num;
+			cout << "\nВведите дату: ";
+			cin >> num;
+			arr->date = num; 
+			cout << "\nВведите продолжительность: ";
+			cin >> num;
+			arr->during = num; 
+			cout << "\nВведите код региона: ";
+			cin >> num;
+			arr->code = num;
+
+			if (maintree != NULL)
+				if (push_end(arr, maintree))
+					cout << "\nСтрока добавлена";
+				else
+					cout << "\nСтрока не добавлена";
+			break;
+		case 3:
+			arr = (vershok*)malloc(sizeof * arr);
+			cout << "\nВведите номер телефона: ";
+			cin >> num;
+			arr->number = num;
+			cout << "\nВведите дату: ";
+			cin >> num;
+			arr->date = num;
+			cout << "\nВведите продолжительность: ";
+			cin >> num;
+			arr->during = num;
+			cout << "\nВведите код региона: ";
+			cin >> num;
+			arr->code = num;
+
+			if(maintree != NULL)
+				if(push_front(arr, maintree))
+					cout <<  "\nСтрока добавлена";
+				else 
+					cout << "\nСтрока не добавлена";
+			break;
+		case 4:
+			if (pull_end(maintree))
+				cout << "\nСтрока удалена";
+			else
+				cout << "\nСписок пуст";
+			break;
+		case 5:
+			if (pull_front(maintree))
+				cout << "\nСтрока удалена";
+			else
+				cout << "\nСписок пуст";
+			break;
+		case 6:
+			cout << "\nПо чему ведем поиск? - ";
+			cout << "\n1 - по номеру"
+				<< "\n2 - по дате"
+				<< "\n3 - по продолжительности"
+				<< "\n4 - по коду региона"
+				<< "\nВаш выбор: ";
+			cin >> num;
+
+			cout << "Введите значени: ";
+			cin >> num2;
+
+			switch (num)
+			{
+			case 1:
+				res = number_search(num2, maintree);
+				break;
+			case 2:
+				res = date_search(num2, maintree);
+				break;
+			case 3:
+				res = during_search(num2, maintree);
+				break;
+			case 4:
+				res = code_search(num2, maintree);
+				break;
+			}
+
+			if (res != NULL) {
+				cout << "\nИскомая строка:\n";
+				cout << "\nНомер телефона - " << res->number
+					<< "\nДата - " << res->date
+					<< "\nПродолжительность - " << res->during
+					<< "\nКод - " << res->code;
+
+				cout << "\n\nКоманды:"
+					<< "\n1 - Удалить найденный элемент"
+					<< "\n2 - Добавить новый элемент после найденного"
+					<< "\n3 - Ничего не делать"
+					<< "\nВаш выбор: ";
+				cin >> command;
+				switch (command)
+				{
+				case 1:
+					if (pull_versh(res, maintree))
+						cout << "Строка удалена";
+					else
+						cout << "Ошибка";
+					break;
+				case 2:
+					arr = (vershok*)malloc(sizeof * arr);
+					cout << "\nВведите номер телефона: ";
+					cin >> num;
+					arr->number = num;
+					cout << "\nВведите дату: ";
+					cin >> num;
+					arr->date = num;
+					cout << "\nВведите продолжительность: ";
+					cin >> num;
+					arr->during = num;
+					cout << "\nВведите код региона: ";
+					cin >> num;
+					arr->code = num;
+
+					if (push_after(arr, res, maintree))
+						cout << "\nСтрока добавлена";
+					else
+						cout << "\nСтрока не добавлена";
+					break;
+				case 3:
+					break;
+				}
+			}
+			else
+				cout << "\nСтрока не найдена";
+			break;
+		case 7:
+			cout << "\nВывод данных:" << endl;
+			arr = el_output(maintree);
+			if (arr != NULL)
+				for (int i = 0; i < maintree->count; i++)
+					cout << "\nНомер телефона - " << arr[i].number
+					<< "\nДата - " << arr[i].date
+					<< "\nПродолжительность - " << arr[i].during
+					<< "\nКод - " << arr[i].code << endl;
+			else
+				cout << "Список пуст";
+			break;
+		}
+	}
+	return 0;
+}
