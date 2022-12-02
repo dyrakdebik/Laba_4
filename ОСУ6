@@ -4,7 +4,7 @@
 using namespace std;
 fstream file;
 const char file_name[] = "file.txt";
-const int N = 8;
+const int N = 5;
 class Dijkstra
 {
 private:
