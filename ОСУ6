@@ -1,0 +1,104 @@
+#include <iostream>
+#include <fstream>
+
+using namespace std;
+fstream file;
+const char file_name[] = "file.txt";
+const int N = 8;
+class Dijkstra
+{
+private:
+	unsigned int** _DUG;
+	unsigned int* _FIKS;
+	unsigned int* _MIN_WEG;
+	unsigned int* _VON_PUNKT;
+	bool check_min;
+public:
+	Dijkstra() {
+		_DUG = new unsigned int* [N];
+		for (int i = 0; i < N; i++)
+		{
+			_DUG[i] = new unsigned int[N];
+		}
+		_FIKS = new unsigned int[N];
+		_MIN_WEG = new unsigned int[N];
+		_VON_PUNKT = new unsigned int[N];
+		file.open(file_name, fstream::in);
+		for (int j = 0; j < N; j++) {
+			for (int k = 0; k < N; k++) {
+				file >> _DUG[k][j];
+				if (_DUG[k][j] == -1) {
+					_DUG[k][j] = 10000000;
+				}
+			}
+		}
+		file.close();
+	}
+	void poisk(int begin, int end, int min_index) {
+		begin--; end--;
+		for (int j = 0; j < N; j++) {
+			_FIKS[j] = 0;
+			_VON_PUNKT[j] = begin + 1;
+			_MIN_WEG[j] = _DUG[begin][j];
+		}
+		_VON_PUNKT[begin] = 0;
+		_FIKS[begin] = 1;
+		for (int f = 0; f < N; f++) {
+			check_min = false;
+			for (int j = 0; j < N; j++) {
+				if (_FIKS[j] == 0) {
+					if (!check_min) {
+						min_index = j;
+						check_min = true;
+					}
+					else if (_MIN_WEG[min_index] >= _MIN_WEG[j]) {
+						min_index = j;
+					}
+				}
+			}
+			_FIKS[min_index] = 1;
+			for (int j = 0; j < N; j++) {
+				if (_FIKS[j] == 0) {
+					if (_MIN_WEG[j] > _MIN_WEG[min_index] + _DUG[min_index][j]) {
+						_MIN_WEG[j] = _MIN_WEG[min_index] + _DUG[min_index][j];
+						_VON_PUNKT[j] = min_index + 1;
+					}
+				}
+			}
+		}
+		
+		int z = _VON_PUNKT[end], z_n = 0;
+		while (z != 0) {
+			z = _VON_PUNKT[z - 1];
+			z_n++;
+		}
+		int* z_m = new int[z_n]; 
+		z = _VON_PUNKT[end];
+		cout << end + 1 << endl;
+		for (int k = 0; k < z_n; k++) {
+			z_m[z_n - 1 - k] = z;
+			cout << z << endl;
+			z = _VON_PUNKT[z - 1];
+		}
+		begin++; end++;
+		file.open(file_name, fstream::app);
+		file << "\nНачало: " << begin << "\nКонец: " << end << "\nПолный путь: ";
+		for (int k = 0; k < z_n; k++) {
+			file << z_m[k] << " ";
+		}
+		file << end;
+		file.close();
+	}
+};
+int main()
+{
+	setlocale(LC_ALL, "ru");
+
+	int begin, end;
+	int min_index = 0;
+	Dijkstra dijkstra;
+	cout << "Введите начальную вершину: "; cin >> begin;
+	cout << "Введите конечную вершину: "; cin >> end;
+	dijkstra.poisk(begin, end, min_index);
+	return 0;
+}
