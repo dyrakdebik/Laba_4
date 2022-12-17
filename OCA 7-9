@@ -1,0 +1,194 @@
+#include "iostream"
+#include "fstream"
+using namespace std;
+fstream file;
+const char file_name[] = "file.txt";
+const int N = 10;
+class matrica {
+private:
+	unsigned int** _mas;
+	int* _front;
+	unsigned int* _rang;
+	unsigned int* _visited;
+	unsigned int* _von_punkt;
+	int point;
+public:
+	matrica() {
+		_mas = new unsigned int* [N];
+		for (int i = 0; i < N; i++)
+		{
+			_mas[i] = new unsigned int[N];
+		}
+		_front = new int[N];
+		_rang = new unsigned int[N];
+		_visited = new unsigned int[N];
+		_von_punkt = new unsigned int[N];
+		file.open(file_name, fstream::in);
+		for (int j = 0; j < N; j++) {
+			for (int k = 0; k < N; k++) {
+				file >> _mas[k][j];
+				_visited[j] = 0;
+				_rang[j] = 100;
+				_front[j] = 0;
+			}
+		}
+		file.close();
+	}
+	void push_fifo(int* f, int x) {
+		for (int i = 0; i < N; i++) {
+			if (f[i] == 0) {
+				f[i] = x;
+				return;
+			}
+		}
+	}
+	void pop_fifo(int* f) {
+		int i = 0;
+		for (; i < N - 1; i++) {
+			f[i] = f[i + 1];
+		}
+		f[i] = 0;
+	}
+	void vivod(int s, int e) {
+		file.open(file_name, fstream::app);
+		file << "\n" << e + 1 << " ";
+		int z = _von_punkt[e];
+		file << z << " ";
+		while (z != -1) {
+			z = _von_punkt[z - 1];
+			if (z != -1) {
+				file << z << " ";
+			}
+		}
+		file.close();
+	}
+	void poisk(int start) {
+		_front[0] = start;
+		_von_punkt[start] = -1;
+		_rang[start] = 0;
+		_visited[start] = 1;
+		do {
+			point = _front[0];
+			pop_fifo(_front);
+			for (int i = 0; i < N; i++) {
+				if (_mas[point][i] == 1 && _visited[i] == 0) {
+					_visited[i] = 1;
+					push_fifo(_front, i);
+					_von_punkt[i] = point + 1;
+					_rang[i] = _rang[point] + 1;
+				}
+			}
+		} while (_front[0] != 0);
+	}
+};
+
+
+int main()
+{
+	setlocale(LC_ALL, "ru");
+	int start, end = 0;
+	matrica matrica;
+	cout << "Введите начальную вершину: "; cin >> start;
+	cout << "Введите конечную вершину: "; cin >> end;
+	start--; end--;
+	matrica.poisk(start);
+	matrica.vivod(start, end);
+	return 0;
+}
+
+
+
+
+
+////////////////////////
+///////////////////////
+//////////////////////
+
+#include <iostream>
+#include <fstream>
+using namespace std;
+fstream file;
+const int V = 8;
+const char file_name[] = "file.txt";
+class matrica {
+private:
+	int** _arr;
+	bool* _visited;
+	int* _ways;
+	int* _rev;
+	int i = 0;
+public:
+	void open(int start) {
+		_arr = new int* [V];
+		for (int j = 0; j < V; j++)
+		{
+			_arr[j] = new int[V];
+		}
+		_visited = new bool[V];
+		_ways = new int[V];
+		file.open(file_name, fstream::in);
+		for (int j = 0; j < V; j++) {
+			for (int k = 0; k < V; k++) {
+				file >> _arr[k][j];
+				_visited[j] = false;
+			}
+		}
+		file.close();
+		_visited[start] = true;
+		_ways[start] = -1;
+	}
+	void func(int dot)
+	{
+		for (int j = 0; j < V; j++)
+			if (!_visited[j] && _arr[dot][j] == 1)
+			{
+				_ways[j] = dot;
+				_visited[j] = true;
+				func(j);
+			}
+	}
+	void cicle(int start, int end) {
+		int dne = end;
+		int count = 0;
+		do {
+			count++;
+			dne = _ways[dne];
+		} while (dne != _ways[start]);
+		_rev = new int[count];
+		_rev[i] = end;
+		i++;
+		do {
+			_rev[i] = _ways[end];
+			i++;
+			end = _ways[end];
+		} while (end != start);
+		i--;
+	}
+	void vivod() {
+		while (i >= 0)
+		{
+			cout << _rev[i] << " ";
+			i--;
+		}
+	}
+};
+
+int main()
+{
+	matrica matrica;
+	int start;
+	setlocale(LC_ALL, "Russian");
+	cout << "Введите начальную точку (нумерация с 0): ";
+	cin >> start;
+	matrica.open(start);
+	matrica.func(start);
+	int end;
+	cout << "До какой точки рассчитать маршрут(нумерация с 0): ";
+	cin >> end;
+	matrica.cicle(start, end);
+	cout << "Путь: ";
+	matrica.vivod();
+	cout << '\n';
+	system("pause");
+	return 0;
+}
